@@ -7,13 +7,13 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-oolab/.idea
-oolab/.gitignore
-oolab/gradlew.bat
-oolab/.gradle
-oolab/gradlew
-oolab/build
-oolab/oolab.iml
+oop_project/.idea
+oop_project/.gitignore
+oop_project/gradlew.bat
+oop_project/.gradle
+oop_project/gradlew
+oop_project/build
+oop_project/oolab.iml
 .gitattributes
 
 # AWS User-specific
