@@ -21,9 +21,10 @@ public class Simulation {
                 break;
             }
             moveAnimals();
-            System.out.println(map);
+//            System.out.println(map);
+            map.mapChanged("Zwierzaki się ruszyły");
         }
-        System.out.println(map);
+//        System.out.println(map);
         System.out.println("Wszystkie zwierzęta umarły");
     }
 

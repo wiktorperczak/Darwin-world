@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RectangularMap implements WorldMap{
+    private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
     Map<WorldElement, Vector2d> animals = new HashMap<>();
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
     Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
@@ -89,6 +90,20 @@ public class RectangularMap implements WorldMap{
             }
         }
         return elements;
+    }
+
+    public void registerObserver(MapChangeListener obs){
+        observers.put(obs, obs);
+    }
+
+    public void unregisterObserver(MapChangeListener obs){
+        observers.remove(obs);
+    }
+
+    protected void mapChanged(String message){
+        for (MapChangeListener obs: observers.values()){
+            obs.mapChanged(this, message);
+        }
     }
 
     @Override
