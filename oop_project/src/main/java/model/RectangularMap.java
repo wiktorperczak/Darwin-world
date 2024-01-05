@@ -15,10 +15,12 @@ public class RectangularMap implements WorldMap{
     Map<Vector2d, TunnelEnter> tunnels = new HashMap<>();
     private int width;
     private int height;
+    protected int id;
 
-    public RectangularMap(int width, int height){
+    public RectangularMap(int width, int height, int id) {
         this.width = width;
         this.height = height;
+        this.id = id;
         initializeGrass();
         initializeTunnels();
     }
@@ -116,6 +118,9 @@ public class RectangularMap implements WorldMap{
         MapVisualizer mapVisualizer = new MapVisualizer(this);
         return mapVisualizer.draw();
     }
+
+    @Override
+    public int getId() { return id;}
 
     public Map<WorldElement, Vector2d> getAnimals(){
         return animals;
