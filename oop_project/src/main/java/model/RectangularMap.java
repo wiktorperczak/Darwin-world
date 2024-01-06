@@ -42,6 +42,7 @@ public class RectangularMap implements WorldMap{
 
     @Override
     public void place(Animal animal) {
+        System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
         updateAllElements();
     }
@@ -77,6 +78,7 @@ public class RectangularMap implements WorldMap{
         elements = addNewValuesToElements(elements, tunnelEnters);
         elements = addNewValuesToElements(elements, tunnelExits);
         allElements = elements;
+        mapChanged("Update");
     }
 
     public Map<Vector2d, List<WorldElement>> addNewValuesToElements(Map<Vector2d, List<WorldElement>> elements,

@@ -12,4 +12,7 @@ public interface WorldMap {
     Vector2d getBoundaries();
     void updateAllElements();
     int getId();
+    void registerObserver(MapChangeListener obs);
+
+    void unregisterObserver(MapChangeListener obs);
 }

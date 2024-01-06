@@ -11,17 +11,22 @@ public class Simulation implements Runnable{
         for (Vector2d position : animalsStartingPos) {
             this.map.place(new Animal(position));
         }
-        System.out.println(map);
+        System.out.println(this.map);
+
+        this.map.updateAllElements();
+        System.out.println(this.map.allElements.size());
+        this.map.mapChanged("Start");
     }
 
     public void run(){
+        map.mapChanged("Zwierzaki sie ruszyly");
         while(!map.getAnimals().isEmpty()) {
             removeDeadBodies();
             if (map.getAnimals().isEmpty()){
                 break;
             }
             moveAnimals();
-            map.mapChanged("Zwierzaki się ruszyły");
+            System.out.println("TEST");
         }
         System.out.println("Wszystkie zwierzęta umarły");
     }
@@ -44,6 +49,7 @@ public class Simulation implements Runnable{
         if (!animalsToRemove.isEmpty()) map.updateAllElements();
     }
     void moveAnimals(){
+        System.out.println(map.getAnimals().size());
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         if (animals.isEmpty()) return;
         for (WorldElement worldElement : animals) {
@@ -51,6 +57,7 @@ public class Simulation implements Runnable{
             map.move(animal);
         }
 
-        map.updateAllElements();
+//        map.updateAllElements();
+//        map.mapChanged("Wszystkie zmiany skonczone");
     }
 }

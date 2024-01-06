@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      minHeight="550.0" minWidth="850.0"
+      spacing="5" alignment="CENTER"
+      fx:controller="presenter.StartPresenter">
+    <Label text="Początkowa energia:" />
+    <TextField fx:id="animalLife">5</TextField>
+    <Label text="Dlugosc genotypu:" />
+    <TextField fx:id="genotypeLength">5</TextField>
+    <Button onAction="#onSimulationStartClick">Start</Button>
+</VBox>
