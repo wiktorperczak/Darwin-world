@@ -36,22 +36,22 @@ public class SimulationPresenter implements MapChangeListener {
 
         Vector2d bounds = map.getBoundaries();
 
-        for (int i = 0; i < bounds.getX() + 1; i++) {
+        for (int i = 0; i < bounds.getX() + 2; i++) {
             mapGrid.getColumnConstraints().add(new ColumnConstraints(50));
         }
 
-        for (int i = 0; i < bounds.getY() + 1; i++) {
+        for (int i = 0; i < bounds.getY() + 2; i++) {
             mapGrid.getRowConstraints().add(new RowConstraints(50));
         }
 
         Label label;
-        for (int i = 0; i < bounds.getX(); i++){
+        for (int i = 0; i < bounds.getX() + 1; i++){
             label = new Label(String.valueOf(i));
             GridPane.setHalignment(label, HPos.CENTER);
             mapGrid.add(label, i + 1, 0);
         }
-        for (int i = 0; i < bounds.getY(); i++){
-            label = new Label(String.valueOf(bounds.getY() - i - 1));
+        for (int i = 0; i < bounds.getY() + 1; i++){
+            label = new Label(String.valueOf(bounds.getY() - i));
             GridPane.setHalignment(label, HPos.CENTER);
             mapGrid.add(label, 0, i + 1);
         }
