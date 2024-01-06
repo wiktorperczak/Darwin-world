@@ -13,6 +13,7 @@ public final class OptionsManager {
     int genotypeLength;
     int minimalEnergyToBreed;
     int energyLossOnBreed;
+    int gensToMutate;
 
     public void setGenotypeLength(int genotypeLength) {
         this.genotypeLength = genotypeLength;
@@ -28,5 +29,7 @@ public final class OptionsManager {
     public int getMinimalEnergyToBreed(){ return minimalEnergyToBreed;}
     public void setEnergyLossOnBreed(int value){ energyLossOnBreed = value;}
     public int getEnergyLossOnBreed(){ return energyLossOnBreed;}
+    public void setGensToMutate(int value){gensToMutate = value;}
+    public int getGensToMutate(){ return gensToMutate;}
 
 }

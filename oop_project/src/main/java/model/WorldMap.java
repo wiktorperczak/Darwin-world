@@ -12,5 +12,6 @@ public interface WorldMap {
     Map<Vector2d, List<WorldElement>> getAllElements();
     Vector2d getBoundaries();
     void updateAllElements();
+    Map<WorldElement, Vector2d> getAnimals();
     UUID getId();
 }
