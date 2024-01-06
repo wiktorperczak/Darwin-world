@@ -6,6 +6,7 @@ public class RectangularMap implements WorldMap{
     private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
     Map<WorldElement, Vector2d> animals = new HashMap<>();
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
+    List<List<Boolean>> isGrass = new ArrayList<>();
     Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
     Map<WorldElement, Vector2d> tunnelExits = new HashMap<>();
     Map<Vector2d, List<WorldElement>> allElements = new HashMap<>();
@@ -20,10 +21,15 @@ public class RectangularMap implements WorldMap{
         this.id = generateId();
         initializeGrass();
         initializeTunnels();
+
     }
 
-    void initializeGrass(){
-
+    void initializeIsGrass(){
+        for (int i = 0; i <= height; i++) {
+            List<Boolean> row = new ArrayList<>();
+            for (int j = 0; j <= width; i++) { row.add(false); }
+            isGrass.add(row);
+        }
     }
 
     void initializeTunnels(){
@@ -39,6 +45,7 @@ public class RectangularMap implements WorldMap{
 
     @Override
     public void place(Animal animal) {
+        System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
         updateAllElements();
     }
@@ -124,6 +131,16 @@ public class RectangularMap implements WorldMap{
         }
     }
 
+    public void addNewGrassField(int x, int y) {
+        isGrass.get(y).set(x, true);
+        Vector2d position = new Vector2d(x, y);
+        grassFields.put(new Grass(position), position);
+    }
+
+    public void deleteEatenGrass() {
+
+    }
+
     @Override
     public Vector2d getBoundaries() {
         return new Vector2d(width, height);
@@ -144,6 +161,8 @@ public class RectangularMap implements WorldMap{
     public Map<WorldElement, Vector2d> getAnimals(){
         return animals;
     }
+    public boolean getIsGrass(int x, int y) { return isGrass.get(y).get(x); }
+    public void setIsGrassValue(int x, int y, boolean value) { isGrass.get(y).set(x, value); }
     public Map<Vector2d, TunnelEnter> getTunnels(){
         return tunnels;
     }

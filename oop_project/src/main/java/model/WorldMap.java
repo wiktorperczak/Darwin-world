@@ -14,4 +14,7 @@ public interface WorldMap {
     void updateAllElements();
     Map<WorldElement, Vector2d> getAnimals();
     UUID getId();
+    void registerObserver(MapChangeListener obs);
+
+    void unregisterObserver(MapChangeListener obs);
 }

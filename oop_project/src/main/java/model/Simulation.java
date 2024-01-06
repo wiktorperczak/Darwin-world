@@ -3,9 +3,14 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Simulation implements Runnable{
     RectangularMap map;
+    Random random = new Random();
+
+    OptionsManager optionsManager = OptionsManager.getInstance();
+
     public Simulation(List<Vector2d> animalsStartingPos, WorldMap map){
         this.map = (RectangularMap) map;
         for (Vector2d position : animalsStartingPos) {
@@ -15,14 +20,20 @@ public class Simulation implements Runnable{
     }
 
     public void run(){
+        map.mapChanged("Zwierzaki sie ruszyly");
         while(!map.getAnimals().isEmpty()) {
             removeDeadBodies();
             if (map.getAnimals().isEmpty()){
                 break;
             }
             moveAnimals();
-            map.mapChanged("Zwierzaki się ruszyły");
             breed();
+            addGrass();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         System.out.println("Wszystkie zwierzęta umarły");
     }
@@ -45,6 +56,7 @@ public class Simulation implements Runnable{
         if (!animalsToRemove.isEmpty()) map.updateAllElements();
     }
     void moveAnimals(){
+        System.out.println(map.getAnimals().size());
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         if (animals.isEmpty()) return;
         for (WorldElement worldElement : animals) {
@@ -52,9 +64,52 @@ public class Simulation implements Runnable{
             map.move(animal);
         }
 
-        map.updateAllElements();
+//        map.updateAllElements();
+//        map.mapChanged("Wszystkie zmiany skonczone");
     }
     void breed(){
         BreedingController.breed(map);
+    }
+
+    void eatingGrass() {
+        for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getElements().entrySet()) {
+            Vector2d position = entry.getKey();
+            WorldElement element = entry.getValue().get(0);
+            if (element instanceof Animal) {
+                if (map.getIsGrass(position.getX(), position.getY())) {
+                    ((Animal) element).addEnergy(map.);
+                }
+            }
+//            String klucz = entry.getKey();
+//            Integer wartosc = entry.getValue();
+            System.out.println("Klucz: " + klucz + ", Wartość: " + wartosc);
+        }
+    }
+
+    private boolean isEquatorPosition(int y) {
+        int height  = map.getBoundaries().getY() + 1;
+        int mod = height % 5, equatorWidth = height / 5;
+        if (mod == 3 || mod == 4) equatorWidth += 1;
+
+        int lower_bound = (height - equatorWidth) / 2;
+        int upper_bound = lower_bound + equatorWidth;
+        return (y >= lower_bound && y <= upper_bound);
+    }
+
+    void addGrass() {
+        for (int y = 0; y <= map.getBoundaries().getY(); y++) {
+            boolean checkEquator = isEquatorPosition(y);
+            for (int x = 0; x <= map.getBoundaries().getX(); x++) {
+                if (!map.getIsGrass(x, y)) {
+                    int randomNumber = random.nextInt(100) + 1;
+                    if (checkEquator) {
+                        if (randomNumber <= 80) { map.addNewGrassField(x, y); }
+                    }
+                    else {
+                        if (randomNumber > 80) { map.addNewGrassField(x, y); }
+                    }
+                }
+            }
+        }
     }
 }

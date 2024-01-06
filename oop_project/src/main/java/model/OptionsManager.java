@@ -15,6 +15,12 @@ public final class OptionsManager {
     int energyLossOnBreed;
     int gensToMutate;
 
+    int grassEnergy;
+
+    public int getGenotypeLength() {
+        return genotypeLength;
+    }
+
     public void setGenotypeLength(int genotypeLength) {
         this.genotypeLength = genotypeLength;
     }
@@ -25,6 +31,9 @@ public final class OptionsManager {
     public int getAnimalLife(){
         return animalLife;
     }
+
+    public int getGrassEnergy() { return grassEnergy; }
+    public void setGrassEnergy(int grassEnergy) { this.grassEnergy = grassEnergy; }
     public void setMinimalEnergyToBreed(int value){minimalEnergyToBreed = value;}
     public int getMinimalEnergyToBreed(){ return minimalEnergyToBreed;}
     public void setEnergyLossOnBreed(int value){ energyLossOnBreed = value;}
