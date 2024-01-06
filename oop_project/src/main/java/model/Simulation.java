@@ -25,7 +25,7 @@ public class Simulation implements Runnable{
             moveAnimals();
             eatingGrass();
             map.mapChanged("Zwierzaki sie ruszyly");
-//            breed();
+            breed();
             addGrass();
             try {
                 Thread.sleep(1000);
@@ -104,16 +104,16 @@ public class Simulation implements Runnable{
     }
 
     void addGrass() {
-        for (int y = 0; y < map.getBoundaries().getY(); y++) {
+        for (int y = 0; y <= map.getBoundaries().getY(); y++) {
             boolean checkEquator = isEquatorPosition(y);
             for (int x = 0; x <= map.getBoundaries().getX(); x++) {
                 if (!map.getIsGrass(x, y)) {
                     int randomNumber = random.nextInt(100) + 1;
                     if (checkEquator) {
-                        if (randomNumber > 80) { map.addNewGrassField(x, y); }
+                        if (randomNumber <= 80) { map.addNewGrassField(x, y); }
                     }
                     else {
-                        if (randomNumber <= 80) { map.addNewGrassField(x, y); }
+                        if (randomNumber > 80) { map.addNewGrassField(x, y); }
                     }
                 }
             }
