@@ -12,7 +12,7 @@ public class TunnelEnter extends WorldElement{
 
     Vector2d getRandomPos(){
         Random random = new Random();
-        return new Vector2d(random.nextInt(5), random.nextInt(5));
+        return new Vector2d(random.nextInt(3), random.nextInt(3));
     }
 
     TunnelExit getTunnelExit(){

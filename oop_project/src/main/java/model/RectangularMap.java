@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RectangularMap implements WorldMap{
     private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
@@ -15,12 +12,12 @@ public class RectangularMap implements WorldMap{
     Map<Vector2d, TunnelEnter> tunnels = new HashMap<>();
     private int width;
     private int height;
-    protected int id;
+    protected UUID id;
 
-    public RectangularMap(int width, int height, int id) {
+    public RectangularMap(int width, int height) {
         this.width = width;
         this.height = height;
-        this.id = id;
+        this.id = generateId();
         initializeGrass();
         initializeTunnels();
     }
@@ -66,7 +63,7 @@ public class RectangularMap implements WorldMap{
     }
 
     @Override
-    public Map<Vector2d, List<WorldElement>> getElements() {
+    public Map<Vector2d, List<WorldElement>> getAllElements() {
         return allElements;
     }
 
@@ -119,8 +116,11 @@ public class RectangularMap implements WorldMap{
         return mapVisualizer.draw();
     }
 
+    UUID generateId(){
+        return UUID.randomUUID();
+    }
     @Override
-    public int getId() { return id;}
+    public UUID getId() { return id;}
 
     public Map<WorldElement, Vector2d> getAnimals(){
         return animals;

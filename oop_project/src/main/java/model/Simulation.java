@@ -11,7 +11,7 @@ public class Simulation implements Runnable{
         for (Vector2d position : animalsStartingPos) {
             this.map.place(new Animal(position));
         }
-        System.out.println(map);
+        this.map.mapChanged("Zwierzaki się ustawiły");
     }
 
     public void run(){
@@ -22,6 +22,7 @@ public class Simulation implements Runnable{
             }
             moveAnimals();
             map.mapChanged("Zwierzaki się ruszyły");
+            breed();
         }
         System.out.println("Wszystkie zwierzęta umarły");
     }
@@ -52,5 +53,8 @@ public class Simulation implements Runnable{
         }
 
         map.updateAllElements();
+    }
+    void breed(){
+        BreedingController.breed(map);
     }
 }
