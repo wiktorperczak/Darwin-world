@@ -15,5 +15,7 @@
     <TextField fx:id="animalLife">5</TextField>
     <Label text="Dlugosc genotypu:" />
     <TextField fx:id="genotypeLength">5</TextField>
+    <Label text="Wartosc energetyczna trawy:" />
+    <TextField fx:id="grassEnergy">5</TextField>
     <Button onAction="#onSimulationStartClick">Start</Button>
 </VBox>

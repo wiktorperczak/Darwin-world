@@ -1,32 +1,37 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RectangularMap implements WorldMap{
     private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
+    public OptionsManager optionsManager;
     Map<WorldElement, Vector2d> animals = new HashMap<>();
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
+    List<List<Boolean>> isGrass = new ArrayList<>();
     Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
     Map<WorldElement, Vector2d> tunnelExits = new HashMap<>();
     Map<Vector2d, List<WorldElement>> allElements = new HashMap<>();
     Map<Vector2d, TunnelEnter> tunnels = new HashMap<>();
     private int width;
     private int height;
-    protected int id;
+    protected UUID id;
 
-    public RectangularMap(int width, int height, int id) {
+    public RectangularMap(int width, int height, OptionsManager optionsManager) {
         this.width = width;
         this.height = height;
-        this.id = id;
-        initializeGrass();
+        this.id = generateId();
+        this.optionsManager = optionsManager;
+        initializeIsGrass();
         initializeTunnels();
+
     }
 
-    void initializeGrass(){
-
+    void initializeIsGrass(){
+        for (int i = 0; i <= height; i++) {
+            List<Boolean> row = new ArrayList<>();
+            for (int j = 0; j <= width; j++) { row.add(false); }
+            isGrass.add(row);
+        }
     }
 
     void initializeTunnels(){
@@ -44,7 +49,6 @@ public class RectangularMap implements WorldMap{
     public void place(Animal animal) {
         System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
-        updateAllElements();
     }
 
     @Override
@@ -67,21 +71,20 @@ public class RectangularMap implements WorldMap{
     }
 
     @Override
-    public Map<Vector2d, List<WorldElement>> getElements() {
+    public Map<Vector2d, List<WorldElement>> getAllElements() {
         return allElements;
     }
 
     public void updateAllElements() {
         Map<Vector2d, List<WorldElement>> elements = new HashMap<>();
         elements = addNewValuesToElements(elements, animals);
-        elements = addNewValuesToElements(elements, grassFields);
         elements = addNewValuesToElements(elements, tunnelEnters);
         elements = addNewValuesToElements(elements, tunnelExits);
-        allElements = elements;
-        mapChanged("Update");
+        elements = addNewValuesToElements(elements, grassFields);
+        allElements = sortAnimals(elements);
     }
 
-    public Map<Vector2d, List<WorldElement>> addNewValuesToElements(Map<Vector2d, List<WorldElement>> elements,
+    Map<Vector2d, List<WorldElement>> addNewValuesToElements(Map<Vector2d, List<WorldElement>> elements,
                                                                     Map<WorldElement, Vector2d> worldElements){
         for (WorldElement worldElement : worldElements.keySet()){
             Vector2d pos = worldElement.getPosition();
@@ -92,6 +95,25 @@ public class RectangularMap implements WorldMap{
             } else {
                 elements.put(pos, new ArrayList<>(List.of(worldElement)));
             }
+        }
+        return elements;
+    }
+
+    Map<Vector2d, List<WorldElement>> sortAnimals(Map<Vector2d, List<WorldElement>> elements){
+        for (Vector2d position : elements.keySet()){
+            List<WorldElement> animals = elements.get(position).stream()
+                    .filter(worldElement -> worldElement instanceof Animal)
+                    .map(worldElement -> (Animal) worldElement)
+                    .sorted(new AnimalComparator())
+                    .map(worldElement -> (WorldElement) worldElement)
+                    .toList();
+            List<WorldElement> restWorldElements = elements.get(position).stream()
+                    .filter(worldElement -> !(worldElement instanceof Animal))
+                    .toList();
+            List<WorldElement> worldElements = new ArrayList<>();
+            worldElements.addAll(animals);
+            worldElements.addAll(restWorldElements);
+            elements.put(position, worldElements);
         }
         return elements;
     }
@@ -110,6 +132,16 @@ public class RectangularMap implements WorldMap{
         }
     }
 
+    public void addNewGrassField(int x, int y) {
+        isGrass.get(y).set(x, true);
+        Vector2d position = new Vector2d(x, y);
+        grassFields.put(new Grass(position), position);
+    }
+
+    public void deleteEatenGrass() {
+
+    }
+
     @Override
     public Vector2d getBoundaries() {
         return new Vector2d(width, height);
@@ -121,12 +153,20 @@ public class RectangularMap implements WorldMap{
         return mapVisualizer.draw();
     }
 
+    UUID generateId(){
+        return UUID.randomUUID();
+    }
     @Override
-    public int getId() { return id;}
+    public UUID getId() { return id;}
 
     public Map<WorldElement, Vector2d> getAnimals(){
         return animals;
     }
+    public Map<WorldElement, Vector2d> getGrassFields(){
+        return grassFields;
+    }
+    public boolean getIsGrass(int x, int y) { return isGrass.get(y).get(x); }
+    public void setIsGrassValue(int x, int y, boolean value) { isGrass.get(y).set(x, value); }
     public Map<Vector2d, TunnelEnter> getTunnels(){
         return tunnels;
     }

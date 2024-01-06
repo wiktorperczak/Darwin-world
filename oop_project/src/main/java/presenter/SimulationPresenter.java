@@ -60,13 +60,11 @@ public class SimulationPresenter implements MapChangeListener {
         GridPane.setHalignment(label, HPos.CENTER);
         mapGrid.add(label, 0, 0);
 
-        for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getElements().entrySet()) {
-            System.out.println("Pozycja elementu");
+        for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getAllElements().entrySet()) {
             label = new Label(entry.getValue().get(0).toString());
-            System.out.println(entry.toString());
             GridPane.setHalignment(label, HPos.CENTER);
             mapGrid.add(label, entry.getKey().getX() + 1,
-                    bounds.getY() - (entry.getKey().getY()));
+                    bounds.getY() - (entry.getKey().getY()) + 1);
         }
     }
 

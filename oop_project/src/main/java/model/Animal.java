@@ -9,23 +9,29 @@ public class Animal extends WorldElement{
     private MapDirection facingDirection;
     private List<Integer> genotype;
     private Iterator<MapDirection> genDirectionGenerator;
-    private int life;
+    private int energy;
+    private int numberOfDaysLived;
+    private int numberOfKids;
+    RectangularMap map;
 
 
-    public Animal(Vector2d position){
-        OptionsManager optionsManager = OptionsManager.getInstance();
+    public Animal(RectangularMap map, Vector2d position){
+        this.map = map;
         this.position = position;
-        genotype = generateGenotype(optionsManager.getGenotypeLength());
+        genotype = generateGenotype(map.optionsManager.getGenotypeLength());
         //System.out.println(genotype);
         genDirectionGenerator = new GenDirectionGenerator(genotype).iterator();
         facingDirection = genDirectionGenerator.next();
-        life = optionsManager.getAnimalLife();
+        energy = map.optionsManager.getAnimalLife();
+        numberOfDaysLived = 0;
+        numberOfKids = 0;
     }
 
     public void move(RectangularMap map){
         position = calculateNewPosition(map);
         facingDirection = calculateNewRotation();
-        life -= 1;
+        energy -= 1;
+        numberOfDaysLived += 1;
     }
 
     Vector2d calculateNewPosition(RectangularMap map){
@@ -63,7 +69,7 @@ public class Animal extends WorldElement{
     }
 
     public boolean isAlive(){
-        return life > 0;
+        return energy > 0;
     }
 
     public String toString() {
@@ -78,4 +84,12 @@ public class Animal extends WorldElement{
             case NORTH_WEST -> "NW";
         };
     }
+
+    public int getEnergy(){ return energy;}
+    public void addEnergy(int value){ energy += value;}
+    public void setEnergy(int value){ energy = value;}
+    public int getNumberOfDaysLived(){ return numberOfDaysLived;}
+    public int getNumberOfKids(){ return numberOfKids;}
+    public List<Integer> getGenotype(){return genotype;}
+    public void setGenotype(List<Integer> newGenotype){ genotype = newGenotype;}
 }

@@ -9,4 +9,5 @@ public class Grass extends WorldElement{
     public String toString() {
         return "*";
     }
+
 }
