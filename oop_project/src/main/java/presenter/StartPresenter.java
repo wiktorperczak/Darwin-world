@@ -47,6 +47,12 @@ public class StartPresenter {
         List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
 //        List<Vector2d> positions = List.of();
         WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight());
+        optionsManager.setEnergyLossOnBreed(1);
+        optionsManager.setMinimalEnergyToBreed(3);
+
+//        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
+//        List<Vector2d> positions = List.of();
+//        WorldMap map = new RectangularMap(4, 4);
 
 
         SimulationPresenter simulationPresenter = loader.getController();
