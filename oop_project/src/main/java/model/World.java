@@ -27,7 +27,7 @@ public class World {
 
     static void setParameters(){
         OptionsManager optionsManager = OptionsManager.getInstance();
-        optionsManager.setAnimalLife(45);
+        optionsManager.setAnimalLife(5);
         optionsManager.setGenotypeLength(5);
     }
 }

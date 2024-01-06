@@ -27,6 +27,11 @@ public class Simulation implements Runnable{
             }
             moveAnimals();
             System.out.println("TEST");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         System.out.println("Wszystkie zwierzęta umarły");
     }

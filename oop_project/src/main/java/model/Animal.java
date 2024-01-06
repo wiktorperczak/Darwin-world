@@ -18,9 +18,7 @@ public class Animal extends WorldElement{
         genotype = generateGenotype(optionsManager.getGenotypeLength());
         //System.out.println(genotype);
         genDirectionGenerator = new GenDirectionGenerator(genotype).iterator();
-        //todo: tutaj jest jakis bug, nie moge do presentera dodać zwierząt
         facingDirection = genDirectionGenerator.next();
-        System.out.println("Animal OK");
         life = optionsManager.getAnimalLife();
     }
 
