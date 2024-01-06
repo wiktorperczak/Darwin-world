@@ -27,7 +27,7 @@ public class BreedingController {
             }
         }
         if (numberOfChildrenAdded > 0){
-            ((RectangularMap) map).mapChanged("Zwierzaki się rozmnożyły");
+            ((RectangularMap) map).mapChanged("Zwierzaki się rozmnozyly");
         }
     }
 

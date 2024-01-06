@@ -28,7 +28,7 @@ public class Simulation implements Runnable{
             breed();
             addGrass();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -40,7 +40,6 @@ public class Simulation implements Runnable{
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         List<Animal> animalsToRemove = new ArrayList<>();
         if (animals.isEmpty()) return;
-
         for (WorldElement worldElement : animals){
             Animal animal = (Animal) worldElement;
             if (!animal.isAlive()){
@@ -50,17 +49,18 @@ public class Simulation implements Runnable{
         for (Animal animal : animalsToRemove){
             map.removeAnimal(animal);
         }
-
-        if (!animalsToRemove.isEmpty()) map.updateAllElements();
+        if (!animalsToRemove.isEmpty()) {
+            map.updateAllElements();
+        }
     }
     void moveAnimals(){
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         if (animals.isEmpty()) return;
+        System.out.println(animals);
         for (WorldElement worldElement : animals) {
             Animal animal = (Animal) worldElement;
             map.move(animal);
         }
-
         map.updateAllElements();
     }
     void breed(){
