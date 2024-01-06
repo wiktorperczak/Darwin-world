@@ -5,9 +5,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BreedingController {
-    static OptionsManager optionsManager = OptionsManager.getInstance();
+    static RectangularMap map;
 
-    public static void breed(WorldMap map){
+    public static void breed(RectangularMap map){
+        BreedingController.map = map;
         Map<Vector2d, List<WorldElement>> allAnimals = map.getAllElements();
         int numberOfChildrenAdded = 0;
         for (Vector2d position : allAnimals.keySet()){
@@ -19,15 +20,15 @@ public class BreedingController {
                 Animal animal1 = animals.get(i);
                 Animal animal2 = animals.get(i+1);
 
-                if (animal1.getEnergy() < optionsManager.getMinimalEnergyToBreed() ||
-                        animal2.getEnergy() < optionsManager.getMinimalEnergyToBreed()) continue;
+                if (animal1.getEnergy() < map.optionsManager.getMinimalEnergyToBreed() ||
+                        animal2.getEnergy() < map.optionsManager.getMinimalEnergyToBreed()) continue;
                 Animal children = generateChildren(animal1, animal2);
                 map.place(children);
                 numberOfChildrenAdded += 1;
             }
         }
         if (numberOfChildrenAdded > 0){
-            ((RectangularMap) map).mapChanged("Zwierzaki się rozmnozyly");
+            map.updateAllElements();
         }
     }
 
@@ -45,17 +46,17 @@ public class BreedingController {
 //        System.out.println(takeLeftSide);
 //        System.out.println(childrenGenotype);
 //        System.out.println();
-        Animal children = new Animal(parent1.getPosition());
-        children.setEnergy(2 * optionsManager.getEnergyLossOnBreed());
+        Animal children = new Animal(map, parent1.getPosition());
+        children.setEnergy(2 * map.optionsManager.getEnergyLossOnBreed());
         children.setGenotype(childrenGenotype);
-        parent1.addEnergy(-optionsManager.getEnergyLossOnBreed());
-        parent2.addEnergy(-optionsManager.getEnergyLossOnBreed());
+        parent1.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
+        parent2.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
         return children;
     }
 
     static List<Integer> getNewGenotype(List<Integer> genotype1, List<Integer> genotype2, float ratio, boolean takeLeftSide){
         int n = genotype1.size();
-        int len1 = (int) Math.floor(n * ratio);
+        int len1 = (int) Math.ceil(n * ratio);
         int len2 = n - len1;
         List<Integer> resultGenotype = new ArrayList<>();
         if (takeLeftSide){
@@ -73,7 +74,7 @@ public class BreedingController {
         for (int i = 0; i < genotype.size(); i++){
             indexes.add(i);
         }
-        for (int i = 0; i < optionsManager.getGensToMutate(); i++){
+        for (int i = 0; i < map.optionsManager.getGensToMutate(); i++){
             Random random = new Random();
             int temp = random.nextInt(indexes.size());
             int index = indexes.get(temp);

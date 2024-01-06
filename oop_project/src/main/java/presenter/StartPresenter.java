@@ -36,7 +36,7 @@ public class StartPresenter {
 
         stage.show();
 
-        OptionsManager optionsManager = OptionsManager.getInstance();
+        OptionsManager optionsManager = new OptionsManager();
         optionsManager.setWidth(Integer.parseInt(width.getText()));
         optionsManager.setHeight(Integer.parseInt(height.getText()));
         optionsManager.setAnimalLife(Integer.parseInt(animalLife.getText()));
@@ -46,14 +46,9 @@ public class StartPresenter {
 
         List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
 //        List<Vector2d> positions = List.of();
-        WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight());
+        WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight(), optionsManager);
         optionsManager.setEnergyLossOnBreed(1);
         optionsManager.setMinimalEnergyToBreed(3);
-
-//        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
-//        List<Vector2d> positions = List.of();
-//        WorldMap map = new RectangularMap(4, 4);
-
 
         SimulationPresenter simulationPresenter = loader.getController();
         map.registerObserver(simulationPresenter);

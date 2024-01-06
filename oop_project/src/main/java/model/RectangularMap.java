@@ -4,6 +4,7 @@ import java.util.*;
 
 public class RectangularMap implements WorldMap{
     private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
+    public OptionsManager optionsManager;
     Map<WorldElement, Vector2d> animals = new HashMap<>();
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
     List<List<Boolean>> isGrass = new ArrayList<>();
@@ -14,12 +15,12 @@ public class RectangularMap implements WorldMap{
     private int width;
     private int height;
     protected UUID id;
-    OptionsManager optionsManager = OptionsManager.getInstance();
 
-    public RectangularMap(int width, int height) {
+    public RectangularMap(int width, int height, OptionsManager optionsManager) {
         this.width = width;
         this.height = height;
         this.id = generateId();
+        this.optionsManager = optionsManager;
         initializeIsGrass();
         initializeTunnels();
 
@@ -59,7 +60,6 @@ public class RectangularMap implements WorldMap{
     public void place(Animal animal) {
         System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
-        updateAllElements();
     }
 
     @Override

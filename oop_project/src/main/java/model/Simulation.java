@@ -6,12 +6,11 @@ public class Simulation implements Runnable{
     RectangularMap map;
     Random random = new Random();
 
-    OptionsManager optionsManager = OptionsManager.getInstance();
 
     public Simulation(List<Vector2d> animalsStartingPos, WorldMap map){
         this.map = (RectangularMap) map;
         for (Vector2d position : animalsStartingPos) {
-            this.map.place(new Animal(position));
+            this.map.place(new Animal(this.map, position));
         }
         this.map.mapChanged("Zwierzaki się ustawiły");
     }
@@ -32,6 +31,8 @@ public class Simulation implements Runnable{
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            map.updateAllElements();
+            map.mapChanged("Zwierzaki sie ruszyly");
         }
         map.mapChanged("Wszystkie zwierzaki umarly");
     }
@@ -56,7 +57,6 @@ public class Simulation implements Runnable{
     void moveAnimals(){
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         if (animals.isEmpty()) return;
-        System.out.println(animals);
         for (WorldElement worldElement : animals) {
             Animal animal = (Animal) worldElement;
             map.move(animal);
@@ -73,7 +73,7 @@ public class Simulation implements Runnable{
             WorldElement element = entry.getValue().get(0);
             if (element instanceof Animal) {
                 if (map.getIsGrass(position.getX(), position.getY())) {
-                    ((Animal) element).addEnergy(optionsManager.getGrassEnergy());
+                    ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
                     map.setIsGrassValue(position.getX(), position.getY(), false);
                 }
             }
