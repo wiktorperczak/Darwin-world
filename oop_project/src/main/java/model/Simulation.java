@@ -28,7 +28,7 @@ public class Simulation implements Runnable{
             breed();
             addGrass();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(800);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
