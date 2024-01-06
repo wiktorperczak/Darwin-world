@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Simulation {
+public class Simulation implements Runnable{
     RectangularMap map;
     public Simulation(List<Vector2d> animalsStartingPos, WorldMap map){
         this.map = (RectangularMap) map;
@@ -21,9 +21,8 @@ public class Simulation {
                 break;
             }
             moveAnimals();
-            System.out.println(map);
+            map.mapChanged("Zwierzaki się ruszyły");
         }
-        System.out.println(map);
         System.out.println("Wszystkie zwierzęta umarły");
     }
 

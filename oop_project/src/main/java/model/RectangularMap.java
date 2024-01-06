@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RectangularMap implements WorldMap{
+    private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
     Map<WorldElement, Vector2d> animals = new HashMap<>();
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
     Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
@@ -14,10 +15,12 @@ public class RectangularMap implements WorldMap{
     Map<Vector2d, TunnelEnter> tunnels = new HashMap<>();
     private int width;
     private int height;
+    protected int id;
 
-    public RectangularMap(int width, int height){
+    public RectangularMap(int width, int height, int id) {
         this.width = width;
         this.height = height;
+        this.id = id;
         initializeGrass();
         initializeTunnels();
     }
@@ -91,6 +94,20 @@ public class RectangularMap implements WorldMap{
         return elements;
     }
 
+    public void registerObserver(MapChangeListener obs){
+        observers.put(obs, obs);
+    }
+
+    public void unregisterObserver(MapChangeListener obs){
+        observers.remove(obs);
+    }
+
+    protected void mapChanged(String message){
+        for (MapChangeListener obs: observers.values()){
+            obs.mapChanged(this, message);
+        }
+    }
+
     @Override
     public Vector2d getBoundaries() {
         return new Vector2d(width, height);
@@ -101,6 +118,9 @@ public class RectangularMap implements WorldMap{
         MapVisualizer mapVisualizer = new MapVisualizer(this);
         return mapVisualizer.draw();
     }
+
+    @Override
+    public int getId() { return id;}
 
     public Map<WorldElement, Vector2d> getAnimals(){
         return animals;
