@@ -16,11 +16,7 @@ public class Simulation implements Runnable{
         for (Vector2d position : animalsStartingPos) {
             this.map.place(new Animal(position));
         }
-        System.out.println(this.map);
-
-        this.map.updateAllElements();
-        System.out.println(this.map.allElements.size());
-        this.map.mapChanged("Start");
+        this.map.mapChanged("Zwierzaki się ustawiły");
     }
 
     public void run(){
@@ -31,6 +27,7 @@ public class Simulation implements Runnable{
                 break;
             }
             moveAnimals();
+            breed();
             addGrass();
             try {
                 Thread.sleep(500);
@@ -69,6 +66,9 @@ public class Simulation implements Runnable{
 
 //        map.updateAllElements();
 //        map.mapChanged("Wszystkie zmiany skonczone");
+    }
+    void breed(){
+        BreedingController.breed(map);
     }
 
     void eatingGrass() {

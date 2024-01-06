@@ -10,6 +10,8 @@ public class Animal extends WorldElement{
     private List<Integer> genotype;
     private Iterator<MapDirection> genDirectionGenerator;
     private int energy;
+    private int numberOfDaysLived;
+    private int numberOfKids;
 
 
     public Animal(Vector2d position){
@@ -19,13 +21,18 @@ public class Animal extends WorldElement{
         //System.out.println(genotype);
         genDirectionGenerator = new GenDirectionGenerator(genotype).iterator();
         facingDirection = genDirectionGenerator.next();
-        energy = optionsManager.getAnimalLife();
+        Random random = new Random();
+        energy = random.nextInt(10);
+        //energy = optionsManager.getAnimalLife();
+        numberOfDaysLived = 0;
+        numberOfKids = 0;
     }
 
     public void move(RectangularMap map){
         position = calculateNewPosition(map);
         facingDirection = calculateNewRotation();
         energy -= 1;
+        numberOfDaysLived += 1;
     }
 
     Vector2d calculateNewPosition(RectangularMap map){
@@ -82,4 +89,8 @@ public class Animal extends WorldElement{
     public int getEnergy(){ return energy;}
     public void addEnergy(int value){ energy += value;}
     public void setEnergy(int value){ energy = value;}
+    public int getNumberOfDaysLived(){ return numberOfDaysLived;}
+    public int getNumberOfKids(){ return numberOfKids;}
+    public List<Integer> getGenotype(){return genotype;}
+    public void setGenotype(List<Integer> newGenotype){ genotype = newGenotype;}
 }

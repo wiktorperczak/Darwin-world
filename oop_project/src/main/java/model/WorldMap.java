@@ -2,16 +2,18 @@ package model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface WorldMap {
     void place(Animal animal);
     void move(Animal animal);
     boolean isOccupied(Vector2d position);
     WorldElement objectAt(Vector2d position);
-    Map<Vector2d, List<WorldElement>> getElements();
+    Map<Vector2d, List<WorldElement>> getAllElements();
     Vector2d getBoundaries();
     void updateAllElements();
-    int getId();
+    Map<WorldElement, Vector2d> getAnimals();
+    UUID getId();
     void registerObserver(MapChangeListener obs);
 
     void unregisterObserver(MapChangeListener obs);
