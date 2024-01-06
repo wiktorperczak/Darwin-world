@@ -9,18 +9,16 @@ public class Simulation implements Runnable{
     RectangularMap map;
     Random random = new Random();
 
-    OptionsManager optionsManager = OptionsManager.getInstance();
 
     public Simulation(List<Vector2d> animalsStartingPos, WorldMap map){
         this.map = (RectangularMap) map;
         for (Vector2d position : animalsStartingPos) {
-            this.map.place(new Animal(position));
+            this.map.place(new Animal(this.map, position));
         }
         this.map.mapChanged("Zwierzaki się ustawiły");
     }
 
     public void run(){
-        map.mapChanged("Zwierzaki sie ruszyly");
         while(!map.getAnimals().isEmpty()) {
             removeDeadBodies();
             if (map.getAnimals().isEmpty()){
@@ -28,12 +26,14 @@ public class Simulation implements Runnable{
             }
             moveAnimals();
             breed();
-            addGrass();
+            //addGrass();
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            map.updateAllElements();
+            map.mapChanged("Zwierzaki sie ruszyly");
         }
         System.out.println("Wszystkie zwierzęta umarły");
     }
@@ -72,17 +72,17 @@ public class Simulation implements Runnable{
     }
 
     void eatingGrass() {
-        for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getElements().entrySet()) {
+        for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getAllElements().entrySet()) {
             Vector2d position = entry.getKey();
             WorldElement element = entry.getValue().get(0);
             if (element instanceof Animal) {
                 if (map.getIsGrass(position.getX(), position.getY())) {
-                    ((Animal) element).addEnergy(map.);
+                    //((Animal) element).addEnergy(map.);
                 }
             }
 //            String klucz = entry.getKey();
 //            Integer wartosc = entry.getValue();
-            System.out.println("Klucz: " + klucz + ", Wartość: " + wartosc);
+            //System.out.println("Klucz: " + klucz + ", Wartość: " + wartosc);
         }
     }
 

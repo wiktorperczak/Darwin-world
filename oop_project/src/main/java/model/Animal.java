@@ -12,18 +12,17 @@ public class Animal extends WorldElement{
     private int energy;
     private int numberOfDaysLived;
     private int numberOfKids;
+    RectangularMap map;
 
 
-    public Animal(Vector2d position){
-        OptionsManager optionsManager = OptionsManager.getInstance();
+    public Animal(RectangularMap map, Vector2d position){
+        this.map = map;
         this.position = position;
-        genotype = generateGenotype(optionsManager.getGenotypeLength());
+        genotype = generateGenotype(map.optionsManager.getGenotypeLength());
         //System.out.println(genotype);
         genDirectionGenerator = new GenDirectionGenerator(genotype).iterator();
         facingDirection = genDirectionGenerator.next();
-        Random random = new Random();
-        energy = random.nextInt(10);
-        //energy = optionsManager.getAnimalLife();
+        energy = map.optionsManager.getAnimalLife();
         numberOfDaysLived = 0;
         numberOfKids = 0;
     }

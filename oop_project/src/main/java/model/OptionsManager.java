@@ -1,14 +1,6 @@
 package model;
 
 public final class OptionsManager {
-    private static OptionsManager instance;
-
-    public static OptionsManager getInstance(){
-        if (instance == null){
-            instance = new OptionsManager();
-        }
-        return instance;
-    }
     int animalLife;
     int genotypeLength;
     int minimalEnergyToBreed;
@@ -16,10 +8,6 @@ public final class OptionsManager {
     int gensToMutate;
 
     int grassEnergy;
-
-    public int getGenotypeLength() {
-        return genotypeLength;
-    }
 
     public void setGenotypeLength(int genotypeLength) {
         this.genotypeLength = genotypeLength;
