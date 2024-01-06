@@ -11,4 +11,5 @@ public interface WorldMap {
     Map<Vector2d, List<WorldElement>> getElements();
     Vector2d getBoundaries();
     void updateAllElements();
+    int getId();
 }
