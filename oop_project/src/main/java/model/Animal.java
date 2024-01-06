@@ -21,9 +21,7 @@ public class Animal extends WorldElement{
         //System.out.println(genotype);
         genDirectionGenerator = new GenDirectionGenerator(genotype).iterator();
         facingDirection = genDirectionGenerator.next();
-        Random random = new Random();
-        energy = random.nextInt(10);
-        //energy = optionsManager.getAnimalLife();
+        energy = optionsManager.getAnimalLife();
         numberOfDaysLived = 0;
         numberOfKids = 0;
     }

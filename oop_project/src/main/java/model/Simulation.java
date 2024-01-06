@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Simulation implements Runnable{
     RectangularMap map;
@@ -20,22 +17,23 @@ public class Simulation implements Runnable{
     }
 
     public void run(){
-        map.mapChanged("Zwierzaki sie ruszyly");
         while(!map.getAnimals().isEmpty()) {
             removeDeadBodies();
             if (map.getAnimals().isEmpty()){
                 break;
             }
             moveAnimals();
-            breed();
+            eatingGrass();
+            map.mapChanged("Zwierzaki sie ruszyly");
+//            breed();
             addGrass();
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("Wszystkie zwierzęta umarły");
+        map.mapChanged("Wszystkie zwierzaki umarly");
     }
 
     void removeDeadBodies(){
@@ -56,7 +54,6 @@ public class Simulation implements Runnable{
         if (!animalsToRemove.isEmpty()) map.updateAllElements();
     }
     void moveAnimals(){
-        System.out.println(map.getAnimals().size());
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         if (animals.isEmpty()) return;
         for (WorldElement worldElement : animals) {
@@ -64,26 +61,36 @@ public class Simulation implements Runnable{
             map.move(animal);
         }
 
-//        map.updateAllElements();
-//        map.mapChanged("Wszystkie zmiany skonczone");
+        map.updateAllElements();
     }
     void breed(){
         BreedingController.breed(map);
     }
 
     void eatingGrass() {
-        for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getElements().entrySet()) {
+        for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getAllElements().entrySet()) {
             Vector2d position = entry.getKey();
             WorldElement element = entry.getValue().get(0);
             if (element instanceof Animal) {
                 if (map.getIsGrass(position.getX(), position.getY())) {
-                    ((Animal) element).addEnergy(map.);
+                    ((Animal) element).addEnergy(optionsManager.getGrassEnergy());
+                    map.setIsGrassValue(position.getX(), position.getY(), false);
                 }
             }
-//            String klucz = entry.getKey();
-//            Integer wartosc = entry.getValue();
-            System.out.println("Klucz: " + klucz + ", Wartość: " + wartosc);
         }
+
+        Iterator<Map.Entry<WorldElement, Vector2d>> iterator = map.getGrassFields().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<WorldElement, Vector2d> entry = iterator.next();
+            WorldElement grass = entry.getKey();
+            Vector2d position = entry.getValue();
+
+            if (!map.getIsGrass(position.getX(), position.getY())) {
+                iterator.remove();
+            }
+        }
+
+        map.updateAllElements();
     }
 
     private boolean isEquatorPosition(int y) {
@@ -97,16 +104,16 @@ public class Simulation implements Runnable{
     }
 
     void addGrass() {
-        for (int y = 0; y <= map.getBoundaries().getY(); y++) {
+        for (int y = 0; y < map.getBoundaries().getY(); y++) {
             boolean checkEquator = isEquatorPosition(y);
             for (int x = 0; x <= map.getBoundaries().getX(); x++) {
                 if (!map.getIsGrass(x, y)) {
                     int randomNumber = random.nextInt(100) + 1;
                     if (checkEquator) {
-                        if (randomNumber <= 80) { map.addNewGrassField(x, y); }
+                        if (randomNumber > 80) { map.addNewGrassField(x, y); }
                     }
                     else {
-                        if (randomNumber > 80) { map.addNewGrassField(x, y); }
+                        if (randomNumber <= 80) { map.addNewGrassField(x, y); }
                     }
                 }
             }

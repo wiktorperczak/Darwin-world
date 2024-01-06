@@ -17,10 +17,6 @@ public final class OptionsManager {
 
     int grassEnergy;
 
-    public int getGenotypeLength() {
-        return genotypeLength;
-    }
-
     public void setGenotypeLength(int genotypeLength) {
         this.genotypeLength = genotypeLength;
     }
