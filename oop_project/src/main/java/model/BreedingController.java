@@ -39,12 +39,12 @@ public class BreedingController {
         boolean takeLeftSide = random.nextInt(2) == 0;
         float ratio = (float) energy1 / (energy1 + energy2);
         List<Integer> childrenGenotype = getNewGenotype(parent1.getGenotype(), parent2.getGenotype(), ratio, takeLeftSide);
-//        System.out.println("-----------");
-//        System.out.println(parent1.getGenotype() + " Energy: " + energy1);
-//        System.out.println(parent2.getGenotype() + " Energy: " + energy2);
-//        System.out.println(takeLeftSide);
-//        System.out.println(childrenGenotype);
-//        System.out.println();
+        System.out.println("-----------");
+        System.out.println(parent1.getGenotype() + " Energy: " + energy1);
+        System.out.println(parent2.getGenotype() + " Energy: " + energy2);
+        System.out.println(takeLeftSide);
+        System.out.println(childrenGenotype);
+        System.out.println();
         Animal children = new Animal(parent1.getPosition());
         children.setEnergy(2 * optionsManager.getEnergyLossOnBreed());
         children.setGenotype(childrenGenotype);
@@ -69,7 +69,20 @@ public class BreedingController {
     }
 
     static List<Integer> mutate(List<Integer> genotype){
-
+        ArrayList<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < genotype.size(); i++){
+            indexes.add(i);
+        }
+        for (int i = 0; i < optionsManager.getGensToMutate(); i++){
+            Random random = new Random();
+            int temp = random.nextInt(indexes.size());
+            int index = indexes.get(temp);
+            indexes.remove(temp);
+            ArrayList<Integer> gens = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7));
+            gens.remove(genotype.get(index));
+            genotype.remove(index);
+            genotype.add(index, gens.get(random.nextInt(7)));
+        }
         return genotype;
     }
 }

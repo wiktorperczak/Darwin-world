@@ -21,7 +21,7 @@ public class World {
 //        SimulationEngine simulationEngine = new SimulationEngine(simulations);
 //        simulationEngine.runAsyncInThreadPool();
 //        simulationEngine.awaitSimulationsEnd();
-        RectangularMap map = new RectangularMap(5, 5);
+        RectangularMap map = new RectangularMap(3, 3);
         map.registerObserver(obs);
         Simulation simulation = new Simulation(positions, map);
         simulation.run();
