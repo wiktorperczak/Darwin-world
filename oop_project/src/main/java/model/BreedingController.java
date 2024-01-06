@@ -14,7 +14,7 @@ public class BreedingController {
             List<Animal> animals = allAnimals.get(position).stream()
                     .filter(worldElement -> worldElement instanceof Animal)
                     .map(worldElement -> (Animal) worldElement)
-                    .sorted(new AnimalComparator()).toList();
+                    .toList();
             for (int i = 0; i < animals.size() - 1; i += 2){
                 Animal animal1 = animals.get(i);
                 Animal animal2 = animals.get(i+1);
@@ -39,12 +39,12 @@ public class BreedingController {
         boolean takeLeftSide = random.nextInt(2) == 0;
         float ratio = (float) energy1 / (energy1 + energy2);
         List<Integer> childrenGenotype = getNewGenotype(parent1.getGenotype(), parent2.getGenotype(), ratio, takeLeftSide);
-        System.out.println("-----------");
-        System.out.println(parent1.getGenotype() + " Energy: " + energy1);
-        System.out.println(parent2.getGenotype() + " Energy: " + energy2);
-        System.out.println(takeLeftSide);
-        System.out.println(childrenGenotype);
-        System.out.println();
+//        System.out.println("-----------");
+//        System.out.println(parent1.getGenotype() + " Energy: " + energy1);
+//        System.out.println(parent2.getGenotype() + " Energy: " + energy2);
+//        System.out.println(takeLeftSide);
+//        System.out.println(childrenGenotype);
+//        System.out.println();
         Animal children = new Animal(parent1.getPosition());
         children.setEnergy(2 * optionsManager.getEnergyLossOnBreed());
         children.setGenotype(childrenGenotype);
