@@ -15,6 +15,7 @@ public class StartPresenter {
 
     public TextField animalLife;
     public TextField genotypeLength;
+    public TextField grassEnergy;
 
     private void configureStage(Stage primaryStage, VBox viewRoot){
         var scene = new Scene(viewRoot);
@@ -35,6 +36,9 @@ public class StartPresenter {
         OptionsManager optionsManager = new OptionsManager();
         optionsManager.setAnimalLife(Integer.parseInt(animalLife.getText()));
         optionsManager.setGenotypeLength(Integer.parseInt(genotypeLength.getText()));
+        optionsManager.setGrassEnergy(Integer.parseInt(grassEnergy.getText()));
+        optionsManager.setEnergyLossOnBreed(1);
+        optionsManager.setMinimalEnergyToBreed(3);
 
         List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
 //        List<Vector2d> positions = List.of();

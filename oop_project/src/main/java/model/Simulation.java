@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Simulation implements Runnable{
     RectangularMap map;
@@ -25,24 +22,25 @@ public class Simulation implements Runnable{
                 break;
             }
             moveAnimals();
+            eatingGrass();
+            map.mapChanged("Zwierzaki sie ruszyly");
             breed();
             //addGrass();
             try {
-                Thread.sleep(500);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
         }
-        System.out.println("Wszystkie zwierzęta umarły");
+        map.mapChanged("Wszystkie zwierzaki umarly");
     }
 
     void removeDeadBodies(){
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         List<Animal> animalsToRemove = new ArrayList<>();
         if (animals.isEmpty()) return;
-
         for (WorldElement worldElement : animals){
             Animal animal = (Animal) worldElement;
             if (!animal.isAlive()){
@@ -52,20 +50,19 @@ public class Simulation implements Runnable{
         for (Animal animal : animalsToRemove){
             map.removeAnimal(animal);
         }
-
-        if (!animalsToRemove.isEmpty()) map.updateAllElements();
+        if (!animalsToRemove.isEmpty()) {
+            map.updateAllElements();
+        }
     }
     void moveAnimals(){
-        System.out.println(map.getAnimals().size());
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         if (animals.isEmpty()) return;
+        System.out.println(animals);
         for (WorldElement worldElement : animals) {
             Animal animal = (Animal) worldElement;
             map.move(animal);
         }
-
-//        map.updateAllElements();
-//        map.mapChanged("Wszystkie zmiany skonczone");
+        map.updateAllElements();
     }
     void breed(){
         BreedingController.breed(map);
@@ -77,13 +74,24 @@ public class Simulation implements Runnable{
             WorldElement element = entry.getValue().get(0);
             if (element instanceof Animal) {
                 if (map.getIsGrass(position.getX(), position.getY())) {
-                    //((Animal) element).addEnergy(map.);
+                    ((Animal) element).addEnergy(optionsManager.getGrassEnergy());
+                    map.setIsGrassValue(position.getX(), position.getY(), false);
                 }
             }
-//            String klucz = entry.getKey();
-//            Integer wartosc = entry.getValue();
-            //System.out.println("Klucz: " + klucz + ", Wartość: " + wartosc);
         }
+
+        Iterator<Map.Entry<WorldElement, Vector2d>> iterator = map.getGrassFields().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<WorldElement, Vector2d> entry = iterator.next();
+            WorldElement grass = entry.getKey();
+            Vector2d position = entry.getValue();
+
+            if (!map.getIsGrass(position.getX(), position.getY())) {
+                iterator.remove();
+            }
+        }
+
+        map.updateAllElements();
     }
 
     private boolean isEquatorPosition(int y) {

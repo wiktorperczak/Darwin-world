@@ -21,15 +21,15 @@ public class RectangularMap implements WorldMap{
         this.height = height;
         this.id = generateId();
         this.optionsManager = optionsManager;
-        //initializeIsGrass();
-        //initializeTunnels();
+        initializeIsGrass();
+        initializeTunnels();
 
     }
 
     void initializeIsGrass(){
         for (int i = 0; i <= height; i++) {
             List<Boolean> row = new ArrayList<>();
-            for (int j = 0; j <= width; i++) { row.add(false); }
+            for (int j = 0; j <= width; j++) { row.add(false); }
             isGrass.add(row);
         }
     }
@@ -78,9 +78,9 @@ public class RectangularMap implements WorldMap{
     public void updateAllElements() {
         Map<Vector2d, List<WorldElement>> elements = new HashMap<>();
         elements = addNewValuesToElements(elements, animals);
-        elements = addNewValuesToElements(elements, grassFields);
         elements = addNewValuesToElements(elements, tunnelEnters);
         elements = addNewValuesToElements(elements, tunnelExits);
+        elements = addNewValuesToElements(elements, grassFields);
         allElements = sortAnimals(elements);
     }
 
@@ -161,6 +161,9 @@ public class RectangularMap implements WorldMap{
 
     public Map<WorldElement, Vector2d> getAnimals(){
         return animals;
+    }
+    public Map<WorldElement, Vector2d> getGrassFields(){
+        return grassFields;
     }
     public boolean getIsGrass(int x, int y) { return isGrass.get(y).get(x); }
     public void setIsGrassValue(int x, int y, boolean value) { isGrass.get(y).set(x, value); }
