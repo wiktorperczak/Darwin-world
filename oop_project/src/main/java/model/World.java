@@ -35,6 +35,7 @@ public class World {
         optionsManager.setEnergyLossOnBreed(1);
         optionsManager.setMinimalEnergyToBreed(1);
         optionsManager.setGensToMutate(3);
+        optionsManager.setGrassEnergy(2);
         return optionsManager;
     }
 }

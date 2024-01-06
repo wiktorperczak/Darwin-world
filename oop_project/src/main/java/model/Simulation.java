@@ -25,9 +25,9 @@ public class Simulation implements Runnable{
             eatingGrass();
             map.mapChanged("Zwierzaki sie ruszyly");
             breed();
-            //addGrass();
+            addGrass();
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -57,7 +57,6 @@ public class Simulation implements Runnable{
     void moveAnimals(){
         List<WorldElement> animals = new ArrayList<>(map.getAnimals().keySet());
         if (animals.isEmpty()) return;
-        System.out.println(animals);
         for (WorldElement worldElement : animals) {
             Animal animal = (Animal) worldElement;
             map.move(animal);
@@ -74,7 +73,7 @@ public class Simulation implements Runnable{
             WorldElement element = entry.getValue().get(0);
             if (element instanceof Animal) {
                 if (map.getIsGrass(position.getX(), position.getY())) {
-                    ((Animal) element).addEnergy(optionsManager.getGrassEnergy());
+                    ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
                     map.setIsGrassValue(position.getX(), position.getY(), false);
                 }
             }
