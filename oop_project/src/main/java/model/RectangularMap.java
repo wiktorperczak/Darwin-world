@@ -17,6 +17,9 @@ public class RectangularMap implements WorldMap{
     private int height;
     protected UUID id;
 
+    private int numberOfAllAnimals;
+    public List<Boolean> animalIdVisited = new ArrayList<>();
+
     public RectangularMap(int width, int height, OptionsManager optionsManager) {
         this.width = width;
         this.height = height;
@@ -62,6 +65,9 @@ public class RectangularMap implements WorldMap{
     public void place(Animal animal) {
         System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
+        System.out.println("ID: " + animal.getId());
+        animalIdVisited.add(false);
+        System.out.println("Number of animals: " + animalIdVisited.size());
     }
 
     @Override
@@ -201,4 +207,16 @@ public class RectangularMap implements WorldMap{
     public StatsHandler getStatsHandler(){
         return statsHandler;
     }
+
+    public int getNumberOfAllAnimals() { return numberOfAllAnimals; }
+    public void setNumberOfAllAnimals(int numberOfAllAnimals) { this.numberOfAllAnimals = numberOfAllAnimals; }
+    public int getNumberOfAnimalsAndIncrement() {
+        numberOfAllAnimals += 1;
+        return numberOfAllAnimals - 1;
+    }
+
+    public boolean getAnimalIdVisited(int id) { return animalIdVisited.get(id); }
+    public void setAnimalIdVisited(int id, boolean value) { animalIdVisited.set(id, value); }
+    public void resetAnimalIdVisited() { Collections.fill(animalIdVisited, false); }
+    public void clearAnimaIdVisited() { animalIdVisited.clear(); }
 }

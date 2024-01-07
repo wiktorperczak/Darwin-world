@@ -14,7 +14,7 @@ public class Simulation implements Runnable{
         this.map = (RectangularMap) map;
         isRunning = true;
         for (Vector2d position : animalsStartingPos) {
-            this.map.place(new Animal(this.map, position));
+            this.map.place(new Animal(this.map, position, this.map.getNumberOfAnimalsAndIncrement()));
         }
         this.map.mapChanged("Zwierzaki się ustawiły");
     }
@@ -149,5 +149,10 @@ public class Simulation implements Runnable{
             pauseThreadFlag = false;
             GUI_INITIALIZATION_MONITOR.notify();
         }
+    }
+
+    public void startFollowingAnimal(Animal animal) {
+        animal.calculateNumberOfDescendants();
+        int num = animal.getNumberOfDescendants();
     }
 }

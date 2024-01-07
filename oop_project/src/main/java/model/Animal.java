@@ -9,14 +9,18 @@ public class Animal extends WorldElement{
     private MapDirection facingDirection;
     private List<Integer> genotype;
     private Iterator<MapDirection> genDirectionGenerator;
+
+
+    private int id;
     private int energy;
     private int numberOfDaysLived;
     private int numberOfKids;
+    private int numberOfDescendants;
     private List<Animal> kids;
     RectangularMap map;
 
 
-    public Animal(RectangularMap map, Vector2d position){
+    public Animal(RectangularMap map, Vector2d position, int id){
         worldElementType = WorldElementType.ANIMAL;
         this.map = map;
         this.position = position;
@@ -28,6 +32,7 @@ public class Animal extends WorldElement{
         numberOfDaysLived = 0;
         numberOfKids = 0;
         kids = new ArrayList<>();
+        this.id = id;
     }
 
     public void move(RectangularMap map){
@@ -96,17 +101,35 @@ public class Animal extends WorldElement{
     public List<Integer> getGenotype(){return genotype;}
     public void setGenotype(List<Integer> newGenotype){ genotype = newGenotype;}
     public int getFacingDirection(){ return facingDirection.toInt();}
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public void addChild(Animal child) {
         kids.add(child);
         numberOfKids += 1;
     }
 
-//    public Integer getNumberOfDescendants() {
-//        for (Animal animal : kids) {
-//
+    public Integer visitDescendants(Animal animal) {
+        System.out.println("Recursive id: " + animal.getId());
+        map.setAnimalIdVisited(this.id, true);
+//        System.out.println("Visited");
+//        for (boolean elem : map.animalIdVisited) {
+//            System.out.print(elem + " ");
 //        }
-//    }
+//        System.out.println();
+        int res = 0;
+        for (Animal kid : animal.getKids()) {
+            if (!map.getAnimalIdVisited(kid.getId())) {
+                res += 1 + visitDescendants(kid);
+            }
+        }
+        return res;
+    }
+
+    public void calculateNumberOfDescendants() {
+        map.resetAnimalIdVisited();
+        numberOfDescendants = visitDescendants(this);
+    }
 
     @Override
     public String getImagePath() {
@@ -117,4 +140,7 @@ public class Animal extends WorldElement{
         numberOfKids += 1;
         kids.add(kid);
     }
+
+    public List<Animal> getKids() { return kids; }
+    public Integer getNumberOfDescendants() { return numberOfDescendants; }
 }

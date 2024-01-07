@@ -23,7 +23,7 @@ public class BreedingController {
                 if (animal1.getEnergy() < map.optionsManager.getMinimalEnergyToBreed() ||
                         animal2.getEnergy() < map.optionsManager.getMinimalEnergyToBreed()) continue;
                 Animal children = generateChildren(animal1, animal2);
-                animal1.
+//                animal1.
 
                 map.place(children);
                 numberOfChildrenAdded += 1;
@@ -48,7 +48,7 @@ public class BreedingController {
 //        System.out.println(takeLeftSide);
 //        System.out.println(childrenGenotype);
 //        System.out.println();
-        Animal children = new Animal(map, parent1.getPosition());
+        Animal children = new Animal(map, parent1.getPosition(), map.getNumberOfAnimalsAndIncrement());
         children.setEnergy(2 * map.optionsManager.getEnergyLossOnBreed());
         children.setGenotype(childrenGenotype);
         parent1.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
