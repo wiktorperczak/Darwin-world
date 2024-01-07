@@ -6,16 +6,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
 
 public class StartPresenter {
-    public TextField inputArguments;
+    public TextField height;
+    public TextField width;
 
     public TextField animalLife;
     public TextField genotypeLength;
     public TextField grassEnergy;
+    public TextField numberOfTunnels;
 
     private void configureStage(Stage primaryStage, VBox viewRoot){
         var scene = new Scene(viewRoot);
@@ -34,16 +37,18 @@ public class StartPresenter {
         stage.show();
 
         OptionsManager optionsManager = new OptionsManager();
+        optionsManager.setWidth(Integer.parseInt(width.getText()));
+        optionsManager.setHeight(Integer.parseInt(height.getText()));
         optionsManager.setAnimalLife(Integer.parseInt(animalLife.getText()));
         optionsManager.setGenotypeLength(Integer.parseInt(genotypeLength.getText()));
         optionsManager.setGrassEnergy(Integer.parseInt(grassEnergy.getText()));
-        optionsManager.setEnergyLossOnBreed(1);
-        optionsManager.setMinimalEnergyToBreed(3);
+        optionsManager.setNumberOfTunnels(Integer.parseInt(numberOfTunnels.getText()));
 
         List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
 //        List<Vector2d> positions = List.of();
-        WorldMap map = new RectangularMap(5, 5, optionsManager);
-
+        WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight(), optionsManager);
+        optionsManager.setEnergyLossOnBreed(1);
+        optionsManager.setMinimalEnergyToBreed(3);
 
         SimulationPresenter simulationPresenter = loader.getController();
         map.registerObserver(simulationPresenter);

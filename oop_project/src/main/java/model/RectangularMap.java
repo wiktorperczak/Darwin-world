@@ -35,10 +35,21 @@ public class RectangularMap implements WorldMap{
     }
 
     void initializeTunnels(){
-        TunnelEnter tunnelEnter = new TunnelEnter(new Vector2d(3, 3));
-        tunnelEnters.put(tunnelEnter, tunnelEnter.getPosition());
-        TunnelExit tunnelExit = tunnelEnter.getTunnelExit();
-        tunnelExits.put(tunnelExit, tunnelExit.getPosition());
+        List<Integer> coordinates = new ArrayList<>();
+        for (int i = 0; i < (height + 1) * (width + 1); i++) { coordinates.add(i); }
+        Collections.shuffle(coordinates);
+
+        for (int i = 0; i < 2 * optionsManager.getNumberOfTunnels(); i += 2) {
+            int enterX = coordinates.get(i) % (width + 1);
+            int enterY = coordinates.get(i) / (width + 1);
+            int exitX = coordinates.get(i + 1) % (width + 1);
+            int exitY = coordinates.get(i + 1) / (width + 1);
+
+            TunnelEnter tunnelEnter = new TunnelEnter(new Vector2d(enterX, enterY));
+            tunnelEnters.put(tunnelEnter, tunnelEnter.getPosition());
+            TunnelExit tunnelExit = new TunnelExit(new Vector2d(exitX, exitY));
+            tunnelExits.put(tunnelExit, tunnelExit.getPosition());
+        }
 
         for (WorldElement worldElement : tunnelEnters.keySet()){
             tunnels.put(worldElement.getPosition(), (TunnelEnter) worldElement);
