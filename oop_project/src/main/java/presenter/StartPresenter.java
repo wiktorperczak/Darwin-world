@@ -1,7 +1,9 @@
 package presenter;
 
 import com.sun.security.jgss.InquireType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.HBox;
 import model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,15 +28,23 @@ public class StartPresenter {
     @FXML
     public ComboBox<Integer> animalLife;
     @FXML
+    public CheckBox useReverseGenotype;
+    @FXML
     public ComboBox<Integer> genotypeLength;
     @FXML
     public ComboBox<Integer> grassEnergy;
+    @FXML
+    public CheckBox useTunnels;
     @FXML
     public ComboBox<Integer> numberOfTunnels;
     @FXML
     public ComboBox<Integer> energyLossOnBreed;
     @FXML
     public ComboBox<Integer> minimalEnergyToBreed;
+    @FXML
+    public ComboBox<Integer> maxGensToMutate;
+    @FXML
+    public ComboBox<Integer> minGensToMutate;
 
     @FXML
     private void initialize() {
@@ -55,14 +65,19 @@ public class StartPresenter {
             // todo: energyloss < minimalenergy
             energyLossOnBreed.getItems().add(i);
             minimalEnergyToBreed.getItems().add(i);
+            minGensToMutate.getItems().add(i);
+            maxGensToMutate.getItems().add(i);
         }
         grassEnergy.setValue(2);
         animalLife.setValue(5);
         genotypeLength.setValue(5);
         minimalEnergyToBreed.setValue(5);
+        maxGensToMutate.setValue(0);
+        minGensToMutate.setValue(0);
 
         updateTunnels();
         updateEnergyLossOnBreed();
+        updateGensToMutate();
     }
 
     @FXML
@@ -82,8 +97,36 @@ public class StartPresenter {
         energyLossOnBreed.setValue(1);
     }
 
+    @FXML
+    private void updateGensToMutate(){
+        maxGensToMutate.getItems().clear();
+        minGensToMutate.getItems().clear();
+        for (int i = 0; i <= genotypeLength.getValue(); i++){
+            maxGensToMutate.getItems().add(i);
+            minGensToMutate.getItems().add(i);
+        }
+        maxGensToMutate.setValue(0);
+        minGensToMutate.setValue(0);
+    }
 
-    private void configureStage(Stage primaryStage, VBox viewRoot){
+    @FXML
+    private void updateMaxGensToMutate(){
+        if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
+        if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
+            maxGensToMutate.setValue(minGensToMutate.getValue());
+        }
+    }
+
+    @FXML
+    private void updateMinGensToMutate(){
+        if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
+        if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
+            minGensToMutate.setValue(maxGensToMutate.getValue());
+        }
+    }
+
+
+    private void configureStage(Stage primaryStage, HBox viewRoot){
         var scene = new Scene(viewRoot);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Simulation");
@@ -94,7 +137,7 @@ public class StartPresenter {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         Stage stage = new Stage();
-        VBox viewRoot = loader.load();
+        HBox viewRoot = loader.load();
         configureStage(stage, viewRoot);
 
         stage.show();
@@ -104,11 +147,15 @@ public class StartPresenter {
         optionsManager.setWidth(width.getValue());
         optionsManager.setHeight(height.getValue());
         optionsManager.setAnimalLife(animalLife.getValue());
+        optionsManager.setUseTunnels(useReverseGenotype.isSelected());
         optionsManager.setGenotypeLength(genotypeLength.getValue());
         optionsManager.setGrassEnergy(grassEnergy.getValue());
         optionsManager.setNumberOfTunnels(numberOfTunnels.getValue());
+        optionsManager.setUseTunnels(useTunnels.isSelected());
         optionsManager.setEnergyLossOnBreed(energyLossOnBreed.getValue());
         optionsManager.setMinimalEnergyToBreed(minimalEnergyToBreed.getValue());
+        optionsManager.setMaxGensToMutate(maxGensToMutate.getValue());
+        optionsManager.setMinGensToMutate(minGensToMutate.getValue());
 
 //        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
         List<Vector2d> positions = new ArrayList<>();
@@ -128,7 +175,7 @@ public class StartPresenter {
 
         map.registerObserver(simulationPresenter);
         simulationPresenter.setSimulation(simulation);
-        simulationPresenter.initializePresenter();
+        simulationPresenter.initializePresenter(optionsManager);
 
 
         stage.setOnCloseRequest(event -> {

@@ -17,4 +17,5 @@ public interface WorldMap {
     void registerObserver(MapChangeListener obs);
 
     void unregisterObserver(MapChangeListener obs);
+    StatsHandler getStatsHandler();
 }

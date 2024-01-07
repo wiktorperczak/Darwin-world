@@ -1,15 +1,17 @@
 package model;
 
 public final class OptionsManager {
-    private static OptionsManager instance;
-
-    public static OptionsManager getInstance(){
-        if (instance == null){
-            instance = new OptionsManager();
-        }
-        return instance;
-    }
-
+    private int numberOfAnimals;
+    private int width;
+    private int height;
+    private int animalLife;
+    private int genotypeLength;
+    private int minimalEnergyToBreed;
+    private int energyLossOnBreed;
+    private int maxGensToMutate;
+    private int minGensToMutate;
+    private int grassEnergy;
+    private int numberOfTunnels;
 
     int numberOfAnimals;
     int width;
@@ -21,6 +23,8 @@ public final class OptionsManager {
     int gensToMutate;
     int grassEnergy;
     int numberOfTunnels;
+    boolean useTunnels;
+    boolean useReverseGenotype;
 
     public int getNumberOfAnimals() { return numberOfAnimals; }
 
@@ -42,13 +46,18 @@ public final class OptionsManager {
     public int getMinimalEnergyToBreed(){ return minimalEnergyToBreed;}
     public void setEnergyLossOnBreed(int value){ energyLossOnBreed = value;}
     public int getEnergyLossOnBreed(){ return energyLossOnBreed;}
-    public void setGensToMutate(int value){gensToMutate = value;}
-    public int getGensToMutate(){ return gensToMutate;}
+    public void setMaxGensToMutate(int value){maxGensToMutate = value;}
+    public int getMaxGensToMutate(){ return maxGensToMutate;}
+    public void setMinGensToMutate(int value){minGensToMutate = value;}
+    public int getMinGensToMutate(){ return minGensToMutate;}
     public int getNumberOfTunnels() { return numberOfTunnels; }
     public void setNumberOfTunnels(int numberOfTunnels) { this.numberOfTunnels = numberOfTunnels; }
     public int getWidth() { return width; }
     public void setWidth(int width) { this.width = width; }
     public int getHeight() { return height; }
     public void setHeight(int height) { this.height = height; }
-
+    public void setUseTunnels(boolean useTunnels) { this.useTunnels = useTunnels; }
+    public boolean getUseTunnels() { return useTunnels; }
+    public void setUseReverseGenotype(boolean useReverseGenotype) { this.useReverseGenotype = useReverseGenotype; }
+    public boolean getUseReverseGenotype() { return useReverseGenotype; }
 }

@@ -5,6 +5,7 @@ import java.util.*;
 public class RectangularMap implements WorldMap{
     private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
     public OptionsManager optionsManager;
+    public StatsHandler statsHandler;
     Map<WorldElement, Vector2d> animals = new HashMap<>();
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
     List<List<Boolean>> isGrass = new ArrayList<>();
@@ -25,7 +26,7 @@ public class RectangularMap implements WorldMap{
         this.id = generateId();
         this.optionsManager = optionsManager;
         initializeIsGrass();
-        initializeTunnels();
+        if (optionsManager.getUseTunnels()) { initializeTunnels(); }
 
     }
 
@@ -64,9 +65,7 @@ public class RectangularMap implements WorldMap{
     public void place(Animal animal) {
         System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
-        System.out.println("ID: " + animal.getId());
         animalIdVisited.add(false);
-        System.out.println("Number of animals: " + animalIdVisited.size());
     }
 
     @Override
@@ -120,13 +119,13 @@ public class RectangularMap implements WorldMap{
     Map<Vector2d, List<WorldElement>> sortAnimals(Map<Vector2d, List<WorldElement>> elements){
         for (Vector2d position : elements.keySet()){
             List<WorldElement> animals = elements.get(position).stream()
-                    .filter(worldElement -> worldElement instanceof Animal)
+                    .filter(worldElement -> worldElement.worldElementType == WorldElementType.ANIMAL)
                     .map(worldElement -> (Animal) worldElement)
                     .sorted(new AnimalComparator())
                     .map(worldElement -> (WorldElement) worldElement)
                     .toList();
             List<WorldElement> restWorldElements = elements.get(position).stream()
-                    .filter(worldElement -> !(worldElement instanceof Animal))
+                    .filter(worldElement -> !(worldElement.worldElementType == WorldElementType.ANIMAL))
                     .toList();
             List<WorldElement> worldElements = new ArrayList<>();
             worldElements.addAll(animals);
@@ -191,11 +190,20 @@ public class RectangularMap implements WorldMap{
 
     public void removeAnimal(Animal animalToRemove){
         animals.remove(animalToRemove);
+        statsHandler.animalDeceased(animalToRemove);
     }
 
     public void killAllAnimals(){
         animals = new HashMap<>();
         updateAllElements();
+    }
+
+    public void countAllStats(){
+        statsHandler.updateAllStats();
+    }
+
+    public StatsHandler getStatsHandler(){
+        return statsHandler;
     }
 
     public int getNumberOfAllAnimals() { return numberOfAllAnimals; }

@@ -13,7 +13,7 @@ public class BreedingController {
         int numberOfChildrenAdded = 0;
         for (Vector2d position : allAnimals.keySet()){
             List<Animal> animals = allAnimals.get(position).stream()
-                    .filter(worldElement -> worldElement instanceof Animal)
+                    .filter(worldElement -> worldElement.worldElementType == WorldElementType.ANIMAL)
                     .map(worldElement -> (Animal) worldElement)
                     .toList();
             for (int i = 0; i < animals.size() - 1; i += 2){
@@ -53,9 +53,11 @@ public class BreedingController {
         children.setGenotype(childrenGenotype);
         parent1.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
         parent2.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
-
         parent1.addKid(children);
         parent2.addKid(children);
+
+        children.randomizeGenotypeIterator();
+        children.randomizeStartingRotation();
         return children;
     }
 
@@ -75,12 +77,15 @@ public class BreedingController {
     }
 
     static List<Integer> mutate(List<Integer> genotype){
+        Random random = new Random();
         ArrayList<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < genotype.size(); i++){
             indexes.add(i);
         }
-        for (int i = 0; i < map.optionsManager.getGensToMutate(); i++){
-            Random random = new Random();
+        int n = random.nextInt(map.optionsManager.getMaxGensToMutate() - map.optionsManager.getMinGensToMutate());
+        n += map.optionsManager.getMinGensToMutate();
+        for (int i = 0; i < n; i++){
+
             int temp = random.nextInt(indexes.size());
             int index = indexes.get(temp);
             indexes.remove(temp);

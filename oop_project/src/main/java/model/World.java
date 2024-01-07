@@ -34,7 +34,8 @@ public class World {
         optionsManager.setGenotypeLength(5);
         optionsManager.setEnergyLossOnBreed(1);
         optionsManager.setMinimalEnergyToBreed(1);
-        optionsManager.setGensToMutate(3);
+        optionsManager.setMaxGensToMutate(3);
+        optionsManager.setMinGensToMutate(3);
         optionsManager.setGrassEnergy(2);
         return optionsManager;
     }

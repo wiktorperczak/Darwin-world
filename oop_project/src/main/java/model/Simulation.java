@@ -32,9 +32,9 @@ public class Simulation implements Runnable{
             addGrass();
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
-
+            map.countAllStats();
             try {
-                Thread.sleep(500);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
