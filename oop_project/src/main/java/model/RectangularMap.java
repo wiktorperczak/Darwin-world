@@ -25,7 +25,7 @@ public class RectangularMap implements WorldMap{
         this.id = generateId();
         this.optionsManager = optionsManager;
         initializeIsGrass();
-        initializeTunnels();
+        if (optionsManager.getUseTunnels()) { initializeTunnels(); }
 
     }
 

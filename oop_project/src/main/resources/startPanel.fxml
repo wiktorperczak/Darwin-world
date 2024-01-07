@@ -27,6 +27,9 @@
             <Label text="Liczba zwierząt:" />
             <ComboBox fx:id="numberOfAnimals" prefWidth="150"/>
 
+            <Label text="Występowanie tuneli:" />
+            <CheckBox fx:id="useTunnels" />
+
             <Label text="Liczba tuneli:" />
             <ComboBox fx:id="numberOfTunnels" prefWidth="150"/>
 
@@ -35,6 +38,9 @@
         </VBox>
 
         <VBox spacing="8">
+            <Label text="Odtwarzanie genotypu na zmiane (przód/tył):" />
+            <CheckBox fx:id="useReverseGenotype" />
+
             <Label text="Początkowa energia zwierząt:" />
             <ComboBox fx:id="animalLife" prefWidth="150"/>
 

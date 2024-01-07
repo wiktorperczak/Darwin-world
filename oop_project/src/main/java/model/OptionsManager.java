@@ -21,6 +21,8 @@ public final class OptionsManager {
     int gensToMutate;
     int grassEnergy;
     int numberOfTunnels;
+    boolean useTunnels;
+    boolean useReverseGenotype;
 
     public int getNumberOfAnimals() { return numberOfAnimals; }
 
@@ -50,5 +52,8 @@ public final class OptionsManager {
     public void setWidth(int width) { this.width = width; }
     public int getHeight() { return height; }
     public void setHeight(int height) { this.height = height; }
-
+    public void setUseTunnels(boolean useTunnels) { this.useTunnels = useTunnels; }
+    public boolean getUseTunnels() { return useTunnels; }
+    public void setUseReverseGenotype(boolean useReverseGenotype) { this.useReverseGenotype = useReverseGenotype; }
+    public boolean getUseReverseGenotype() { return useReverseGenotype; }
 }

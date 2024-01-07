@@ -1,6 +1,7 @@
 package presenter;
 
 import com.sun.security.jgss.InquireType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import model.*;
 import javafx.fxml.FXML;
@@ -26,9 +27,13 @@ public class StartPresenter {
     @FXML
     public ComboBox<Integer> animalLife;
     @FXML
+    public CheckBox useReverseGenotype;
+    @FXML
     public ComboBox<Integer> genotypeLength;
     @FXML
     public ComboBox<Integer> grassEnergy;
+    @FXML
+    public CheckBox useTunnels;
     @FXML
     public ComboBox<Integer> numberOfTunnels;
     @FXML
@@ -104,9 +109,11 @@ public class StartPresenter {
         optionsManager.setWidth(width.getValue());
         optionsManager.setHeight(height.getValue());
         optionsManager.setAnimalLife(animalLife.getValue());
+        optionsManager.setUseTunnels(useReverseGenotype.isSelected());
         optionsManager.setGenotypeLength(genotypeLength.getValue());
         optionsManager.setGrassEnergy(grassEnergy.getValue());
         optionsManager.setNumberOfTunnels(numberOfTunnels.getValue());
+        optionsManager.setUseTunnels(useTunnels.isSelected());
         optionsManager.setEnergyLossOnBreed(energyLossOnBreed.getValue());
         optionsManager.setMinimalEnergyToBreed(minimalEnergyToBreed.getValue());
 
