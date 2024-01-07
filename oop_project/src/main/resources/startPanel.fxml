@@ -14,7 +14,7 @@
       spacing="5" alignment="CENTER"
       fx:controller="presenter.StartPresenter">
 
-    <Label text="Dostosuj parametry:" style="-fx-font-size: 16px;"/>
+    <Label text="Dostosuj parametry:" style="-fx-font-size: 16px; -fx-font-weight: bold"/>
 
     <HBox spacing="10" alignment="CENTER">
         <VBox spacing="8">

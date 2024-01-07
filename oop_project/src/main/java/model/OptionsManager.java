@@ -1,16 +1,6 @@
 package model;
 
 public final class OptionsManager {
-    private static OptionsManager instance;
-
-    public static OptionsManager getInstance(){
-        if (instance == null){
-            instance = new OptionsManager();
-        }
-        return instance;
-    }
-
-
     int numberOfAnimals;
     int width;
     int height;

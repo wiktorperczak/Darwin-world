@@ -5,6 +5,7 @@ import java.util.*;
 public class RectangularMap implements WorldMap{
     private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
     public OptionsManager optionsManager;
+    public StatsHandler statsHandler;
     Map<WorldElement, Vector2d> animals = new HashMap<>();
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
     List<List<Boolean>> isGrass = new ArrayList<>();
@@ -23,7 +24,7 @@ public class RectangularMap implements WorldMap{
         this.optionsManager = optionsManager;
         initializeIsGrass();
         initializeTunnels();
-
+        statsHandler = new StatsHandler(this);
     }
 
     void initializeIsGrass(){
@@ -185,10 +186,19 @@ public class RectangularMap implements WorldMap{
 
     public void removeAnimal(Animal animalToRemove){
         animals.remove(animalToRemove);
+        statsHandler.animalDeceased(animalToRemove);
     }
 
     public void killAllAnimals(){
         animals = new HashMap<>();
         updateAllElements();
+    }
+
+    public void countAllStats(){
+        statsHandler.updateAllStats();
+    }
+
+    public StatsHandler getStatsHandler(){
+        return statsHandler;
     }
 }

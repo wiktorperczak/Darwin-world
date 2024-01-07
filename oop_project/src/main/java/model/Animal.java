@@ -15,8 +15,6 @@ public class Animal extends WorldElement{
     private List<Animal> kids;
     RectangularMap map;
 
-    private List<Animal> kids;
-
 
     public Animal(RectangularMap map, Vector2d position){
         worldElementType = WorldElementType.ANIMAL;
@@ -104,11 +102,11 @@ public class Animal extends WorldElement{
         numberOfKids += 1;
     }
 
-    public Integer getNumberOfDescendants() {
-        for (Animal animal : kids) {
-            
-        }
-    }
+//    public Integer getNumberOfDescendants() {
+//        for (Animal animal : kids) {
+//
+//        }
+//    }
 
     @Override
     public String getImagePath() {

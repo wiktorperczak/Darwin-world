@@ -2,6 +2,7 @@ package presenter;
 
 import com.sun.security.jgss.InquireType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.HBox;
 import model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -83,7 +84,7 @@ public class StartPresenter {
     }
 
 
-    private void configureStage(Stage primaryStage, VBox viewRoot){
+    private void configureStage(Stage primaryStage, HBox viewRoot){
         var scene = new Scene(viewRoot);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Simulation");
@@ -94,7 +95,7 @@ public class StartPresenter {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         Stage stage = new Stage();
-        VBox viewRoot = loader.load();
+        HBox viewRoot = loader.load();
         configureStage(stage, viewRoot);
 
         stage.show();
@@ -128,7 +129,7 @@ public class StartPresenter {
 
         map.registerObserver(simulationPresenter);
         simulationPresenter.setSimulation(simulation);
-        simulationPresenter.initializePresenter();
+        simulationPresenter.initializePresenter(optionsManager);
 
 
         stage.setOnCloseRequest(event -> {
