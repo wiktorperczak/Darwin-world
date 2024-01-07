@@ -108,7 +108,14 @@ public class StartPresenter {
         map.registerObserver(simulationPresenter);
 
         Simulation simulation = new Simulation(positions, map);
+        stage.setOnCloseRequest(event -> {
+                stopSimulation(simulation);
+        });
         SimulationEngine simulationEngine = new SimulationEngine(List.of(simulation));
         simulationEngine.runAsync();
+    }
+
+    private void stopSimulation(Simulation simulation){
+        simulation.stopSimulation();
     }
 }

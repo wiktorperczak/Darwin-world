@@ -33,6 +33,7 @@ public class Simulation implements Runnable{
             }
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
+            System.out.println(map.getAnimals());
         }
         map.mapChanged("Wszystkie zwierzaki umarly");
     }
@@ -118,5 +119,9 @@ public class Simulation implements Runnable{
                 }
             }
         }
+    }
+
+    public void stopSimulation() {
+        map.killAllAnimals();
     }
 }
