@@ -6,16 +6,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       minHeight="550.0" minWidth="850.0"
       spacing="5" alignment="CENTER"
       fx:controller="presenter.StartPresenter">
-    <Label text="Początkowa energia:" />
-    <TextField fx:id="animalLife">5</TextField>
+
+
+    <Label text="Wysokosc mapy:" />
+    <ComboBox fx:id="height" prefWidth="150" onAction="#updateTunnels"/>
+
+    <Label text="Szerokosc mapy:" />
+    <ComboBox fx:id="width" prefWidth="150" onAction="#updateTunnels"/>
+
+    <Label text="Liczba zwierzakow:" />
+    <ComboBox fx:id="numberOfAnimals" prefWidth="150"/>
+
+    <Label text="Początkowa energia zwierzaka:" />
+    <ComboBox fx:id="animalLife" prefWidth="150"/>
+
     <Label text="Dlugosc genotypu:" />
-    <TextField fx:id="genotypeLength">5</TextField>
+    <ComboBox fx:id="genotypeLength" prefWidth="150"/>
+
     <Label text="Wartosc energetyczna trawy:" />
-    <TextField fx:id="grassEnergy">5</TextField>
+    <ComboBox fx:id="grassEnergy" prefWidth="150"/>
+
+    <Label text="Liczba tuneli:" />
+    <ComboBox fx:id="numberOfTunnels" prefWidth="150"></ComboBox>
     <Button onAction="#onSimulationStartClick">Start</Button>
 </VBox>
