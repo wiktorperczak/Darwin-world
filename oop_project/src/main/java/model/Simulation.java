@@ -30,13 +30,14 @@ public class Simulation implements Runnable{
             eatingGrass();
             breed();
             addGrass();
+            map.updateAllElements();
+            map.mapChanged("Zwierzaki sie ruszyly");
+
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            map.updateAllElements();
-            map.mapChanged("Zwierzaki sie ruszyly");
         }
         map.mapChanged("Wszystkie zwierzaki umarly");
     }

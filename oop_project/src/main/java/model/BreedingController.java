@@ -13,7 +13,7 @@ public class BreedingController {
         int numberOfChildrenAdded = 0;
         for (Vector2d position : allAnimals.keySet()){
             List<Animal> animals = allAnimals.get(position).stream()
-                    .filter(worldElement -> worldElement instanceof Animal)
+                    .filter(worldElement -> worldElement.worldElementType == WorldElementType.ANIMAL)
                     .map(worldElement -> (Animal) worldElement)
                     .toList();
             for (int i = 0; i < animals.size() - 1; i += 2){

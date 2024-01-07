@@ -114,13 +114,13 @@ public class RectangularMap implements WorldMap{
     Map<Vector2d, List<WorldElement>> sortAnimals(Map<Vector2d, List<WorldElement>> elements){
         for (Vector2d position : elements.keySet()){
             List<WorldElement> animals = elements.get(position).stream()
-                    .filter(worldElement -> worldElement instanceof Animal)
+                    .filter(worldElement -> worldElement.worldElementType == WorldElementType.ANIMAL)
                     .map(worldElement -> (Animal) worldElement)
                     .sorted(new AnimalComparator())
                     .map(worldElement -> (WorldElement) worldElement)
                     .toList();
             List<WorldElement> restWorldElements = elements.get(position).stream()
-                    .filter(worldElement -> !(worldElement instanceof Animal))
+                    .filter(worldElement -> !(worldElement.worldElementType == WorldElementType.ANIMAL))
                     .toList();
             List<WorldElement> worldElements = new ArrayList<>();
             worldElements.addAll(animals);

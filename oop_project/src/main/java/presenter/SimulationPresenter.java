@@ -4,6 +4,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
 import model.*;
 import javafx.application.Platform;
@@ -104,12 +106,15 @@ public class SimulationPresenter implements MapChangeListener {
             }
             if (worldElement.worldElementType == WorldElementType.GRASS){
                 drawTunnelUnderWorldElement(entry, bounds);
+                Circle grassCircle = new Circle(10, Color.GREEN);
+                GridPane.setHalignment(grassCircle, HPos.CENTER);
+                mapGrid.add(grassCircle, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
             }
-            ImageView imageView = createImageView(worldElement.getImagePath(), rotation);
-
-            // Set the alignment and add the ImageView to the GridPane
-            GridPane.setHalignment(imageView, HPos.CENTER);
-            mapGrid.add(imageView, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
+//            ImageView imageView = createImageView(worldElement.getImagePath(), rotation);
+//
+//            // Set the alignment and add the ImageView to the GridPane
+//            GridPane.setHalignment(imageView, HPos.CENTER);
+//            mapGrid.add(imageView, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
         }
     }
 
