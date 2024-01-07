@@ -90,9 +90,9 @@ public class RectangularMap implements WorldMap{
     public void updateAllElements() {
         Map<Vector2d, List<WorldElement>> elements = new HashMap<>();
         elements = addNewValuesToElements(elements, animals);
+        elements = addNewValuesToElements(elements, grassFields);
         elements = addNewValuesToElements(elements, tunnelEnters);
         elements = addNewValuesToElements(elements, tunnelExits);
-        elements = addNewValuesToElements(elements, grassFields);
         allElements = sortAnimals(elements);
     }
 
@@ -185,5 +185,10 @@ public class RectangularMap implements WorldMap{
 
     public void removeAnimal(Animal animalToRemove){
         animals.remove(animalToRemove);
+    }
+
+    public void killAllAnimals(){
+        animals = new HashMap<>();
+        updateAllElements();
     }
 }
