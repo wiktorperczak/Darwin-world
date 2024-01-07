@@ -65,9 +65,7 @@ public class RectangularMap implements WorldMap{
     public void place(Animal animal) {
         System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
-        System.out.println("ID: " + animal.getId());
         animalIdVisited.add(false);
-        System.out.println("Number of animals: " + animalIdVisited.size());
     }
 
     @Override
