@@ -1,16 +1,17 @@
 package model;
 
 public final class OptionsManager {
-    int numberOfAnimals;
-    int width;
-    int height;
-    int animalLife;
-    int genotypeLength;
-    int minimalEnergyToBreed;
-    int energyLossOnBreed;
-    int gensToMutate;
-    int grassEnergy;
-    int numberOfTunnels;
+    private int numberOfAnimals;
+    private int width;
+    private int height;
+    private int animalLife;
+    private int genotypeLength;
+    private int minimalEnergyToBreed;
+    private int energyLossOnBreed;
+    private int maxGensToMutate;
+    private int minGensToMutate;
+    private int grassEnergy;
+    private int numberOfTunnels;
 
     public int getNumberOfAnimals() { return numberOfAnimals; }
 
@@ -32,8 +33,10 @@ public final class OptionsManager {
     public int getMinimalEnergyToBreed(){ return minimalEnergyToBreed;}
     public void setEnergyLossOnBreed(int value){ energyLossOnBreed = value;}
     public int getEnergyLossOnBreed(){ return energyLossOnBreed;}
-    public void setGensToMutate(int value){gensToMutate = value;}
-    public int getGensToMutate(){ return gensToMutate;}
+    public void setMaxGensToMutate(int value){maxGensToMutate = value;}
+    public int getMaxGensToMutate(){ return maxGensToMutate;}
+    public void setMinGensToMutate(int value){minGensToMutate = value;}
+    public int getMinGensToMutate(){ return minGensToMutate;}
     public int getNumberOfTunnels() { return numberOfTunnels; }
     public void setNumberOfTunnels(int numberOfTunnels) { this.numberOfTunnels = numberOfTunnels; }
     public int getWidth() { return width; }

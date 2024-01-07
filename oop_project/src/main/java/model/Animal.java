@@ -143,4 +143,15 @@ public class Animal extends WorldElement{
 
     public List<Animal> getKids() { return kids; }
     public Integer getNumberOfDescendants() { return numberOfDescendants; }
+    public void randomizeGenotypeIterator(){
+        Random random = new Random();
+        for (int i = 0; i < random.nextInt(map.optionsManager.getGenotypeLength()); i++){
+            genDirectionGenerator.next();
+        }
+    }
+
+    public void randomizeStartingRotation() {
+        Random random = new Random();
+        facingDirection = MapDirection.toMapDirection(random.nextInt(8));
+    }
 }

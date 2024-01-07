@@ -36,6 +36,10 @@ public class StartPresenter {
     public ComboBox<Integer> energyLossOnBreed;
     @FXML
     public ComboBox<Integer> minimalEnergyToBreed;
+    @FXML
+    public ComboBox<Integer> maxGensToMutate;
+    @FXML
+    public ComboBox<Integer> minGensToMutate;
 
     @FXML
     private void initialize() {
@@ -56,14 +60,19 @@ public class StartPresenter {
             // todo: energyloss < minimalenergy
             energyLossOnBreed.getItems().add(i);
             minimalEnergyToBreed.getItems().add(i);
+            minGensToMutate.getItems().add(i);
+            maxGensToMutate.getItems().add(i);
         }
         grassEnergy.setValue(2);
         animalLife.setValue(5);
         genotypeLength.setValue(5);
         minimalEnergyToBreed.setValue(5);
+        maxGensToMutate.setValue(0);
+        minGensToMutate.setValue(0);
 
         updateTunnels();
         updateEnergyLossOnBreed();
+        updateGensToMutate();
     }
 
     @FXML
@@ -81,6 +90,34 @@ public class StartPresenter {
         for (int i = 0; i < minimalEnergyToBreed.getValue(); i++)
             energyLossOnBreed.getItems().add(i);
         energyLossOnBreed.setValue(1);
+    }
+
+    @FXML
+    private void updateGensToMutate(){
+        maxGensToMutate.getItems().clear();
+        minGensToMutate.getItems().clear();
+        for (int i = 0; i <= genotypeLength.getValue(); i++){
+            maxGensToMutate.getItems().add(i);
+            minGensToMutate.getItems().add(i);
+        }
+        maxGensToMutate.setValue(0);
+        minGensToMutate.setValue(0);
+    }
+
+    @FXML
+    private void updateMaxGensToMutate(){
+        if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
+        if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
+            maxGensToMutate.setValue(minGensToMutate.getValue());
+        }
+    }
+
+    @FXML
+    private void updateMinGensToMutate(){
+        if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
+        if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
+            minGensToMutate.setValue(maxGensToMutate.getValue());
+        }
     }
 
 
@@ -110,6 +147,8 @@ public class StartPresenter {
         optionsManager.setNumberOfTunnels(numberOfTunnels.getValue());
         optionsManager.setEnergyLossOnBreed(energyLossOnBreed.getValue());
         optionsManager.setMinimalEnergyToBreed(minimalEnergyToBreed.getValue());
+        optionsManager.setMaxGensToMutate(maxGensToMutate.getValue());
+        optionsManager.setMinGensToMutate(minGensToMutate.getValue());
 
 //        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
         List<Vector2d> positions = new ArrayList<>();

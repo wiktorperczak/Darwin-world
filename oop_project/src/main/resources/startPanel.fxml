@@ -31,7 +31,7 @@
             <ComboBox fx:id="numberOfTunnels" prefWidth="150"/>
 
             <Label text="Długość genotypu:" />
-            <ComboBox fx:id="genotypeLength" prefWidth="150"/>
+            <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGensToMutate"/>
         </VBox>
 
         <VBox spacing="8">
@@ -46,6 +46,12 @@
 
             <Label text="Utrata energii przy rozmnażaniu:" />
             <ComboBox fx:id="energyLossOnBreed" prefWidth="150"/>
+
+            <Label text="Max genów zmienane podczas mutacji:" />
+            <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate"/>
+
+            <Label text="Min genów zmienane podczas mutacji:" />
+            <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate"/>
         </VBox>
     </HBox>
 
