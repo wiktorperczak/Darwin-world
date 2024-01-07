@@ -2,6 +2,8 @@ package presenter;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.transform.Rotate;
 import model.*;
 import javafx.application.Platform;
@@ -25,6 +27,28 @@ public class SimulationPresenter implements MapChangeListener {
     public Label argsText;
     @FXML
     private Label infoMove;
+
+    boolean simulationPaused;
+    Simulation simulation;
+
+    public void setSimulation(Simulation simulation){
+        this.simulation = simulation;
+    }
+    public void initializePresenter(){
+        mapGrid.getScene().addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+        simulationPaused = false;
+    }
+
+    private void handleKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.SPACE) {
+            simulationPaused = !simulationPaused;
+            if (simulationPaused) {
+                simulation.pauseSimulation();
+            } else {
+                simulation.unPauseSimulation();
+            }
+        }
+    }
 
     @Override
     public void mapChanged(WorldMap worldMap, String message){
@@ -74,11 +98,11 @@ public class SimulationPresenter implements MapChangeListener {
 
             // Create an ImageView using the image path from the WorldElement
             int rotation = 0;
-            if (worldElement instanceof Animal){
+            if (worldElement.worldElementType == WorldElementType.ANIMAL){
                 drawTunnelUnderWorldElement(entry, bounds);
                 rotation = 45 * ((Animal) worldElement).getFacingDirection();
             }
-            if (worldElement instanceof Grass){
+            if (worldElement.worldElementType == WorldElementType.GRASS){
                 drawTunnelUnderWorldElement(entry, bounds);
             }
             ImageView imageView = createImageView(worldElement.getImagePath(), rotation);
@@ -91,7 +115,8 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void drawTunnelUnderWorldElement(Map.Entry<Vector2d, List<WorldElement>> entry, Vector2d bounds){
         List<WorldElement> tunnel= entry.getValue().stream()
-                .filter(worldElement -> worldElement instanceof TunnelEnter || worldElement instanceof TunnelExit).toList();
+                .filter(worldElement -> worldElement.worldElementType == WorldElementType.TUNNELENTER ||
+                        worldElement.worldElementType == WorldElementType.TUNNELEXIT).toList();
         if (tunnel.isEmpty()) return;
         ImageView imageView = createImageView(tunnel.get(0).getImagePath(), 0);
         GridPane.setHalignment(imageView, HPos.CENTER);

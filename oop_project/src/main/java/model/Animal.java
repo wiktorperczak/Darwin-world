@@ -15,8 +15,11 @@ public class Animal extends WorldElement{
     private List<Animal> kids;
     RectangularMap map;
 
+    private List<Animal> kids;
+
 
     public Animal(RectangularMap map, Vector2d position){
+        worldElementType = WorldElementType.ANIMAL;
         this.map = map;
         this.position = position;
         genotype = generateGenotype(map.optionsManager.getGenotypeLength());
@@ -26,6 +29,7 @@ public class Animal extends WorldElement{
         energy = map.optionsManager.getAnimalLife();
         numberOfDaysLived = 0;
         numberOfKids = 0;
+        kids = new ArrayList<>();
     }
 
     public void move(RectangularMap map){
@@ -109,5 +113,10 @@ public class Animal extends WorldElement{
     @Override
     public String getImagePath() {
         return "/media/Kot_M.png";
+    }
+
+    public void addKid(Animal kid){
+        numberOfKids += 1;
+        kids.add(kid);
     }
 }

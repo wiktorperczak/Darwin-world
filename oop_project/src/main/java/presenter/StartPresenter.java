@@ -123,10 +123,14 @@ public class StartPresenter {
 
         WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight(), optionsManager);
 
-        SimulationPresenter simulationPresenter = loader.getController();
-        map.registerObserver(simulationPresenter);
-
         Simulation simulation = new Simulation(positions, map);
+        SimulationPresenter simulationPresenter = loader.getController();
+
+        map.registerObserver(simulationPresenter);
+        simulationPresenter.setSimulation(simulation);
+        simulationPresenter.initializePresenter();
+
+
         stage.setOnCloseRequest(event -> {
                 stopSimulation(simulation);
         });

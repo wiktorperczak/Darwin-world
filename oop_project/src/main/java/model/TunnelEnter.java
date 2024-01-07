@@ -6,6 +6,7 @@ public class TunnelEnter extends WorldElement{
     TunnelExit tunnelExit;
 
     public TunnelEnter(Vector2d position){
+        worldElementType = WorldElementType.TUNNELENTER;
         this.position = position;
     }
     public void setTunnelExit(TunnelExit tunnelExit){
