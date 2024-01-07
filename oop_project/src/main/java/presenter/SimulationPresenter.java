@@ -1,15 +1,18 @@
 package presenter;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.transform.Rotate;
 import model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -60,12 +63,38 @@ public class SimulationPresenter implements MapChangeListener {
         GridPane.setHalignment(label, HPos.CENTER);
         mapGrid.add(label, 0, 0);
 
+//        for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getAllElements().entrySet()) {
+//            label = new Label(entry.getValue().get(0).toString());
+//            GridPane.setHalignment(label, HPos.CENTER);
+//            mapGrid.add(label, entry.getKey().getX() + 1,
+//                    bounds.getY() - (entry.getKey().getY()) + 1);
+//        }
         for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getAllElements().entrySet()) {
-            label = new Label(entry.getValue().get(0).toString());
-            GridPane.setHalignment(label, HPos.CENTER);
-            mapGrid.add(label, entry.getKey().getX() + 1,
-                    bounds.getY() - (entry.getKey().getY()) + 1);
+            WorldElement worldElement = entry.getValue().get(0);
+
+            // Create an ImageView using the image path from the WorldElement
+            int rotation = 0;
+            if (worldElement instanceof Animal){
+                rotation = 45 * ((Animal) worldElement).getFacingDirection();
+            }
+            ImageView imageView = createImageView(worldElement.getImagePath(), rotation);
+
+            // Set the alignment and add the ImageView to the GridPane
+            GridPane.setHalignment(imageView, HPos.CENTER);
+            mapGrid.add(imageView, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
         }
+    }
+
+    private ImageView createImageView(String imagePath, int rotation) {
+        Image image = new Image(getClass().getResourceAsStream(imagePath));
+        ImageView imageView = new ImageView(image);
+        Rotate rotate = new Rotate(rotation, 25, 25);
+
+        // Apply the transformation to the ImageView
+        imageView.getTransforms().add(rotate);
+        imageView.setFitWidth(50); // Set the width as needed
+        imageView.setFitHeight(50); // Set the height as needed
+        return imageView;
     }
 
     private void clearGrid(){

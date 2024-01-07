@@ -7,12 +7,9 @@ public class TunnelEnter extends WorldElement{
 
     public TunnelEnter(Vector2d position){
         this.position = position;
-        tunnelExit = new TunnelExit(getRandomPos());
     }
-
-    Vector2d getRandomPos(){
-        Random random = new Random();
-        return new Vector2d(random.nextInt(3), random.nextInt(3));
+    public void setTunnelExit(TunnelExit tunnelExit){
+        this.tunnelExit = tunnelExit;
     }
 
     TunnelExit getTunnelExit(){
@@ -22,5 +19,10 @@ public class TunnelEnter extends WorldElement{
     @Override
     public String toString() {
         return "o";
+    }
+
+    @Override
+    public String getImagePath() {
+        return "/media/dziura_1M.png";
     }
 }
