@@ -7,32 +7,52 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       minHeight="550.0" minWidth="850.0"
       spacing="5" alignment="CENTER"
       fx:controller="presenter.StartPresenter">
 
+    <Label text="Dostosuj parametry:" style="-fx-font-size: 16px;"/>
 
-    <Label text="Wysokosc mapy:" />
-    <ComboBox fx:id="height" prefWidth="150" onAction="#updateTunnels"/>
+    <HBox spacing="10" alignment="CENTER">
+        <VBox spacing="8">
+            <Label text="Wysokość mapy:" />
+            <ComboBox fx:id="height" prefWidth="150" onAction="#updateTunnels"/>
 
-    <Label text="Szerokosc mapy:" />
-    <ComboBox fx:id="width" prefWidth="150" onAction="#updateTunnels"/>
+            <Label text="Szerokość mapy:" />
+            <ComboBox fx:id="width" prefWidth="150" onAction="#updateTunnels"/>
 
-    <Label text="Liczba zwierzakow:" />
-    <ComboBox fx:id="numberOfAnimals" prefWidth="150"/>
+            <Label text="Liczba zwierząt:" />
+            <ComboBox fx:id="numberOfAnimals" prefWidth="150"/>
 
-    <Label text="Początkowa energia zwierzaka:" />
-    <ComboBox fx:id="animalLife" prefWidth="150"/>
+            <Label text="Liczba tuneli:" />
+            <ComboBox fx:id="numberOfTunnels" prefWidth="150"/>
 
-    <Label text="Dlugosc genotypu:" />
-    <ComboBox fx:id="genotypeLength" prefWidth="150"/>
+            <Label text="Długość genotypu:" />
+            <ComboBox fx:id="genotypeLength" prefWidth="150"/>
+        </VBox>
 
-    <Label text="Wartosc energetyczna trawy:" />
-    <ComboBox fx:id="grassEnergy" prefWidth="150"/>
+        <VBox spacing="8">
+            <Label text="Początkowa energia zwierząt:" />
+            <ComboBox fx:id="animalLife" prefWidth="150"/>
 
-    <Label text="Liczba tuneli:" />
-    <ComboBox fx:id="numberOfTunnels" prefWidth="150"></ComboBox>
-    <Button onAction="#onSimulationStartClick">Start</Button>
+            <Label text="Wartość energetyczna trawy:" />
+            <ComboBox fx:id="grassEnergy" prefWidth="150"/>
+
+            <Label text="Potrzebna energia do romznazania:"/>
+            <ComboBox fx:id="minimalEnergyToBreed" prefWidth="150" onAction="#updateEnergyLossOnBreed"/>
+
+            <Label text="Utrata energii przy rozmnażaniu:" />
+            <ComboBox fx:id="energyLossOnBreed" prefWidth="150"/>
+        </VBox>
+    </HBox>
+
+    <HBox.margin>
+        <Insets bottom="40"/>
+    </HBox.margin>
+
+    <Button onAction="#onSimulationStartClick" minWidth="150" minHeight="40">Start</Button>
+
 </VBox>

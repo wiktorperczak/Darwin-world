@@ -12,6 +12,7 @@ public class Animal extends WorldElement{
     private int energy;
     private int numberOfDaysLived;
     private int numberOfKids;
+    private List<Animal> kids;
     RectangularMap map;
 
     private List<Animal> kids;
@@ -97,6 +98,17 @@ public class Animal extends WorldElement{
     public List<Integer> getGenotype(){return genotype;}
     public void setGenotype(List<Integer> newGenotype){ genotype = newGenotype;}
     public int getFacingDirection(){ return facingDirection.toInt();}
+
+    public void addChild(Animal child) {
+        kids.add(child);
+        numberOfKids += 1;
+    }
+
+    public Integer getNumberOfDescendants() {
+        for (Animal animal : kids) {
+            
+        }
+    }
 
     @Override
     public String getImagePath() {

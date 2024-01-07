@@ -23,6 +23,8 @@ public class BreedingController {
                 if (animal1.getEnergy() < map.optionsManager.getMinimalEnergyToBreed() ||
                         animal2.getEnergy() < map.optionsManager.getMinimalEnergyToBreed()) continue;
                 Animal children = generateChildren(animal1, animal2);
+                animal1.
+
                 map.place(children);
                 numberOfChildrenAdded += 1;
             }
