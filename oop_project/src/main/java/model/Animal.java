@@ -82,7 +82,7 @@ public class Animal extends WorldElement{
             case SOUTH_WEST -> "SW";
             case WEST -> "W";
             case NORTH_WEST -> "NW";
-        };
+        } + getEnergy();
     }
 
     public int getEnergy(){ return energy;}
@@ -92,4 +92,10 @@ public class Animal extends WorldElement{
     public int getNumberOfKids(){ return numberOfKids;}
     public List<Integer> getGenotype(){return genotype;}
     public void setGenotype(List<Integer> newGenotype){ genotype = newGenotype;}
+    public int getFacingDirection(){ return facingDirection.toInt();}
+
+    @Override
+    public String getImagePath() {
+        return "/media/Kot_M.png";
+    }
 }
