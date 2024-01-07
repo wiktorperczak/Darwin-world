@@ -5,10 +5,14 @@ import java.util.*;
 public class Simulation implements Runnable{
     RectangularMap map;
     Random random = new Random();
+    boolean isRunning;
+    private final Object GUI_INITIALIZATION_MONITOR = new Object();
+    private boolean pauseThreadFlag = false;
 
 
     public Simulation(List<Vector2d> animalsStartingPos, WorldMap map){
         this.map = (RectangularMap) map;
+        isRunning = true;
         for (Vector2d position : animalsStartingPos) {
             this.map.place(new Animal(this.map, position));
         }
@@ -17,23 +21,22 @@ public class Simulation implements Runnable{
 
     public void run(){
         while(!map.getAnimals().isEmpty()) {
+            checkForPaused();
             removeDeadBodies();
             if (map.getAnimals().isEmpty()){
                 break;
             }
             moveAnimals();
             eatingGrass();
-            map.mapChanged("Zwierzaki sie ruszyly");
             breed();
             addGrass();
             try {
-                Thread.sleep(800);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
-            System.out.println(map.getAnimals());
         }
         map.mapChanged("Wszystkie zwierzaki umarly");
     }
@@ -121,7 +124,28 @@ public class Simulation implements Runnable{
         }
     }
 
+    private void checkForPaused() {
+        synchronized (GUI_INITIALIZATION_MONITOR) {
+            while (pauseThreadFlag) {
+                try {
+                    GUI_INITIALIZATION_MONITOR.wait();
+                } catch (Exception e) {}
+            }
+        }
+    }
+
     public void stopSimulation() {
         map.killAllAnimals();
+    }
+
+    public void pauseSimulation() {
+        pauseThreadFlag = true;
+    }
+
+    public void unPauseSimulation(){
+        synchronized(GUI_INITIALIZATION_MONITOR) {
+            pauseThreadFlag = false;
+            GUI_INITIALIZATION_MONITOR.notify();
+        }
     }
 }

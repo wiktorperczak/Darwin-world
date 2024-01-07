@@ -2,6 +2,8 @@ package presenter;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.transform.Rotate;
 import model.*;
 import javafx.application.Platform;
@@ -25,6 +27,28 @@ public class SimulationPresenter implements MapChangeListener {
     public Label argsText;
     @FXML
     private Label infoMove;
+
+    boolean simulationPaused;
+    Simulation simulation;
+
+    public void setSimulation(Simulation simulation){
+        this.simulation = simulation;
+    }
+    public void initializePresenter(){
+        mapGrid.getScene().addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+        simulationPaused = false;
+    }
+
+    private void handleKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.SPACE) {
+            simulationPaused = !simulationPaused;
+            if (simulationPaused) {
+                simulation.pauseSimulation();
+            } else {
+                simulation.unPauseSimulation();
+            }
+        }
+    }
 
     @Override
     public void mapChanged(WorldMap worldMap, String message){

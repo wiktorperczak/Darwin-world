@@ -51,6 +51,9 @@ public class BreedingController {
         children.setGenotype(childrenGenotype);
         parent1.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
         parent2.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
+
+        parent1.addKid(children);
+        parent2.addKid(children);
         return children;
     }
 
