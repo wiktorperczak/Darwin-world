@@ -10,4 +10,8 @@ public class Grass extends WorldElement{
         return "*";
     }
 
+    @Override
+    public String getImagePath() {
+        return "/media/trawa_M.png";
+    }
 }
