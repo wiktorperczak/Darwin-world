@@ -14,7 +14,7 @@ public class Simulation implements Runnable{
         this.map = (RectangularMap) map;
         isRunning = true;
         for (Vector2d position : animalsStartingPos) {
-            this.map.place(new Animal(this.map, position));
+            this.map.place(new Animal(this.map, position, this.map.getNumberOfAnimalsAndIncrement()));
         }
         this.map.mapChanged("Zwierzaki się ustawiły");
     }
@@ -30,13 +30,14 @@ public class Simulation implements Runnable{
             eatingGrass();
             breed();
             addGrass();
+            map.updateAllElements();
+            map.mapChanged("Zwierzaki sie ruszyly");
+
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            map.updateAllElements();
-            map.mapChanged("Zwierzaki sie ruszyly");
         }
         map.mapChanged("Wszystkie zwierzaki umarly");
     }
@@ -148,5 +149,10 @@ public class Simulation implements Runnable{
             pauseThreadFlag = false;
             GUI_INITIALIZATION_MONITOR.notify();
         }
+    }
+
+    public void startFollowingAnimal(Animal animal) {
+        animal.calculateNumberOfDescendants();
+        int num = animal.getNumberOfDescendants();
     }
 }
