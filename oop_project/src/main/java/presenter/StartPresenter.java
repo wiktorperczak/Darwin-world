@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class StartPresenter {
     @FXML
@@ -31,21 +33,22 @@ public class StartPresenter {
 
     @FXML
     private void initialize() {
-        for (int i = 1; i <= 15; i++) {
+        for (int i = 1; i <= 50; i++) {
             width.getItems().add(i);
             height.getItems().add(i);
-            numberOfAnimals.getItems().add(i);
-            grassEnergy.getItems().add(i);
         }
         width.setValue(5);
         height.setValue(5);
+
+        for (int i = 1; i <= 1000; i++) { numberOfAnimals.getItems().add(i); }
         numberOfAnimals.setValue(3);
-        grassEnergy.setValue(2);
 
         for (int i = 1; i <= 30; i++) {
+            grassEnergy.getItems().add(i);
             animalLife.getItems().add(i);
             genotypeLength.getItems().add(i);
         }
+        grassEnergy.setValue(2);
         animalLife.setValue(5);
         genotypeLength.setValue(5);
 
@@ -88,8 +91,16 @@ public class StartPresenter {
         optionsManager.setEnergyLossOnBreed(1);
         optionsManager.setMinimalEnergyToBreed(3);
 
-        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
-//        List<Vector2d> positions = List.of();
+//        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
+        List<Vector2d> positions = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < optionsManager.getNumberOfAnimals(); i++) {
+            int num = random.nextInt((optionsManager.getWidth() + 1) * (optionsManager.getHeight() + 1) - 1);
+            int x = num % (optionsManager.getWidth() + 1);
+            int y = num / (optionsManager.getWidth() + 1);
+            positions.add(new Vector2d(x, y));
+        }
+
 
         WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight(), optionsManager);
 
