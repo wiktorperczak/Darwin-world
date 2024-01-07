@@ -1,6 +1,8 @@
 package presenter;
 
+import javafx.scene.control.ComboBox;
 import model.*;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -12,13 +14,52 @@ import java.io.IOException;
 import java.util.List;
 
 public class StartPresenter {
-    public TextField height;
-    public TextField width;
+    @FXML
+    public ComboBox<Integer> numberOfAnimals;
+    @FXML
+    public ComboBox<Integer> height;
+    @FXML
+    public ComboBox<Integer> width;
+    @FXML
+    public ComboBox<Integer> animalLife;
+    @FXML
+    public ComboBox<Integer> genotypeLength;
+    @FXML
+    public ComboBox<Integer> grassEnergy;
+    @FXML
+    public ComboBox<Integer> numberOfTunnels;
 
-    public TextField animalLife;
-    public TextField genotypeLength;
-    public TextField grassEnergy;
-    public TextField numberOfTunnels;
+    @FXML
+    private void initialize() {
+        for (int i = 1; i <= 15; i++) {
+            width.getItems().add(i);
+            height.getItems().add(i);
+            numberOfAnimals.getItems().add(i);
+            grassEnergy.getItems().add(i);
+        }
+        width.setValue(5);
+        height.setValue(5);
+        numberOfAnimals.setValue(3);
+        grassEnergy.setValue(2);
+
+        for (int i = 1; i <= 30; i++) {
+            animalLife.getItems().add(i);
+            genotypeLength.getItems().add(i);
+        }
+        animalLife.setValue(5);
+        genotypeLength.setValue(5);
+
+        updateTunnels();
+    }
+
+    @FXML
+    private void updateTunnels() {
+        numberOfTunnels.getItems().clear();
+        for (int i = 0; i <= (width.getValue() + 1) * (height.getValue() + 1) / 2; i++) {
+            numberOfTunnels.getItems().add(i);
+        }
+        numberOfTunnels.setValue(1);
+    }
 
     private void configureStage(Stage primaryStage, VBox viewRoot){
         var scene = new Scene(viewRoot);
@@ -37,18 +78,20 @@ public class StartPresenter {
         stage.show();
 
         OptionsManager optionsManager = new OptionsManager();
-        optionsManager.setWidth(Integer.parseInt(width.getText()));
-        optionsManager.setHeight(Integer.parseInt(height.getText()));
-        optionsManager.setAnimalLife(Integer.parseInt(animalLife.getText()));
-        optionsManager.setGenotypeLength(Integer.parseInt(genotypeLength.getText()));
-        optionsManager.setGrassEnergy(Integer.parseInt(grassEnergy.getText()));
-        optionsManager.setNumberOfTunnels(Integer.parseInt(numberOfTunnels.getText()));
+        optionsManager.setNumberOfAnimals(numberOfAnimals.getValue());
+        optionsManager.setWidth(width.getValue());
+        optionsManager.setHeight(height.getValue());
+        optionsManager.setAnimalLife(animalLife.getValue());
+        optionsManager.setGenotypeLength(genotypeLength.getValue());
+        optionsManager.setGrassEnergy(grassEnergy.getValue());
+        optionsManager.setNumberOfTunnels(numberOfTunnels.getValue());
+        optionsManager.setEnergyLossOnBreed(1);
+        optionsManager.setMinimalEnergyToBreed(3);
 
         List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
 //        List<Vector2d> positions = List.of();
+
         WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight(), optionsManager);
-        optionsManager.setEnergyLossOnBreed(1);
-        optionsManager.setMinimalEnergyToBreed(3);
 
         SimulationPresenter simulationPresenter = loader.getController();
         map.registerObserver(simulationPresenter);

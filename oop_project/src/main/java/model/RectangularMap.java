@@ -46,18 +46,6 @@ public class RectangularMap implements WorldMap{
             int exitY = coordinates.get(i + 1) / (width + 1);
 
             TunnelEnter tunnelEnter = new TunnelEnter(new Vector2d(enterX, enterY));
-            tunnelEnters.put(tunnelEnter, tunnelEnter.getPosition());
-            TunnelExit tunnelExit = new TunnelExit(new Vector2d(exitX, exitY));
-            tunnelExits.put(tunnelExit, tunnelExit.getPosition());
-        }
-
-        for (int i = 0; i < 2 * optionsManager.getNumberOfTunnels(); i += 2) {
-            int enterX = coordinates.get(i) % (width + 1);
-            int enterY = coordinates.get(i) / (width + 1);
-            int exitX = coordinates.get(i + 1) % (width + 1);
-            int exitY = coordinates.get(i + 1) / (width + 1);
-
-            TunnelEnter tunnelEnter = new TunnelEnter(new Vector2d(enterX, enterY));
             TunnelExit tunnelExit = new TunnelExit(new Vector2d(exitX, exitY));
             tunnelEnter.setTunnelExit(tunnelExit);
             tunnelEnters.put(tunnelEnter, tunnelEnter.getPosition());

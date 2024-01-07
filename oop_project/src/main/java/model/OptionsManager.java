@@ -11,6 +11,7 @@ public final class OptionsManager {
     }
 
 
+    int numberOfAnimals;
     int width;
     int height;
     int animalLife;
@@ -21,6 +22,9 @@ public final class OptionsManager {
     int grassEnergy;
     int numberOfTunnels;
 
+    public int getNumberOfAnimals() { return numberOfAnimals; }
+
+    public void setNumberOfAnimals(int numberOfAnimals) { this.numberOfAnimals = numberOfAnimals; }
     public void setGenotypeLength(int genotypeLength) {
         this.genotypeLength = genotypeLength;
     }
