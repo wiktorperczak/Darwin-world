@@ -98,11 +98,11 @@ public class SimulationPresenter implements MapChangeListener {
 
             // Create an ImageView using the image path from the WorldElement
             int rotation = 0;
-            if (worldElement instanceof Animal){
+            if (worldElement.worldElementType == WorldElementType.ANIMAL){
                 drawTunnelUnderWorldElement(entry, bounds);
                 rotation = 45 * ((Animal) worldElement).getFacingDirection();
             }
-            if (worldElement instanceof Grass){
+            if (worldElement.worldElementType == WorldElementType.GRASS){
                 drawTunnelUnderWorldElement(entry, bounds);
             }
             ImageView imageView = createImageView(worldElement.getImagePath(), rotation);
@@ -115,7 +115,8 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void drawTunnelUnderWorldElement(Map.Entry<Vector2d, List<WorldElement>> entry, Vector2d bounds){
         List<WorldElement> tunnel= entry.getValue().stream()
-                .filter(worldElement -> worldElement instanceof TunnelEnter || worldElement instanceof TunnelExit).toList();
+                .filter(worldElement -> worldElement.worldElementType == WorldElementType.TUNNELENTER ||
+                        worldElement.worldElementType == WorldElementType.TUNNELEXIT).toList();
         if (tunnel.isEmpty()) return;
         ImageView imageView = createImageView(tunnel.get(0).getImagePath(), 0);
         GridPane.setHalignment(imageView, HPos.CENTER);

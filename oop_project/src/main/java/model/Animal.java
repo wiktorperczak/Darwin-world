@@ -18,6 +18,7 @@ public class Animal extends WorldElement{
 
 
     public Animal(RectangularMap map, Vector2d position){
+        worldElementType = WorldElementType.ANIMAL;
         this.map = map;
         this.position = position;
         genotype = generateGenotype(map.optionsManager.getGenotypeLength());

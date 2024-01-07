@@ -49,6 +49,7 @@ public class Simulation implements Runnable{
             Animal animal = (Animal) worldElement;
             if (!animal.isAlive()){
                 animalsToRemove.add(animal);
+                animal.setEnergy(-1);
             }
         }
         for (Animal animal : animalsToRemove){
