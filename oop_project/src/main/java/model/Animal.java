@@ -26,7 +26,7 @@ public class Animal extends WorldElement{
         this.position = position;
         genotype = generateGenotype(map.optionsManager.getGenotypeLength());
         //System.out.println(genotype);
-        genDirectionGenerator = new GenDirectionGenerator(genotype).iterator();
+        genDirectionGenerator = new GenDirectionGenerator(genotype, map.optionsManager.useReverseGenotype).iterator();
         facingDirection = genDirectionGenerator.next();
         energy = map.optionsManager.getAnimalLife();
         numberOfDaysLived = 0;
