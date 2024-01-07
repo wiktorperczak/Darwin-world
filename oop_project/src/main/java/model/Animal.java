@@ -8,7 +8,8 @@ import java.util.Random;
 public class Animal extends WorldElement{
     private MapDirection facingDirection;
     private List<Integer> genotype;
-    private Iterator<MapDirection> genDirectionGenerator;
+    private GenDirectionGenerator genDirectionGenerator;
+    private Iterator<MapDirection> genIterator;
 
 
     private int id;
@@ -16,6 +17,8 @@ public class Animal extends WorldElement{
     private int numberOfDaysLived;
     private int numberOfKids;
     private int numberOfDescendants;
+    private int grassEaten;
+    private int dayOfDeath;
     private List<Animal> kids;
     RectangularMap map;
 
@@ -25,12 +28,14 @@ public class Animal extends WorldElement{
         this.map = map;
         this.position = position;
         genotype = generateGenotype(map.optionsManager.getGenotypeLength());
-        //System.out.println(genotype);
-        genDirectionGenerator = new GenDirectionGenerator(genotype, map.optionsManager.useReverseGenotype).iterator();
-        facingDirection = genDirectionGenerator.next();
+        genDirectionGenerator = new GenDirectionGenerator(genotype, map.optionsManager.useReverseGenotype);
+        genIterator = genDirectionGenerator.iterator();
+        facingDirection = genIterator.next();
         energy = map.optionsManager.getAnimalLife();
         numberOfDaysLived = 0;
         numberOfKids = 0;
+        grassEaten = 0;
+        dayOfDeath = -1;
         kids = new ArrayList<>();
         this.id = id;
     }
@@ -63,7 +68,7 @@ public class Animal extends WorldElement{
     }
 
     MapDirection calculateNewRotation(){
-        MapDirection newDirection = genDirectionGenerator.next();
+        MapDirection newDirection = genIterator.next();
         return facingDirection.rotate(newDirection.toInt());
     }
 
@@ -146,12 +151,34 @@ public class Animal extends WorldElement{
     public void randomizeGenotypeIterator(){
         Random random = new Random();
         for (int i = 0; i < random.nextInt(map.optionsManager.getGenotypeLength()); i++){
-            genDirectionGenerator.next();
+            genIterator.next();
         }
     }
 
     public void randomizeStartingRotation() {
         Random random = new Random();
         facingDirection = MapDirection.toMapDirection(random.nextInt(8));
+    }
+
+    public void addGrassEaten(){
+        grassEaten += 1;
+    }
+
+    public int getGrassEaten(){
+        return grassEaten;
+    }
+
+    public Integer getActiveGen() {
+        genIterator.hasNext();
+        return genDirectionGenerator.getActiveGen();
+    }
+
+    public Integer getDayOfDeath() {
+        if (dayOfDeath == -1) return map.getDaysSimulated();
+        return dayOfDeath;
+    }
+
+    public void setDayOfDeath(int daysSimulated) {
+        dayOfDeath = daysSimulated;
     }
 }

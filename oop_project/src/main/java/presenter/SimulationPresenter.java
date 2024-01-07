@@ -1,15 +1,15 @@
 package presenter;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Rotate;
 import model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -18,17 +18,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 public class SimulationPresenter implements MapChangeListener {
+    public Button stopFollowingButton;
+    public Label daysSimulated;
     @FXML
     private GridPane mapGrid;
     boolean simulationPaused;
     Simulation simulation;
     int maxEnergy;
+    private WorldMap map;
 
     @FXML
     private Label numberOfAnimalsLabel;
@@ -45,17 +46,39 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private Label averageLengthOfDeadAnimalsLabel;
 
+    @FXML
+    private Label animalStatsLabel;
+    @FXML
+    private Label animalsGenotypeLabel;
+    @FXML
+    private Label genActivatedLabel;
+    @FXML
+    private Label energyLabel;
+    @FXML
+    private Label grassEatenLabel;
+    @FXML
+    private Label numberOfKidsLabel;
+    @FXML
+    private Label numberOfDescendantLabel;
+    @FXML
+    private Label numberOfDaysLived;
+
+    Animal currentFollowingAnimal = null;
+
 
 
     public void setSimulation(Simulation simulation){
         this.simulation = simulation;
     }
-    public void initializePresenter(OptionsManager optionsManager){
+    public void initializePresenter(OptionsManager optionsManager, WorldMap map){
         mapGrid.getScene().addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
         simulationPaused = false;
         maxEnergy = 2 * optionsManager.getAnimalLife();
+        setAnimalsStatsVisibility(false);
+        this.map = map;
     }
 
+    @FXML
     private void handleKeyPress(KeyEvent event) {
         if (event.getCode() == KeyCode.SPACE) {
             simulationPaused = !simulationPaused;
@@ -70,12 +93,14 @@ public class SimulationPresenter implements MapChangeListener {
     @Override
     public void mapChanged(WorldMap worldMap, String message){
         Platform.runLater(() -> {
-            drawMap(worldMap, message);
+            System.out.println(message);
+            drawMap(worldMap);
         });
     }
 
-    private void drawMap(WorldMap map, String message) {
+    private void drawMap(WorldMap map) {
         clearGrid();
+        daysSimulated.setText("Day: " + map.getDaysSimulated().toString());
         Vector2d bounds = map.getBoundaries();
 
         for (int i = 0; i < bounds.getX() + 2; i++) {
@@ -105,11 +130,10 @@ public class SimulationPresenter implements MapChangeListener {
         for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getAllElements().entrySet()) {
             WorldElement worldElement = entry.getValue().get(0);
             Node objectToDraw;
-            // Create an ImageView using the image path from the WorldElement
-            int rotation = 0;
+
             if (worldElement.worldElementType == WorldElementType.ANIMAL){
                 drawTunnel(entry, bounds);
-                objectToDraw = createAnimal(worldElement);
+                objectToDraw = createAnimal(worldElement, bounds);
             } else if (worldElement.worldElementType == WorldElementType.GRASS){
                 drawTunnel(entry, bounds);
                 objectToDraw = createGrass();
@@ -121,22 +145,40 @@ public class SimulationPresenter implements MapChangeListener {
             GridPane.setHalignment(objectToDraw, HPos.CENTER);
             mapGrid.add(objectToDraw, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
 
-            updateStatsLabels(map);
-//            ImageView imageView = createImageView(worldElement.getImagePath(), rotation);
-//
-//            // Set the alignment and add the ImageView to the GridPane
-//            GridPane.setHalignment(imageView, HPos.CENTER);
-//            mapGrid.add(imageView, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
+
         }
+
+        if (currentFollowingAnimal != null){
+            updateAnimalStats(currentFollowingAnimal);
+        }
+        updateStatsLabels(map);
     }
 
-    private Node createAnimal(WorldElement worldElement){
+    private Node createAnimal(WorldElement worldElement, Vector2d bounds){
         double energyNormalized = (double) ((Animal) worldElement).getEnergy() / maxEnergy;
         energyNormalized = Math.min(energyNormalized, 1);
-        Color color = Color.rgb(255, (int) (255 * energyNormalized), 0); // Adjust color range as needed
-        Node objectToDraw = createTriangle(20, color);
+        Color animalColor = Color.rgb(255, (int) (255 * energyNormalized), 0);
+        if (worldElement.equals(currentFollowingAnimal)){
+            animalColor = Color.rgb(100, 0, (int) (255 * energyNormalized));
+        }
+
+        Rectangle invisibleRect = new Rectangle(50, 50, Color.TRANSPARENT);
+        Node objectToDraw = createTriangle(20, animalColor);
+        invisibleRect.setMouseTransparent(false);
+        objectToDraw.setMouseTransparent(true);
+        GridPane.setHalignment(invisibleRect, HPos.CENTER);
+        mapGrid.add(invisibleRect, worldElement.getPosition().getX() + 1,
+                bounds.getY() - worldElement.getPosition().getY() + 1);
         objectToDraw.setRotate(45 * ((Animal) worldElement).getFacingDirection());
+        invisibleRect.setOnMouseClicked(event -> displayAnimalInfo((Animal) worldElement));
         return objectToDraw;
+    }
+
+    private void displayAnimalInfo(Animal animal) {
+        updateAnimalStats(animal);
+        setAnimalsStatsVisibility(true);
+        currentFollowingAnimal = animal;
+        drawMap(map);
     }
 
     private Node createGrass(){
@@ -155,6 +197,7 @@ public class SimulationPresenter implements MapChangeListener {
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(0.0, 0.0, -size/2, 2*size, size/2, 2*size);
         triangle.setFill(color);
+        GridPane.setHalignment(triangle, HPos.CENTER);
         return triangle;
     }
 
@@ -176,18 +219,6 @@ public class SimulationPresenter implements MapChangeListener {
 //        mapGrid.add(imageView, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
     }
 
-    private ImageView createImageView(String imagePath, int rotation) {
-        Image image = new Image(getClass().getResourceAsStream(imagePath));
-        ImageView imageView = new ImageView(image);
-        Rotate rotate = new Rotate(rotation, 25, 25);
-
-        // Apply the transformation to the ImageView
-        imageView.getTransforms().add(rotate);
-        imageView.setFitWidth(50); // Set the width as needed
-        imageView.setFitHeight(50); // Set the height as needed
-        return imageView;
-    }
-
     private void clearGrid(){
         mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0));
         mapGrid.getColumnConstraints().clear();
@@ -203,5 +234,40 @@ public class SimulationPresenter implements MapChangeListener {
         averageEnergyLabel.setText("Average Energy: " + statsHandler.getAverageEnergy());
         averageNumberOfKidsLabel.setText("Average Number of Kids: " + statsHandler.getAverageNumberOfKids());
         averageLengthOfDeadAnimalsLabel.setText("Average Length of Dead Animals: " + statsHandler.getAverageLengthOfDeadAnimals());
+    }
+
+    public void updateAnimalStats(Animal animal) {
+        stopFollowingButton.setFocusTraversable(false);
+        animalsGenotypeLabel.setText("Genotype: " + animal.getGenotype());
+        genActivatedLabel.setText("Activated gen: " + animal.getActiveGen());
+        energyLabel.setText("Energy: " + animal.getEnergy());
+        grassEatenLabel.setText("Grass eaten: " + animal.getGrassEaten());
+        numberOfKidsLabel.setText("Number of kids: " + animal.getNumberOfKids());
+        animal.calculateNumberOfDescendants();
+        numberOfDescendantLabel.setText("Number of descendants: " + animal.getNumberOfDescendants());
+        if (animal.isAlive()) {
+            numberOfDaysLived.setText("Days lived: " + animal.getNumberOfDaysLived());
+        } else {
+            numberOfDaysLived.setText("Day of death: " + animal.getDayOfDeath());
+        }
+    }
+
+    public void setAnimalsStatsVisibility(boolean isVisible){
+        animalStatsLabel.setVisible(isVisible);
+        animalsGenotypeLabel.setVisible(isVisible);
+        genActivatedLabel.setVisible(isVisible);
+        energyLabel.setVisible(isVisible);
+        grassEatenLabel.setVisible(isVisible);
+        numberOfKidsLabel.setVisible(isVisible);
+        numberOfDescendantLabel.setVisible(isVisible);
+        numberOfDaysLived.setVisible(isVisible);
+        stopFollowingButton.setVisible(isVisible);
+    }
+
+    @FXML
+    private void stopFollowingAnimal() {
+        currentFollowingAnimal = null;
+        setAnimalsStatsVisibility(false);
+        drawMap(map);
     }
 }

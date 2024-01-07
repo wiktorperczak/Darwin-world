@@ -25,9 +25,22 @@
     </VBox>
 
     <VBox spacing="10" alignment="CENTER">
+        <Label fx:id="daysSimulated" text="Day: "/>
         <GridPane fx:id="mapGrid"
                   gridLinesVisible="true"
                   alignment="CENTER">
         </GridPane>
+    </VBox>
+
+    <VBox spacing="10" alignment="CENTER_RIGHT">
+        <Label fx:id="animalStatsLabel" text="Animal Statistics" style="-fx-font-size: 20px; -fx-font-weight: bold"/>
+        <Label fx:id="animalsGenotypeLabel" text="Genotype: " style="-fx-font-size: 16px;"/>
+        <Label fx:id="genActivatedLabel" text="Activated gen: " style="-fx-font-size: 16px;"/>
+        <Label fx:id="energyLabel" text="Energy: " style="-fx-font-size: 16px;"/>
+        <Label fx:id="grassEatenLabel" text="Grass eaten: " style="-fx-font-size: 16px;"/>
+        <Label fx:id="numberOfKidsLabel" text="Number of kids: " style="-fx-font-size: 16px;"/>
+        <Label fx:id="numberOfDescendantLabel" text="Number of descendants: " style="-fx-font-size: 16px;"/>
+        <Label fx:id="numberOfDaysLived" text="Days lived: " style="-fx-font-size: 16px;"/>
+        <Button fx:id="stopFollowingButton" text="Stop following" onAction="#stopFollowingAnimal"/>
     </VBox>
 </HBox>

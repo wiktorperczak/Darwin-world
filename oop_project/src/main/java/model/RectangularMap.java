@@ -16,6 +16,7 @@ public class RectangularMap implements WorldMap{
     private int width;
     private int height;
     protected UUID id;
+    private int daysSimulated;
 
     private int numberOfAllAnimals;
     public List<Boolean> animalIdVisited = new ArrayList<>();
@@ -26,6 +27,7 @@ public class RectangularMap implements WorldMap{
         this.id = generateId();
         this.optionsManager = optionsManager;
         initializeIsGrass();
+        daysSimulated = 0;
         if (optionsManager.getUseTunnels()) { initializeTunnels(); }
         statsHandler = new StatsHandler(this);
     }
@@ -191,6 +193,7 @@ public class RectangularMap implements WorldMap{
     public void removeAnimal(Animal animalToRemove){
         animals.remove(animalToRemove);
         statsHandler.animalDeceased(animalToRemove);
+        animalToRemove.setDayOfDeath(daysSimulated);
     }
 
     public void killAllAnimals(){
@@ -216,5 +219,12 @@ public class RectangularMap implements WorldMap{
     public boolean getAnimalIdVisited(int id) { return animalIdVisited.get(id); }
     public void setAnimalIdVisited(int id, boolean value) { animalIdVisited.set(id, value); }
     public void resetAnimalIdVisited() { Collections.fill(animalIdVisited, false); }
-    public void clearAnimaIdVisited() { animalIdVisited.clear(); }
+
+    public void anotherDaySimulated() {
+        daysSimulated += 1;
+    }
+
+    public Integer getDaysSimulated(){
+        return daysSimulated;
+    }
 }

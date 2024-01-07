@@ -33,12 +33,14 @@ public class Simulation implements Runnable{
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
             map.countAllStats();
+            map.anotherDaySimulated();
             try {
-                Thread.sleep(300);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+        map.countAllStats();
         map.mapChanged("Wszystkie zwierzaki umarly");
     }
 
@@ -50,7 +52,6 @@ public class Simulation implements Runnable{
             Animal animal = (Animal) worldElement;
             if (!animal.isAlive()){
                 animalsToRemove.add(animal);
-                animal.setEnergy(-1);
             }
         }
         for (Animal animal : animalsToRemove){
@@ -77,9 +78,10 @@ public class Simulation implements Runnable{
         for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getAllElements().entrySet()) {
             Vector2d position = entry.getKey();
             WorldElement element = entry.getValue().get(0);
-            if (element instanceof Animal) {
+            if (element.worldElementType == WorldElementType.ANIMAL) {
                 if (map.getIsGrass(position.getX(), position.getY())) {
                     ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
+                    ((Animal) element).addGrassEaten();
                     map.setIsGrassValue(position.getX(), position.getY(), false);
                 }
             }
@@ -149,10 +151,5 @@ public class Simulation implements Runnable{
             pauseThreadFlag = false;
             GUI_INITIALIZATION_MONITOR.notify();
         }
-    }
-
-    public void startFollowingAnimal(Animal animal) {
-        animal.calculateNumberOfDescendants();
-        int num = animal.getNumberOfDescendants();
     }
 }

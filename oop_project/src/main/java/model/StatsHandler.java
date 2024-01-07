@@ -9,9 +9,9 @@ public class StatsHandler {
     private int numberOfGrass;
     private int numberOfFreeSpaces;
     private int mostPopularGen;
-    private float averageEnergy;
-    private float averageNumberOfKids;
-    private float averageLengthOfDeadAnimals;
+    private double averageEnergy;
+    private double averageNumberOfKids;
+    private double averageLengthOfDeadAnimals;
 
 
 
@@ -37,12 +37,12 @@ public class StatsHandler {
                 .map(worldElement -> (Animal) worldElement)
                 .toList();
     }
-    float calculateAverageEnergy(){
+    double calculateAverageEnergy(){
         int sum = 0;
         for (Animal animal : animals){
             sum += animal.getEnergy();
         }
-        return (float) sum / animals.size();
+        return Math.round(((double) sum / animals.size()) * 100.0)/100.0;
     }
 
     int countAnimals(){
@@ -59,16 +59,17 @@ public class StatsHandler {
         return ((bounds.getX()+1) * (bounds.getY()+1)) - allElements.size();
     }
 
-    float calculateAverageNumberOfKids(){
+    double calculateAverageNumberOfKids(){
         int sum = 0;
         for (Animal animal : animals){
             sum += animal.getNumberOfKids();
         }
-        return (float) sum / animals.size();
+        return Math.round(((double) sum / animals.size())*100.0)/100.0;
     }
 
-    float calculateAverageLengthOfDeadAnimals(){
-        return (float) sumLifeLengthOfDeadAnimals / numberOfDeadAnimals;
+    double calculateAverageLengthOfDeadAnimals(){
+        if (numberOfDeadAnimals == 0) return 0;
+        return Math.round((((double) sumLifeLengthOfDeadAnimals / numberOfDeadAnimals)*100.0))/100.0;
     }
 
     int calculateMostPopularGen(){
@@ -99,7 +100,7 @@ public class StatsHandler {
         numberOfDeadAnimals += 1;
     }
 
-    public float getAverageEnergy() { return averageEnergy;}
+    public double getAverageEnergy() { return averageEnergy;}
 
     public int getNumberOfAnimals() {
         return numberOfAnimals;
@@ -117,11 +118,11 @@ public class StatsHandler {
         return mostPopularGen;
     }
 
-    public float getAverageNumberOfKids() {
+    public double getAverageNumberOfKids() {
         return averageNumberOfKids;
     }
 
-    public float getAverageLengthOfDeadAnimals() {
+    public double getAverageLengthOfDeadAnimals() {
         return averageLengthOfDeadAnimals;
     }
 

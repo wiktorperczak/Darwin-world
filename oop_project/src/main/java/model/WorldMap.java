@@ -18,4 +18,5 @@ public interface WorldMap {
 
     void unregisterObserver(MapChangeListener obs);
     StatsHandler getStatsHandler();
+    Integer getDaysSimulated();
 }

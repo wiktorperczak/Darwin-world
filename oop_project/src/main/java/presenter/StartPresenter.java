@@ -156,6 +156,7 @@ public class StartPresenter {
         optionsManager.setMinimalEnergyToBreed(minimalEnergyToBreed.getValue());
         optionsManager.setMaxGensToMutate(maxGensToMutate.getValue());
         optionsManager.setMinGensToMutate(minGensToMutate.getValue());
+        optionsManager.setUseReverseGenotype(useReverseGenotype.isSelected());
 
 //        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
         List<Vector2d> positions = new ArrayList<>();
@@ -175,7 +176,7 @@ public class StartPresenter {
 
         map.registerObserver(simulationPresenter);
         simulationPresenter.setSimulation(simulation);
-        simulationPresenter.initializePresenter(optionsManager);
+        simulationPresenter.initializePresenter(optionsManager, map);
 
 
         stage.setOnCloseRequest(event -> {
