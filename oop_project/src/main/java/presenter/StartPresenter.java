@@ -1,5 +1,6 @@
 package presenter;
 
+import com.sun.security.jgss.InquireType;
 import javafx.scene.control.ComboBox;
 import model.*;
 import javafx.fxml.FXML;
@@ -30,6 +31,10 @@ public class StartPresenter {
     public ComboBox<Integer> grassEnergy;
     @FXML
     public ComboBox<Integer> numberOfTunnels;
+    @FXML
+    public ComboBox<Integer> energyLossOnBreed;
+    @FXML
+    public ComboBox<Integer> minimalEnergyToBreed;
 
     @FXML
     private void initialize() {
@@ -47,12 +52,17 @@ public class StartPresenter {
             grassEnergy.getItems().add(i);
             animalLife.getItems().add(i);
             genotypeLength.getItems().add(i);
+            // todo: energyloss < minimalenergy
+            energyLossOnBreed.getItems().add(i);
+            minimalEnergyToBreed.getItems().add(i);
         }
         grassEnergy.setValue(2);
         animalLife.setValue(5);
         genotypeLength.setValue(5);
+        minimalEnergyToBreed.setValue(5);
 
         updateTunnels();
+        updateEnergyLossOnBreed();
     }
 
     @FXML
@@ -63,6 +73,15 @@ public class StartPresenter {
         }
         numberOfTunnels.setValue(1);
     }
+
+    @FXML
+    private void updateEnergyLossOnBreed() {
+        energyLossOnBreed.getItems().clear();
+        for (int i = 0; i < minimalEnergyToBreed.getValue(); i++)
+            energyLossOnBreed.getItems().add(i);
+        energyLossOnBreed.setValue(1);
+    }
+
 
     private void configureStage(Stage primaryStage, VBox viewRoot){
         var scene = new Scene(viewRoot);
@@ -88,8 +107,8 @@ public class StartPresenter {
         optionsManager.setGenotypeLength(genotypeLength.getValue());
         optionsManager.setGrassEnergy(grassEnergy.getValue());
         optionsManager.setNumberOfTunnels(numberOfTunnels.getValue());
-        optionsManager.setEnergyLossOnBreed(1);
-        optionsManager.setMinimalEnergyToBreed(3);
+        optionsManager.setEnergyLossOnBreed(energyLossOnBreed.getValue());
+        optionsManager.setMinimalEnergyToBreed(minimalEnergyToBreed.getValue());
 
 //        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
         List<Vector2d> positions = new ArrayList<>();
