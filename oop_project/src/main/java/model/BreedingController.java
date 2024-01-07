@@ -82,7 +82,11 @@ public class BreedingController {
         for (int i = 0; i < genotype.size(); i++){
             indexes.add(i);
         }
-        int n = random.nextInt(map.optionsManager.getMaxGensToMutate() - map.optionsManager.getMinGensToMutate());
+        int range = map.optionsManager.getMaxGensToMutate() - map.optionsManager.getMinGensToMutate();
+        int n = 0;
+        if (range > 0){
+            n = random.nextInt(range);
+        }
         n += map.optionsManager.getMinGensToMutate();
         for (int i = 0; i < n; i++){
 

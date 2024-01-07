@@ -1,18 +1,6 @@
 package model;
 
 public final class OptionsManager {
-    private int numberOfAnimals;
-    private int width;
-    private int height;
-    private int animalLife;
-    private int genotypeLength;
-    private int minimalEnergyToBreed;
-    private int energyLossOnBreed;
-    private int maxGensToMutate;
-    private int minGensToMutate;
-    private int grassEnergy;
-    private int numberOfTunnels;
-
     int numberOfAnimals;
     int width;
     int height;
@@ -20,7 +8,8 @@ public final class OptionsManager {
     int genotypeLength;
     int minimalEnergyToBreed;
     int energyLossOnBreed;
-    int gensToMutate;
+    int maxGensToMutate;
+    int minGensToMutate;
     int grassEnergy;
     int numberOfTunnels;
     boolean useTunnels;
