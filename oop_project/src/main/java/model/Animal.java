@@ -185,4 +185,8 @@ public class Animal extends WorldElement{
     public void setDayOfDeath(int daysSimulated) {
         dayOfDeath = daysSimulated;
     }
+
+    public boolean genotypeHasGen(int gen){
+        return genotype.contains(gen);
+    }
 }
