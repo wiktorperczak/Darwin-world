@@ -24,6 +24,8 @@ public class Simulation implements Runnable{
         CsvHandler csvHandler = new CsvHandler(map);
         csvHandler.createCsvFile(filePath);
 
+        addGrass(map.optionsManager.startingGrassNumber);
+
 
         while(!map.getAnimals().isEmpty()) {
             checkForPaused();
@@ -34,7 +36,7 @@ public class Simulation implements Runnable{
             moveAnimals();
             eatingGrass();
             breed();
-            addGrass();
+            addGrass(map.optionsManager.numberOfGrassPerDay);
             System.out.println("equator equator: ");
             for (Vector2d position : map.getEquatorEmptyFields()) {
                 System.out.println(position);
@@ -138,8 +140,8 @@ public class Simulation implements Runnable{
         map.updateAllElements();
     }
 
-    void addGrass() {
-        for (int i = 0; i < map.optionsManager.numberOfGrassPerDay; i++) {
+    void addGrass(int numberToAdd) {
+        for (int i = 0; i < numberToAdd; i++) {
             int randomNumber = random.nextInt(100) + 1;
             if (randomNumber <= 80) {
                 if (!map.getEquatorEmptyFields().isEmpty()) {

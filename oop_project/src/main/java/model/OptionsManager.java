@@ -15,6 +15,7 @@ public final class OptionsManager {
     boolean useTunnels;
     boolean useReverseGenotype;
     int numberOfGrassPerDay;
+    int startingGrassNumber;
 
     public int getNumberOfAnimals() { return numberOfAnimals; }
 
@@ -52,4 +53,6 @@ public final class OptionsManager {
     public boolean getUseReverseGenotype() { return useReverseGenotype; }
     public int getNumberOfGrassPerDay() { return numberOfGrassPerDay; }
     public void setNumberOfGrassPerDay(int numberOfGrassPerDay) { this.numberOfGrassPerDay = numberOfGrassPerDay; }
+    public int getStartingGrassNumber() { return startingGrassNumber; }
+    public void setStartingGrassNumber(int startingGrassNumber) { this.startingGrassNumber = startingGrassNumber; }
 }
