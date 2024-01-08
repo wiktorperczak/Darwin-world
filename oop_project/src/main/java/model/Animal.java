@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Animal extends WorldElement{
     private MapDirection facingDirection;
@@ -119,13 +116,7 @@ public class Animal extends WorldElement{
     }
 
     public Integer visitDescendants(Animal animal) {
-        System.out.println("Recursive id: " + animal.getId());
-        map.setAnimalIdVisited(this.id, true);
-//        System.out.println("Visited");
-//        for (boolean elem : map.animalIdVisited) {
-//            System.out.print(elem + " ");
-//        }
-//        System.out.println();
+        map.setAnimalIdVisited(animal.getId(), true);
         int res = 0;
         for (Animal kid : animal.getKids()) {
             if (!map.getAnimalIdVisited(kid.getId())) {

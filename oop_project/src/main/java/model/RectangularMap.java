@@ -10,7 +10,6 @@ public class RectangularMap implements WorldMap{
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
     Set<Vector2d> equatorEmptyFields = new HashSet<>();
     Set<Vector2d> nonEquatorEmptyFields = new HashSet<>();
-//    List<List<Boolean>> isGrass = new ArrayList<>();
     Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
     Map<WorldElement, Vector2d> tunnelExits = new HashMap<>();
     Map<Vector2d, List<WorldElement>> allElements = new HashMap<>();
@@ -30,8 +29,6 @@ public class RectangularMap implements WorldMap{
         this.optionsManager = optionsManager;
         initializeIsGrass();
         daysSimulated = 0;
-        for (Vector2d elem : equatorEmptyFields) { System.out.println(elem); }
-        for (Vector2d elem : nonEquatorEmptyFields) { System.out.println(elem); }
         if (optionsManager.getUseTunnels()) { initializeTunnels(); }
         statsHandler = new StatsHandler(this);
     }
@@ -39,7 +36,6 @@ public class RectangularMap implements WorldMap{
     public boolean isEquatorPosition(int y) {
         int mod = (height + 1) % 5, equatorWidth = (height + 1) / 5;
         if (mod == 3 || mod == 4) equatorWidth += 1;
-        System.out.println("Equator width: " + equatorWidth);
 
         int lower_bound = (height + 1 - equatorWidth) / 2;
         int upper_bound = lower_bound + equatorWidth - 1;
@@ -48,15 +44,12 @@ public class RectangularMap implements WorldMap{
 
     void initializeIsGrass(){
         for (int y = 0; y <= height; y++) {
-//            List<Boolean> row = new ArrayList<>();
             boolean isEquator = isEquatorPosition(y);
             for (int x = 0; x <= width; x++) {
                 Vector2d position = new Vector2d(x, y);
                 if (isEquator) { equatorEmptyFields.add(position); }
                 else { nonEquatorEmptyFields.add(position); }
             }
-//            for (int j = 0; j <= width; j++) { row.add(false); }
-//            isGrass.add(row);
         }
 
     }
@@ -86,7 +79,6 @@ public class RectangularMap implements WorldMap{
 
     @Override
     public void place(Animal animal) {
-        System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
         animalIdVisited.add(false);
     }
@@ -174,10 +166,8 @@ public class RectangularMap implements WorldMap{
 
     public void addNewGrassField(int x, int y) {
         Vector2d position = new Vector2d(x, y);
-        System.out.println("Field found: " + position);
         if (isEquatorPosition(y)) { equatorEmptyFields.remove(position); }
         else { nonEquatorEmptyFields.remove(position); }
-//        isGrass.get(y).set(x, true);
         grassFields.put(new Grass(position), position);
     }
 
@@ -193,10 +183,6 @@ public class RectangularMap implements WorldMap{
             i += 1;
         }
         addNewGrassField(field.getX(), field.getY());
-    }
-
-    public void deleteEatenGrass() {
-
     }
 
     @Override
@@ -222,8 +208,6 @@ public class RectangularMap implements WorldMap{
     public Map<WorldElement, Vector2d> getGrassFields(){
         return grassFields;
     }
-//    public boolean getIsGrass(int x, int y) { return isGrass.get(y).get(x); }
-//    public void setIsGrassValue(int x, int y, boolean value) { isGrass.get(y).set(x, value); }
     public Map<Vector2d, TunnelEnter> getTunnels(){
         return tunnels;
     }
@@ -247,15 +231,14 @@ public class RectangularMap implements WorldMap{
         return statsHandler;
     }
 
-    public int getNumberOfAllAnimals() { return numberOfAllAnimals; }
-    public void setNumberOfAllAnimals(int numberOfAllAnimals) { this.numberOfAllAnimals = numberOfAllAnimals; }
     public int getNumberOfAnimalsAndIncrement() {
         numberOfAllAnimals += 1;
         return numberOfAllAnimals - 1;
     }
-
     public boolean getAnimalIdVisited(int id) { return animalIdVisited.get(id); }
-    public void setAnimalIdVisited(int id, boolean value) { animalIdVisited.set(id, value); }
+    public void setAnimalIdVisited(int id, boolean value) {
+        animalIdVisited.set(id, value);
+    }
     public void resetAnimalIdVisited() { Collections.fill(animalIdVisited, false); }
 
     public void anotherDaySimulated() {

@@ -51,7 +51,7 @@
             <Label text="Utrata energii przy rozmnażaniu:" />
             <ComboBox fx:id="energyLossOnBreed" prefWidth="150"/>
 
-            <Label text="Max genów zmienane w mutacji:" />
+            <Label text="Max genów zmieniane w mutacji:" />
             <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate"/>
 
             <Label text="Min genów zmienane w mutacji:" />
@@ -67,6 +67,14 @@
 
             <Label text="Liczba nowych traw na runde:" />
             <ComboBox fx:id="numberOfGrassPerDay" prefWidth="150"/>
+
+            <Label text="Użyj gotowej konfiguracji:" />
+            <ComboBox fx:id="useConfiguration" prefWidth="150" onAction="#useSetConfiguration"/>
+
+            <Label text="Zapisz konfiguracje w .csv" />
+            <Button onAction="#exportConfiguration" minWidth="150" minHeight="40">Zapisz</Button>
+
+            <Label text="Aby zobaczyć nowo zapisaną konfigurację, należy uruchomić program jeszcze raz" maxWidth="180" wrapText="true" />
         </VBox>
     </HBox>
 
