@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Random;
 
 public class StartPresenter {
+    private int id = 0;
     @FXML
     public ComboBox<Integer> numberOfAnimals;
     @FXML
@@ -45,6 +46,8 @@ public class StartPresenter {
     public ComboBox<Integer> maxGensToMutate;
     @FXML
     public ComboBox<Integer> minGensToMutate;
+    @FXML
+    public ComboBox<Integer> numberOfGrassPerDay;
 
     @FXML
     private void initialize() {
@@ -67,13 +70,17 @@ public class StartPresenter {
             minimalEnergyToBreed.getItems().add(i);
             minGensToMutate.getItems().add(i);
             maxGensToMutate.getItems().add(i);
+            numberOfGrassPerDay.getItems().add(i);
         }
+        numberOfGrassPerDay.setValue(5);
         grassEnergy.setValue(2);
         animalLife.setValue(5);
         genotypeLength.setValue(5);
         minimalEnergyToBreed.setValue(5);
-        maxGensToMutate.setValue(0);
-        minGensToMutate.setValue(0);
+        maxGensToMutate.setValue(1);
+        minGensToMutate.setValue(1);
+        useTunnels.setSelected(true);
+        useReverseGenotype.setSelected(true);
 
         updateTunnels();
         updateEnergyLossOnBreed();
@@ -105,8 +112,8 @@ public class StartPresenter {
             maxGensToMutate.getItems().add(i);
             minGensToMutate.getItems().add(i);
         }
-        maxGensToMutate.setValue(0);
-        minGensToMutate.setValue(0);
+        maxGensToMutate.setValue(1);
+        minGensToMutate.setValue(1);
     }
 
     @FXML
@@ -157,6 +164,7 @@ public class StartPresenter {
         optionsManager.setMaxGensToMutate(maxGensToMutate.getValue());
         optionsManager.setMinGensToMutate(minGensToMutate.getValue());
         optionsManager.setUseReverseGenotype(useReverseGenotype.isSelected());
+        optionsManager.setNumberOfGrassPerDay(numberOfGrassPerDay.getValue());
 
 //        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
         List<Vector2d> positions = new ArrayList<>();
@@ -169,7 +177,8 @@ public class StartPresenter {
         }
 
 
-        WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight(), optionsManager);
+        WorldMap map = new RectangularMap(optionsManager.getWidth(), optionsManager.getHeight(), id, optionsManager);
+        id += 1;
 
         Simulation simulation = new Simulation(positions, map);
         SimulationPresenter simulationPresenter = loader.getController();

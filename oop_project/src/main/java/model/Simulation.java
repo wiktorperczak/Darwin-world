@@ -20,6 +20,11 @@ public class Simulation implements Runnable{
     }
 
     public void run(){
+        String filePath = "output" + (map.getId() + 1) + ".csv";
+        CsvHandler csvHandler = new CsvHandler(map);
+        csvHandler.createCsvFile(filePath);
+
+
         while(!map.getAnimals().isEmpty()) {
             checkForPaused();
             removeDeadBodies();
@@ -30,9 +35,18 @@ public class Simulation implements Runnable{
             eatingGrass();
             breed();
             addGrass();
+            System.out.println("equator equator: ");
+            for (Vector2d position : map.getEquatorEmptyFields()) {
+                System.out.println(position);
+            }
+            System.out.println("non non non equator: ");
+            for (Vector2d position : map.getNonEquatorEmptyFields()) {
+                System.out.println(position);
+            }
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
             map.countAllStats();
+            csvHandler.appendRowToCsv(filePath);
             map.anotherDaySimulated();
             try {
                 Thread.sleep(100);
@@ -79,12 +93,33 @@ public class Simulation implements Runnable{
             Vector2d position = entry.getKey();
             WorldElement element = entry.getValue().get(0);
             if (element.worldElementType == WorldElementType.ANIMAL) {
-                if (map.getIsGrass(position.getX(), position.getY())) {
+                if (map.isEquatorPosition(position.getY()) && !map.getEquatorEmptyFields().contains(position)) {
                     ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
+                    map.getEquatorEmptyFields().add(position);
                     ((Animal) element).addGrassEaten();
-                    map.setIsGrassValue(position.getX(), position.getY(), false);
                 }
+                if (!map.isEquatorPosition(position.getY()) && !map.getNonEquatorEmptyFields().contains(position)) {
+                    ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
+                    map.getNonEquatorEmptyFields().add(position);
+                }
+//                else if (!map.getNonEquatorEmptyFields().contains(position)) {
+//                    ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
+////                    map.getNonEquatorEmptyFields().remove(position);
+//                }
+//                if (map.getIsGrass(position.getX(), position.getY())) {
+//                    ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
+//                    map.setIsGrassValue(position.getX(), position.getY(), false);
+//                }
             }
+        }
+
+        System.out.println("EQUATOR: ");
+        for (Vector2d position : map.getEquatorEmptyFields()) {
+            System.out.println(position);
+        }
+        System.out.println("NON NON NON equator: ");
+        for (Vector2d position : map.getNonEquatorEmptyFields()) {
+            System.out.println(position);
         }
 
         Iterator<Map.Entry<WorldElement, Vector2d>> iterator = map.getGrassFields().entrySet().iterator();
@@ -93,7 +128,10 @@ public class Simulation implements Runnable{
             WorldElement grass = entry.getKey();
             Vector2d position = entry.getValue();
 
-            if (!map.getIsGrass(position.getX(), position.getY())) {
+//            if (!map.getIsGrass(position.getX(), position.getY())) {
+//                iterator.remove();
+//            }
+            if (map.getEquatorEmptyFields().contains(position) || map.getNonEquatorEmptyFields().contains(position)) {
                 iterator.remove();
             }
         }
@@ -101,31 +139,44 @@ public class Simulation implements Runnable{
         map.updateAllElements();
     }
 
-    private boolean isEquatorPosition(int y) {
-        int height  = map.getBoundaries().getY() + 1;
-        int mod = height % 5, equatorWidth = height / 5;
-        if (mod == 3 || mod == 4) equatorWidth += 1;
-
-        int lower_bound = (height - equatorWidth) / 2;
-        int upper_bound = lower_bound + equatorWidth;
-        return (y >= lower_bound && y <= upper_bound);
-    }
-
     void addGrass() {
-        for (int y = 0; y <= map.getBoundaries().getY(); y++) {
-            boolean checkEquator = isEquatorPosition(y);
-            for (int x = 0; x <= map.getBoundaries().getX(); x++) {
-                if (!map.getIsGrass(x, y)) {
-                    int randomNumber = random.nextInt(100) + 1;
-                    if (checkEquator) {
-                        if (randomNumber <= 80) { map.addNewGrassField(x, y); }
-                    }
-                    else {
-                        if (randomNumber > 80) { map.addNewGrassField(x, y); }
-                    }
+        for (int i = 0; i < map.optionsManager.numberOfGrassPerDay; i++) {
+            int randomNumber = random.nextInt(100) + 1;
+            if (randomNumber <= 80) {
+                if (!map.getEquatorEmptyFields().isEmpty()) {
+                    map.generateRandomPosition(map.getEquatorEmptyFields());
+                }
+                else if (!map.getNonEquatorEmptyFields().isEmpty()) {
+                    map.generateRandomPosition(map.getNonEquatorEmptyFields());
+                }
+            }
+            else {
+                if (!map.getNonEquatorEmptyFields().isEmpty()) {
+                    map.generateRandomPosition(map.getNonEquatorEmptyFields());
+                }
+                else if (!map.getEquatorEmptyFields().isEmpty()) {
+                    map.generateRandomPosition(map.getEquatorEmptyFields());
                 }
             }
         }
+
+        System.out.println("Grass fields number: " + map.getGrassFields().size());
+
+
+//        for (int y = 0; y <= map.getBoundaries().getY(); y++) {
+//            boolean checkEquator = isEquatorPosition(y);
+//            for (int x = 0; x <= map.getBoundaries().getX(); x++) {
+//                if (!map.getIsGrass(x, y)) {
+//                    int randomNumber = random.nextInt(100) + 1;
+//                    if (checkEquator) {
+//                        if (randomNumber <= 80) { map.addNewGrassField(x, y); }
+//                    }
+//                    else {
+//                        if (randomNumber > 80) { map.addNewGrassField(x, y); }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private void checkForPaused() {

@@ -35,10 +35,13 @@
 
             <Label text="Długość genotypu:" />
             <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGensToMutate"/>
+
+            <Label text="Liczba nowych traw co runde:" />
+            <ComboBox fx:id="numberOfGrassPerDay" prefWidth="150"/>
         </VBox>
 
         <VBox spacing="8">
-            <Label text="Odtwarzanie genotypu na zmiane (przód/tył):" />
+            <Label text="Odtwarzanie genotypu od tyłu:" />
             <CheckBox fx:id="useReverseGenotype" />
 
             <Label text="Początkowa energia zwierząt:" />
