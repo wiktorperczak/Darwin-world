@@ -33,34 +33,40 @@
             <Label text="Liczba tuneli:" />
             <ComboBox fx:id="numberOfTunnels" prefWidth="150"/>
 
-            <Label text="Długość genotypu:" />
-            <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGensToMutate"/>
-
-            <Label text="Liczba nowych traw co runde:" />
-            <ComboBox fx:id="numberOfGrassPerDay" prefWidth="150"/>
-        </VBox>
-
-        <VBox spacing="8">
-            <Label text="Odtwarzanie genotypu od tyłu:" />
-            <CheckBox fx:id="useReverseGenotype" />
-
             <Label text="Początkowa energia zwierząt:" />
             <ComboBox fx:id="animalLife" prefWidth="150"/>
 
-            <Label text="Wartość energetyczna trawy:" />
-            <ComboBox fx:id="grassEnergy" prefWidth="150"/>
+        </VBox>
 
-            <Label text="Potrzebna energia do romznazania:"/>
+        <VBox spacing="8">
+            <Label text="Długość genotypu:" />
+            <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGensToMutate"/>
+
+            <Label text="Odtwarzanie genotypu od tyłu:" />
+            <CheckBox fx:id="useReverseGenotype" />
+
+            <Label text="Min energii do rozmnazania:"/>
             <ComboBox fx:id="minimalEnergyToBreed" prefWidth="150" onAction="#updateEnergyLossOnBreed"/>
 
             <Label text="Utrata energii przy rozmnażaniu:" />
             <ComboBox fx:id="energyLossOnBreed" prefWidth="150"/>
 
-            <Label text="Max genów zmienane podczas mutacji:" />
+            <Label text="Max genów zmienane w mutacji:" />
             <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate"/>
 
-            <Label text="Min genów zmienane podczas mutacji:" />
+            <Label text="Min genów zmienane w mutacji:" />
             <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate"/>
+        </VBox>
+
+        <VBox spacing="8">
+            <Label text="Liczba traw na start:" />
+            <ComboBox fx:id="startingGrassNumber" prefWidth="150"/>
+
+            <Label text="Wartość energetyczna trawy:" />
+            <ComboBox fx:id="grassEnergy" prefWidth="150"/>
+
+            <Label text="Liczba nowych traw na runde:" />
+            <ComboBox fx:id="numberOfGrassPerDay" prefWidth="150"/>
         </VBox>
     </HBox>
 

@@ -58,6 +58,7 @@ public class RectangularMap implements WorldMap{
 //            for (int j = 0; j <= width; j++) { row.add(false); }
 //            isGrass.add(row);
         }
+
     }
 
     void initializeTunnels(){

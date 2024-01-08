@@ -48,6 +48,8 @@ public class StartPresenter {
     public ComboBox<Integer> minGensToMutate;
     @FXML
     public ComboBox<Integer> numberOfGrassPerDay;
+    @FXML
+    public ComboBox<Integer> startingGrassNumber;
 
     @FXML
     private void initialize() {
@@ -71,7 +73,9 @@ public class StartPresenter {
             minGensToMutate.getItems().add(i);
             maxGensToMutate.getItems().add(i);
             numberOfGrassPerDay.getItems().add(i);
+            startingGrassNumber.getItems().add(i);
         }
+        startingGrassNumber.setValue(5);
         numberOfGrassPerDay.setValue(5);
         grassEnergy.setValue(2);
         animalLife.setValue(5);
@@ -165,6 +169,7 @@ public class StartPresenter {
         optionsManager.setMinGensToMutate(minGensToMutate.getValue());
         optionsManager.setUseReverseGenotype(useReverseGenotype.isSelected());
         optionsManager.setNumberOfGrassPerDay(numberOfGrassPerDay.getValue());
+        optionsManager.setStartingGrassNumber(startingGrassNumber.getValue());
 
 //        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
         List<Vector2d> positions = new ArrayList<>();
