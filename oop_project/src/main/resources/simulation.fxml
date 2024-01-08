@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml/1"
-      minHeight="550.0" minWidth="850.0"
+      minHeight="800.0" minWidth="1300.0"
       spacing="10" alignment="CENTER"
       fx:controller="presenter.SimulationPresenter">
 

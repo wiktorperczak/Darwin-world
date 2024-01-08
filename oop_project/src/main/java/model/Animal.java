@@ -117,6 +117,7 @@ public class Animal extends WorldElement{
 
     public Integer visitDescendants(Animal animal) {
         map.setAnimalIdVisited(animal.getId(), true);
+
         int res = 0;
         for (Animal kid : animal.getKids()) {
             if (!map.getAnimalIdVisited(kid.getId())) {
@@ -175,5 +176,9 @@ public class Animal extends WorldElement{
 
     public void setDayOfDeath(int daysSimulated) {
         dayOfDeath = daysSimulated;
+    }
+
+    public boolean genotypeHasGen(int gen){
+        return genotype.contains(gen);
     }
 }
