@@ -1,7 +1,5 @@
 package presenter;
 
-import javafx.event.ActionEvent;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -63,6 +61,10 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private Label numberOfDaysLived;
 
+    private int cellSize;
+    private final int maxGridWidth = 600;
+    private final int maxGridHeight = 600;
+
     private StatsHandler statsHandler;
 
     Animal currentFollowingAnimal = null;
@@ -79,6 +81,14 @@ public class SimulationPresenter implements MapChangeListener {
         setAnimalsStatsVisibility(false);
         this.map = map;
         statsHandler = map.getStatsHandler();
+        cellSize = calculateCellSize();
+    }
+
+    private int calculateCellSize(){
+        Vector2d bounds = map.getBoundaries();
+        int maxCellWidth = maxGridWidth / (bounds.getX() + 1);
+        int maxCellHeight = maxGridHeight / (bounds.getY() + 1);
+        return Math.max(maxCellWidth, maxCellHeight);
     }
 
     @FXML
@@ -96,10 +106,7 @@ public class SimulationPresenter implements MapChangeListener {
 
     @Override
     public void mapChanged(WorldMap worldMap, String message){
-        Platform.runLater(() -> {
-            System.out.println(message);
-            drawMap(worldMap);
-        });
+        Platform.runLater(() -> drawMap(worldMap));
     }
 
     private void drawMap(WorldMap map) {
@@ -108,11 +115,11 @@ public class SimulationPresenter implements MapChangeListener {
         Vector2d bounds = map.getBoundaries();
 
         for (int i = 0; i < bounds.getX() + 2; i++) {
-            mapGrid.getColumnConstraints().add(new ColumnConstraints(50));
+            mapGrid.getColumnConstraints().add(new ColumnConstraints(cellSize));
         }
 
         for (int i = 0; i < bounds.getY() + 2; i++) {
-            mapGrid.getRowConstraints().add(new RowConstraints(50));
+            mapGrid.getRowConstraints().add(new RowConstraints(cellSize));
         }
 
         Label label;
@@ -135,7 +142,7 @@ public class SimulationPresenter implements MapChangeListener {
             for (int y = 0; y < bounds.getY(); y++){
                 if (map.isEquatorPosition(y)){
                     for (int x = 0; x <= bounds.getX(); x++){
-                        Rectangle rectangle = new Rectangle(50, 50, Color.LIGHTGREEN);
+                        Rectangle rectangle = new Rectangle(cellSize, cellSize, Color.LIGHTGREEN);
                         GridPane.setHalignment(rectangle, HPos.CENTER);
                         mapGrid.add(rectangle, x + 1, bounds.getY() - y + 1);
                     }
@@ -162,6 +169,16 @@ public class SimulationPresenter implements MapChangeListener {
 
             mapGrid.add(objectToDraw, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
 
+            if (simulationPaused &&
+                    worldElement.worldElementType == WorldElementType.ANIMAL &&
+                    ((Animal) worldElement).genotypeHasGen(statsHandler.getMostPopularGen())){
+                Circle circle = new Circle((double) cellSize /10, Color.BLACK);
+                GridPane.setHalignment(circle, HPos.CENTER);
+                circle.setMouseTransparent(true);
+                mapGrid.add(circle, worldElement.getPosition().getX() + 1,
+                        bounds.getY() - worldElement.getPosition().getY() + 1);
+            }
+
         }
 
         if (currentFollowingAnimal != null){
@@ -177,16 +194,9 @@ public class SimulationPresenter implements MapChangeListener {
         if (worldElement.equals(currentFollowingAnimal)){
             animalColor = Color.rgb(100, 0, (int) (255 * energyNormalized));
         }
-        if (simulationPaused && ((Animal) worldElement).genotypeHasGen(statsHandler.getMostPopularGen())){
-            Circle circle = new Circle(5, Color.BLACK);
-            GridPane.setHalignment(circle, HPos.CENTER);
-            mapGrid.add(circle, worldElement.getPosition().getX() + 1,
-                    bounds.getY() - worldElement.getPosition().getY() + 1);
-            //todo to ma się wyświetlać na zwierzaku, a nie pod
-        }
 
-        Rectangle invisibleRect = new Rectangle(50, 50, Color.TRANSPARENT);
-        Node objectToDraw = createTriangle(20, animalColor);
+        Rectangle invisibleRect = new Rectangle(cellSize, cellSize, Color.TRANSPARENT);
+        Node objectToDraw = createTriangle((double) (cellSize * 2) /5, animalColor);
         invisibleRect.setMouseTransparent(false);
         objectToDraw.setMouseTransparent(true);
         GridPane.setHalignment(invisibleRect, HPos.CENTER);
@@ -205,15 +215,15 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     private Node createGrass(){
-        return new Circle(10, Color.GREEN);
+        return new Circle((double) cellSize /5, Color.GREEN);
     }
 
     private Node createTunnelEnter(){
-        return new Circle(20, Color.DARKGRAY);
+        return new Circle((double) (cellSize * 2) /5, Color.DARKGRAY);
     }
 
     private Node createTunnelExit(){
-        return new Rectangle(40, 40, Color.DARKGRAY);
+        return new Rectangle((double) (cellSize * 4) /5, (double) (cellSize * 4) /5, Color.DARKGRAY);
     }
 
     private Polygon createTriangle(double size, Color color) {

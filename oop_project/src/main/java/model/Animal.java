@@ -119,13 +119,7 @@ public class Animal extends WorldElement{
     }
 
     public Integer visitDescendants(Animal animal) {
-        System.out.println("Recursive id: " + animal.getId());
         map.setAnimalIdVisited(this.id, true);
-//        System.out.println("Visited");
-//        for (boolean elem : map.animalIdVisited) {
-//            System.out.print(elem + " ");
-//        }
-//        System.out.println();
         int res = 0;
         for (Animal kid : animal.getKids()) {
             if (!map.getAnimalIdVisited(kid.getId())) {

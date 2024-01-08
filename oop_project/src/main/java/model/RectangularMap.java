@@ -30,8 +30,6 @@ public class RectangularMap implements WorldMap{
         this.optionsManager = optionsManager;
         initializeIsGrass();
         daysSimulated = 0;
-        for (Vector2d elem : equatorEmptyFields) { System.out.println(elem); }
-        for (Vector2d elem : nonEquatorEmptyFields) { System.out.println(elem); }
         if (optionsManager.getUseTunnels()) { initializeTunnels(); }
         statsHandler = new StatsHandler(this);
     }
@@ -39,7 +37,6 @@ public class RectangularMap implements WorldMap{
     public boolean isEquatorPosition(int y) {
         int mod = (height + 1) % 5, equatorWidth = (height + 1) / 5;
         if (mod == 3 || mod == 4) equatorWidth += 1;
-        System.out.println("Equator width: " + equatorWidth);
 
         int lower_bound = (height + 1 - equatorWidth) / 2;
         int upper_bound = lower_bound + equatorWidth - 1;
@@ -86,7 +83,6 @@ public class RectangularMap implements WorldMap{
 
     @Override
     public void place(Animal animal) {
-        System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
         animalIdVisited.add(false);
     }
@@ -174,10 +170,8 @@ public class RectangularMap implements WorldMap{
 
     public void addNewGrassField(int x, int y) {
         Vector2d position = new Vector2d(x, y);
-        System.out.println("Field found: " + position);
         if (isEquatorPosition(y)) { equatorEmptyFields.remove(position); }
         else { nonEquatorEmptyFields.remove(position); }
-//        isGrass.get(y).set(x, true);
         grassFields.put(new Grass(position), position);
     }
 

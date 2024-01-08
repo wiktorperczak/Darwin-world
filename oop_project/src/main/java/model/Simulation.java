@@ -96,24 +96,7 @@ public class Simulation implements Runnable{
                     ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
                     map.getNonEquatorEmptyFields().add(position);
                 }
-//                else if (!map.getNonEquatorEmptyFields().contains(position)) {
-//                    ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
-////                    map.getNonEquatorEmptyFields().remove(position);
-//                }
-//                if (map.getIsGrass(position.getX(), position.getY())) {
-//                    ((Animal) element).addEnergy(map.optionsManager.getGrassEnergy());
-//                    map.setIsGrassValue(position.getX(), position.getY(), false);
-//                }
             }
-        }
-
-        System.out.println("EQUATOR: ");
-        for (Vector2d position : map.getEquatorEmptyFields()) {
-            System.out.println(position);
-        }
-        System.out.println("NON NON NON equator: ");
-        for (Vector2d position : map.getNonEquatorEmptyFields()) {
-            System.out.println(position);
         }
 
         Iterator<Map.Entry<WorldElement, Vector2d>> iterator = map.getGrassFields().entrySet().iterator();
@@ -122,9 +105,6 @@ public class Simulation implements Runnable{
             WorldElement grass = entry.getKey();
             Vector2d position = entry.getValue();
 
-//            if (!map.getIsGrass(position.getX(), position.getY())) {
-//                iterator.remove();
-//            }
             if (map.getEquatorEmptyFields().contains(position) || map.getNonEquatorEmptyFields().contains(position)) {
                 iterator.remove();
             }
@@ -153,24 +133,6 @@ public class Simulation implements Runnable{
                 }
             }
         }
-
-        System.out.println("Grass fields number: " + map.getGrassFields().size());
-
-
-//        for (int y = 0; y <= map.getBoundaries().getY(); y++) {
-//            boolean checkEquator = isEquatorPosition(y);
-//            for (int x = 0; x <= map.getBoundaries().getX(); x++) {
-//                if (!map.getIsGrass(x, y)) {
-//                    int randomNumber = random.nextInt(100) + 1;
-//                    if (checkEquator) {
-//                        if (randomNumber <= 80) { map.addNewGrassField(x, y); }
-//                    }
-//                    else {
-//                        if (randomNumber > 80) { map.addNewGrassField(x, y); }
-//                    }
-//                }
-//            }
-//        }
     }
 
     private void checkForPaused() {

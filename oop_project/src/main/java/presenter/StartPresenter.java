@@ -200,6 +200,20 @@ public class StartPresenter {
         simulationEngine.runAsync();
     }
 
+    public void showLegendWindow() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("legend.fxml"));
+        Stage stage = new Stage();
+        VBox viewRoot = loader.load();
+        var scene = new Scene(viewRoot);
+        stage.setScene(scene);
+        stage.setTitle("Legend");
+        stage.minWidthProperty().bind(viewRoot.minWidthProperty());
+        stage.minHeightProperty().bind(viewRoot.minHeightProperty());
+
+        stage.show();
+    }
+
     private void stopSimulation(Simulation simulation){
         simulation.stopSimulation();
     }
