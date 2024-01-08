@@ -104,7 +104,11 @@ public class Animal extends WorldElement{
     public int getNumberOfDaysLived(){ return numberOfDaysLived;}
     public int getNumberOfKids(){ return numberOfKids;}
     public List<Integer> getGenotype(){return genotype;}
-    public void setGenotype(List<Integer> newGenotype){ genotype = newGenotype;}
+    public void setGenotype(List<Integer> newGenotype){
+        genotype = new ArrayList<>(newGenotype);
+        genDirectionGenerator = new GenDirectionGenerator(genotype, map.optionsManager.useReverseGenotype);
+        genIterator = genDirectionGenerator.iterator();
+    }
     public int getFacingDirection(){ return facingDirection.toInt();}
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

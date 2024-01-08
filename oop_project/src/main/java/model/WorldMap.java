@@ -19,4 +19,5 @@ public interface WorldMap {
     void unregisterObserver(MapChangeListener obs);
     StatsHandler getStatsHandler();
     Integer getDaysSimulated();
+    boolean isEquatorPosition(int y);
 }

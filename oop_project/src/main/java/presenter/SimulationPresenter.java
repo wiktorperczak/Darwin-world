@@ -87,6 +87,7 @@ public class SimulationPresenter implements MapChangeListener {
             } else {
                 simulation.unPauseSimulation();
             }
+            drawMap(map);
         }
     }
 
@@ -127,6 +128,16 @@ public class SimulationPresenter implements MapChangeListener {
         GridPane.setHalignment(label, HPos.CENTER);
         mapGrid.add(label, 0, 0);
 
+//        if (simulationPaused){
+//            for (int y = 0; y < bounds.getY(); y++){
+//                if (map.isEquatorPosition(y)){
+//                    for (int x = 0; x <= bounds.getX(); x++){
+//
+//                    }
+//                }
+//            }
+//        }
+
         for (Map.Entry<Vector2d, List<WorldElement>> entry : map.getAllElements().entrySet()) {
             WorldElement worldElement = entry.getValue().get(0);
             Node objectToDraw;
@@ -161,6 +172,7 @@ public class SimulationPresenter implements MapChangeListener {
         if (worldElement.equals(currentFollowingAnimal)){
             animalColor = Color.rgb(100, 0, (int) (255 * energyNormalized));
         }
+
 
         Rectangle invisibleRect = new Rectangle(50, 50, Color.TRANSPARENT);
         Node objectToDraw = createTriangle(20, animalColor);

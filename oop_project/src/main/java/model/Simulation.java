@@ -35,21 +35,13 @@ public class Simulation implements Runnable{
             eatingGrass();
             breed();
             addGrass();
-            System.out.println("equator equator: ");
-            for (Vector2d position : map.getEquatorEmptyFields()) {
-                System.out.println(position);
-            }
-            System.out.println("non non non equator: ");
-            for (Vector2d position : map.getNonEquatorEmptyFields()) {
-                System.out.println(position);
-            }
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
             map.countAllStats();
             csvHandler.appendRowToCsv(filePath);
             map.anotherDaySimulated();
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
