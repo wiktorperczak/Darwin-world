@@ -55,4 +55,22 @@ public final class OptionsManager {
     public void setNumberOfGrassPerDay(int numberOfGrassPerDay) { this.numberOfGrassPerDay = numberOfGrassPerDay; }
     public int getStartingGrassNumber() { return startingGrassNumber; }
     public void setStartingGrassNumber(int startingGrassNumber) { this.startingGrassNumber = startingGrassNumber; }
+
+    public void generateBasicValues() {
+        setNumberOfAnimals(10);
+        setWidth(5);
+        setHeight(5);
+        setAnimalLife(10);
+        setGenotypeLength(5);
+        setMinimalEnergyToBreed(5);
+        setEnergyLossOnBreed(2);
+        setMaxGensToMutate(5);
+        setMinGensToMutate(1);
+        setGrassEnergy(5);
+        setNumberOfTunnels(1);
+        setUseTunnels(false);
+        setUseReverseGenotype(true);
+        setNumberOfGrassPerDay(10);
+        setStartingGrassNumber(10);
+    }
 }

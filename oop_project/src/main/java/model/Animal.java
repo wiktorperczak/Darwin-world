@@ -183,4 +183,16 @@ public class Animal extends WorldElement{
     public boolean genotypeHasGen(int gen){
         return genotype.contains(gen);
     }
+
+    public void setFacingDirection(MapDirection direction){
+        facingDirection = direction;
+    }
+
+    public void setNumberOfKids(int numberOfKids){
+        this.numberOfKids = numberOfKids;
+    }
+
+    public void setNumberOfDaysLived(int numberOfDaysLived){
+        this.numberOfDaysLived = numberOfDaysLived;
+    }
 }
