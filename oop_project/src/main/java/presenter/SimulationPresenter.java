@@ -88,7 +88,7 @@ public class SimulationPresenter implements MapChangeListener {
         Vector2d bounds = map.getBoundaries();
         int maxCellWidth = maxGridWidth / (bounds.getX() + 1);
         int maxCellHeight = maxGridHeight / (bounds.getY() + 1);
-        return Math.max(maxCellWidth, maxCellHeight);
+        return Math.min(maxCellWidth, maxCellHeight);
     }
 
     @FXML
