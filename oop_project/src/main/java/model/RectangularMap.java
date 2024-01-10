@@ -27,7 +27,7 @@ public class RectangularMap implements WorldMap{
         this.height = height;
         this.id = id;
         this.optionsManager = optionsManager;
-        initializeIsGrass();
+        initializeGrass();
         daysSimulated = 0;
         if (optionsManager.getUseTunnels()) { initializeTunnels(); }
         statsHandler = new StatsHandler(this);
@@ -42,7 +42,7 @@ public class RectangularMap implements WorldMap{
         return (y >= lower_bound && y <= upper_bound);
     }
 
-    void initializeIsGrass(){
+    void initializeGrass(){
         for (int y = 0; y <= height; y++) {
             boolean isEquator = isEquatorPosition(y);
             for (int x = 0; x <= width; x++) {
