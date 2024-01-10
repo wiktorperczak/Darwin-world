@@ -24,7 +24,7 @@ public class Simulation implements Runnable{
         CsvHandler csvHandler = new CsvHandler(map);
         csvHandler.createCsvFile(filePath);
 
-        addGrass(map.optionsManager.startingGrassNumber);
+        addGrass(map.optionsManager.getStartingGrassNumber());
 
 
         while(!map.getAnimals().isEmpty()) {
@@ -36,7 +36,7 @@ public class Simulation implements Runnable{
             moveAnimals();
             eatingGrass();
             breed();
-            addGrass(map.optionsManager.numberOfGrassPerDay);
+            addGrass(map.optionsManager.getNumberOfGrassPerDay());
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
             map.countAllStats();

@@ -34,7 +34,7 @@
 
     <VBox spacing="10" alignment="CENTER_RIGHT">
         <Label fx:id="animalStatsLabel" text="Animal Statistics" style="-fx-font-size: 20px; -fx-font-weight: bold"/>
-        <Label fx:id="animalsGenotypeLabel" text="Genotype: " style="-fx-font-size: 16px;"/>
+        <Label fx:id="animalsGenotypeLabel" text="Genotype: " style="-fx-font-size: 16px;" maxWidth="180" wrapText="true"/>
         <Label fx:id="genActivatedLabel" text="Activated gen: " style="-fx-font-size: 16px;"/>
         <Label fx:id="energyLabel" text="Energy: " style="-fx-font-size: 16px;"/>
         <Label fx:id="grassEatenLabel" text="Grass eaten: " style="-fx-font-size: 16px;"/>

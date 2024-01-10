@@ -83,6 +83,6 @@
     </HBox.margin>
 
     <Button onAction="#onSimulationStartClick" minWidth="150" minHeight="40">Start</Button>
-    <Button onAction="#showLegendWindow" minWidth="150" minHeight="40">Legend</Button>
+    <Button onAction="#showLegendWindow" minWidth="150" minHeight="40">Legenda</Button>
 
 </VBox>

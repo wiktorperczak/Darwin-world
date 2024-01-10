@@ -9,6 +9,8 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       spacing="20" alignment="CENTER"
       minWidth="300.0" minHeight="300.0"
@@ -17,36 +19,44 @@
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Circle radius="10" fill="GREEN"/>
-        <Label text=" - Grass" style="-fx-font-size: 16px;"/>
+        <Label text=" - Trawa" style="-fx-font-size: 16px;"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Circle radius="20" fill="DARKGRAY"/>
-        <Label text=" - Tunnel Entrance" style="-fx-font-size: 16px;"/>
+        <Label text=" - Wejście do tunelu" style="-fx-font-size: 16px;"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Rectangle width="40" height="40" fill="DARKGRAY"/>
-        <Label text=" - Tunnel Exit" style="-fx-font-size: 16px;"/>
+        <Label text=" - Wyjście z tunelu" style="-fx-font-size: 16px;"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Polygon points="0.0, 0.0, -10.0, 40.0, 10.0, 40.0" fill="YELLOW"/>
-        <Label text=" - Animal (2 * starting energy)" style="-fx-font-size: 16px;"/>
+        <Label text=" - Zwierzak (2 * startowa energia)" style="-fx-font-size: 16px;"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Polygon points="0.0, 0.0, -10.0, 40.0, 10.0, 40.0" fill="ORANGE"/>
-        <Label text=" - Animal (starting energy)" style="-fx-font-size: 16px;"/>
+        <Label text=" - Zwierzak (startowa energia)" style="-fx-font-size: 16px;"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Polygon points="0.0, 0.0, -10.0, 40.0, 10.0, 40.0" fill="RED"/>
-        <Label text=" - Animal (0 energy)" style="-fx-font-size: 16px;"/>
+        <Label text=" - Zwierzak (0 energii)" style="-fx-font-size: 16px;"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Circle radius="5" fill="BLACK"/>
-        <Label text=" - Animal marked with gen" style="-fx-font-size: 16px;"/>
+        <Label text=" - Zwierzak posiadający najpopularniejszy gen" style="-fx-font-size: 16px;"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextFlow>
+            <Text text="Press " style="-fx-font-size: 16px;"/>
+            <Text text="SPACE " style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+            <Text text="to pause " style="-fx-font-size: 16px;"/>
+        </TextFlow>
     </HBox>
 </VBox>
