@@ -3,17 +3,17 @@ package model;
 import java.util.Random;
 
 public class TunnelEnter extends WorldElement{
-    TunnelExit tunnelExit;
+    TunnelEnter tunnelExit;
 
     public TunnelEnter(Vector2d position){
-        worldElementType = WorldElementType.TUNNELENTER;
+        worldElementType = WorldElementType.TUNNEL;
         this.position = position;
     }
-    public void setTunnelExit(TunnelExit tunnelExit){
+    public void setTunnelExit(TunnelEnter tunnelExit){
         this.tunnelExit = tunnelExit;
     }
 
-    TunnelExit getTunnelExit(){
+    TunnelEnter getTunnelExit(){
         return tunnelExit;
     }
 

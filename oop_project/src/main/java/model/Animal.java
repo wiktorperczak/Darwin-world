@@ -10,6 +10,7 @@ public class Animal extends WorldElement{
     private List<Integer> genotype;
     private GenDirectionGenerator genDirectionGenerator;
     private Iterator<MapDirection> genIterator;
+    boolean isTunnelUsedLastMove;
 
 
     private int id;
@@ -37,6 +38,7 @@ public class Animal extends WorldElement{
         grassEaten = 0;
         dayOfDeath = -1;
         kids = new ArrayList<>();
+        isTunnelUsedLastMove = false;
         this.id = id;
     }
 
@@ -48,10 +50,10 @@ public class Animal extends WorldElement{
     }
 
     Vector2d calculateNewPosition(RectangularMap map){
-        if (map.getTunnels().containsKey(position)){
+        if (!isTunnelUsedLastMove && map.getTunnels().containsKey(position)){
+            isTunnelUsedLastMove = true;
             return map.getTunnels().get(position).getTunnelExit().getPosition();
         }
-
         Vector2d newPosition = position.add(facingDirection.toUnitVector());
         Vector2d boundaries = map.getBoundaries();
         if (newPosition.getX() > boundaries.getX()){
@@ -64,6 +66,7 @@ public class Animal extends WorldElement{
             newPosition = new Vector2d(newPosition.getX(), position.getY());
             facingDirection = facingDirection.rotate(4);
         }
+        isTunnelUsedLastMove = false;
         return newPosition;
     }
 

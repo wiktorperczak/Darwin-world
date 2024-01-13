@@ -10,7 +10,6 @@ public class RectangularMap implements WorldMap{
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
     Set<Vector2d> equatorEmptyFields = new HashSet<>();
     Set<Vector2d> nonEquatorEmptyFields = new HashSet<>();
-//    List<List<Boolean>> isGrass = new ArrayList<>();
     Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
     Map<WorldElement, Vector2d> tunnelExits = new HashMap<>();
     Map<Vector2d, List<WorldElement>> allElements = new HashMap<>();
@@ -22,6 +21,7 @@ public class RectangularMap implements WorldMap{
     private int numberOfAllAnimals;
     public List<Boolean> animalIdVisited = new ArrayList<>();
     private final Random random = new Random();
+
 
     public RectangularMap(int width, int height, int id, OptionsManager optionsManager) {
         this.width = width;
@@ -45,15 +45,12 @@ public class RectangularMap implements WorldMap{
 
     void initializeIsGrass(){
         for (int y = 0; y <= height; y++) {
-//            List<Boolean> row = new ArrayList<>();
             boolean isEquator = isEquatorPosition(y);
             for (int x = 0; x <= width; x++) {
                 Vector2d position = new Vector2d(x, y);
                 if (isEquator) { equatorEmptyFields.add(position); }
                 else { nonEquatorEmptyFields.add(position); }
             }
-//            for (int j = 0; j <= width; j++) { row.add(false); }
-//            isGrass.add(row);
         }
 
     }
@@ -70,14 +67,15 @@ public class RectangularMap implements WorldMap{
             int exitY = coordinates.get(i + 1) / (width + 1);
 
             TunnelEnter tunnelEnter = new TunnelEnter(new Vector2d(enterX, enterY));
-            TunnelExit tunnelExit = new TunnelExit(new Vector2d(exitX, exitY));
+            TunnelEnter tunnelExit = new TunnelEnter(new Vector2d(exitX, exitY));
             tunnelEnter.setTunnelExit(tunnelExit);
+            tunnelExit.setTunnelExit(tunnelEnter);
             tunnelEnters.put(tunnelEnter, tunnelEnter.getPosition());
             tunnelExits.put(tunnelExit, tunnelExit.getPosition());
-        }
 
-        for (WorldElement worldElement : tunnelEnters.keySet()){
-            tunnels.put(worldElement.getPosition(), (TunnelEnter) worldElement);
+            tunnels.put(tunnelEnter.getPosition(), tunnelEnter);
+            tunnels.put(tunnelExit.getPosition(), tunnelExit);
+
         }
     }
 
