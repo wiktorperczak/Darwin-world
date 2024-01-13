@@ -160,10 +160,8 @@ public class SimulationPresenter implements MapChangeListener {
             } else if (worldElement.worldElementType == WorldElementType.GRASS){
                 drawTunnel(entry, bounds);
                 objectToDraw = createGrass();
-            } else if (worldElement.worldElementType == WorldElementType.TUNNELENTER){
-                objectToDraw = createTunnelEnter();
             } else {
-                objectToDraw = createTunnelExit();
+                objectToDraw = createTunnel();
             }
             GridPane.setHalignment(objectToDraw, HPos.CENTER);
 
@@ -218,12 +216,8 @@ public class SimulationPresenter implements MapChangeListener {
         return new Circle((double) cellSize /5, Color.GREEN);
     }
 
-    private Node createTunnelEnter(){
+    private Node createTunnel(){
         return new Circle((double) (cellSize * 2) /5, Color.DARKGRAY);
-    }
-
-    private Node createTunnelExit(){
-        return new Rectangle((double) (cellSize * 4) /5, (double) (cellSize * 4) /5, Color.DARKGRAY);
     }
 
     private Polygon createTriangle(double size, Color color) {
@@ -236,15 +230,9 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void drawTunnel(Map.Entry<Vector2d, List<WorldElement>> entry, Vector2d bounds){
         List<WorldElement> tunnel= entry.getValue().stream()
-                .filter(worldElement -> worldElement.worldElementType == WorldElementType.TUNNELENTER ||
-                        worldElement.worldElementType == WorldElementType.TUNNELEXIT).toList();
+                .filter(worldElement -> worldElement.worldElementType == WorldElementType.TUNNEL).toList();
         if (tunnel.isEmpty()) return;
-        Node objectToDraw;
-        if (tunnel.get(0).worldElementType == WorldElementType.TUNNELENTER){
-            objectToDraw = createTunnelEnter();
-        } else {
-            objectToDraw = createTunnelExit();
-        }
+        Node objectToDraw = createTunnel();
         GridPane.setHalignment(objectToDraw, HPos.CENTER);
         mapGrid.add(objectToDraw, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
 //        ImageView imageView = createImageView(tunnel.get(0).getImagePath(), 0);
