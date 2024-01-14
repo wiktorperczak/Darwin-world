@@ -10,9 +10,4 @@ public class Grass extends WorldElement{
     public String toString() {
         return "*";
     }
-
-    @Override
-    public String getImagePath() {
-        return "/media/trawa_M.png";
-    }
 }

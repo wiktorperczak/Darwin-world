@@ -7,8 +7,9 @@ import java.util.List;
 
 public class GenDirectionGenerator implements Iterable<MapDirection>{
     private List<Integer> genotype;
+
     private int it = 0;
-    private boolean useReverseGenotype;
+    private final boolean useReverseGenotype;
 
     public GenDirectionGenerator(List<Integer> tab, boolean useReverseGenotype){
 

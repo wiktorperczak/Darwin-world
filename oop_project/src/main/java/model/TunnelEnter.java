@@ -22,8 +22,4 @@ public class TunnelEnter extends WorldElement{
         return "o";
     }
 
-    @Override
-    public String getImagePath() {
-        return "/media/dziura_1M.png";
-    }
 }

@@ -1,5 +1,5 @@
 package model;
 
 public interface MapChangeListener {
-    public void mapChanged(WorldMap worldMap, String message);
+    void mapChanged(WorldMap worldMap, String message);
 }

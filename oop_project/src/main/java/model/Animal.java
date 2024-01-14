@@ -10,9 +10,11 @@ public class Animal extends WorldElement{
     private List<Integer> genotype;
     private GenDirectionGenerator genDirectionGenerator;
     private Iterator<MapDirection> genIterator;
-    boolean isTunnelUsedLastMove;
+    private List<Animal> kids;
+    private RectangularMap map;
 
 
+    private boolean isTunnelUsedLastMove;
     private int id;
     private int energy;
     private int numberOfDaysLived;
@@ -20,8 +22,6 @@ public class Animal extends WorldElement{
     private int numberOfDescendants;
     private int grassEaten;
     private int dayOfDeath;
-    private List<Animal> kids;
-    RectangularMap map;
 
 
     public Animal(RectangularMap map, Vector2d position, int id){
@@ -88,6 +88,44 @@ public class Animal extends WorldElement{
         return energy > 0;
     }
 
+    public Integer visitDescendants(Animal animal) {
+        map.setAnimalIdVisited(this.id, true);
+        int res = 0;
+        for (Animal kid : animal.getKids()) {
+            if (!map.getAnimalIdVisited(kid.getId())) {
+                res += 1 + visitDescendants(kid);
+            }
+        }
+        return res;
+    }
+
+    public void calculateNumberOfDescendants() {
+        map.resetAnimalIdVisited();
+        numberOfDescendants = visitDescendants(this);
+    }
+
+    public void addKid(Animal kid){
+        numberOfKids += 1;
+        kids.add(kid);
+    }
+
+    public void randomizeGenotypeIterator(){
+        Random random = new Random();
+        for (int i = 0; i < random.nextInt(map.optionsManager.getGenotypeLength()); i++){
+            genIterator.next();
+        }
+    }
+
+    public void randomizeStartingRotation() {
+        Random random = new Random();
+        facingDirection = MapDirection.toMapDirection(random.nextInt(8));
+    }
+
+    public Integer getActiveGen() {
+        genIterator.hasNext();
+        return genDirectionGenerator.getActiveGen();
+    }
+
     public String toString() {
         return switch (facingDirection){
             case NORTH -> "N";
@@ -115,70 +153,18 @@ public class Animal extends WorldElement{
     public int getFacingDirection(){ return facingDirection.toInt();}
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
-
-    public void addChild(Animal child) {
-        kids.add(child);
-        numberOfKids += 1;
-    }
-
-    public Integer visitDescendants(Animal animal) {
-        map.setAnimalIdVisited(this.id, true);
-        int res = 0;
-        for (Animal kid : animal.getKids()) {
-            if (!map.getAnimalIdVisited(kid.getId())) {
-                res += 1 + visitDescendants(kid);
-            }
-        }
-        return res;
-    }
-
-    public void calculateNumberOfDescendants() {
-        map.resetAnimalIdVisited();
-        numberOfDescendants = visitDescendants(this);
-    }
-
-    @Override
-    public String getImagePath() {
-        return "/media/Kot_M.png";
-    }
-
-    public void addKid(Animal kid){
-        numberOfKids += 1;
-        kids.add(kid);
-    }
-
     public List<Animal> getKids() { return kids; }
     public Integer getNumberOfDescendants() { return numberOfDescendants; }
-    public void randomizeGenotypeIterator(){
-        Random random = new Random();
-        for (int i = 0; i < random.nextInt(map.optionsManager.getGenotypeLength()); i++){
-            genIterator.next();
-        }
-    }
-
-    public void randomizeStartingRotation() {
-        Random random = new Random();
-        facingDirection = MapDirection.toMapDirection(random.nextInt(8));
-    }
-
     public void addGrassEaten(){
         grassEaten += 1;
     }
-
     public int getGrassEaten(){
         return grassEaten;
     }
-
-    public Integer getActiveGen() {
-        genIterator.hasNext();
-        return genDirectionGenerator.getActiveGen();
-    }
-
     public Integer getDayOfDeath() {
         if (dayOfDeath == -1) return map.getDaysSimulated();
         return dayOfDeath;
     }
-
     public void setDayOfDeath(int daysSimulated) {
         dayOfDeath = daysSimulated;
     }

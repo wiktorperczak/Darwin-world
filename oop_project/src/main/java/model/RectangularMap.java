@@ -6,14 +6,15 @@ public class RectangularMap implements WorldMap{
     private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
     public OptionsManager optionsManager;
     public StatsHandler statsHandler;
-    Map<WorldElement, Vector2d> animals = new HashMap<>();
-    Map<WorldElement, Vector2d> grassFields = new HashMap<>();
-    Set<Vector2d> equatorEmptyFields = new HashSet<>();
-    Set<Vector2d> nonEquatorEmptyFields = new HashSet<>();
-    Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
-    Map<WorldElement, Vector2d> tunnelExits = new HashMap<>();
-    Map<Vector2d, List<WorldElement>> allElements = new HashMap<>();
-    Map<Vector2d, TunnelEnter> tunnels = new HashMap<>();
+    private Map<WorldElement, Vector2d> animals = new HashMap<>();
+    private Map<WorldElement, Vector2d> grassFields = new HashMap<>();
+    private Set<Vector2d> equatorEmptyFields = new HashSet<>();
+    private Set<Vector2d> nonEquatorEmptyFields = new HashSet<>();
+    private Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
+    private Map<WorldElement, Vector2d> tunnelExits = new HashMap<>();
+    private Map<Vector2d, List<WorldElement>> allElements = new HashMap<>();
+    private Map<Vector2d, TunnelEnter> tunnels = new HashMap<>();
+
     private int daysSimulated;
     private final int width;
     private final int height;
@@ -186,10 +187,6 @@ public class RectangularMap implements WorldMap{
         addNewGrassField(field.getX(), field.getY());
     }
 
-    public void deleteEatenGrass() {
-
-    }
-
     @Override
     public Vector2d getBoundaries() {
         return new Vector2d(width, height);
@@ -201,9 +198,6 @@ public class RectangularMap implements WorldMap{
         return mapVisualizer.draw();
     }
 
-    UUID generateId(){
-        return UUID.randomUUID();
-    }
     @Override
     public int getId() { return id;}
 
@@ -213,8 +207,6 @@ public class RectangularMap implements WorldMap{
     public Map<WorldElement, Vector2d> getGrassFields(){
         return grassFields;
     }
-//    public boolean getIsGrass(int x, int y) { return isGrass.get(y).get(x); }
-//    public void setIsGrassValue(int x, int y, boolean value) { isGrass.get(y).set(x, value); }
     public Map<Vector2d, TunnelEnter> getTunnels(){
         return tunnels;
     }

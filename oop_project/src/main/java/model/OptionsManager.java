@@ -31,7 +31,6 @@ public final class OptionsManager {
     public int getAnimalLife(){
         return animalLife;
     }
-
     public int getGrassEnergy() { return grassEnergy; }
     public void setGrassEnergy(int grassEnergy) { this.grassEnergy = grassEnergy; }
     public void setMinimalEnergyToBreed(int value){minimalEnergyToBreed = value;}

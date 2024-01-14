@@ -7,6 +7,4 @@ public abstract class WorldElement {
     public Vector2d getPosition(){
         return position;
     }
-
-    public abstract String getImagePath();
 }
