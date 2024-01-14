@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -16,6 +15,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import model.application.options.OptionsManager;
+import model.application.options.StatsHandler;
+import model.map.WorldMap;
+import model.map.utils.MapChangeListener;
+import model.map.utils.Vector2d;
+import model.simulation.Simulation;
+import model.worldElements.Animal;
+import model.worldElements.WorldElement;
+import model.worldElements.WorldElementType;
+
 import java.util.List;
 import java.util.Map;
 

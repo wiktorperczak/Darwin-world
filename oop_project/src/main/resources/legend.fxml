@@ -49,9 +49,9 @@
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <TextFlow>
-            <Text text="Press " style="-fx-font-size: 16px;"/>
-            <Text text="SPACE " style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
-            <Text text="to pause " style="-fx-font-size: 16px;"/>
+            <Text text="Wciścij " style="-fx-font-size: 16px;"/>
+            <Text text="SPACJĘ" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+            <Text text=", aby zatrzymać" style="-fx-font-size: 16px;"/>
         </TextFlow>
     </HBox>
 </VBox>
