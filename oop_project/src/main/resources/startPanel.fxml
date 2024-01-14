@@ -6,22 +6,83 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       minHeight="550.0" minWidth="850.0"
       spacing="5" alignment="CENTER"
       fx:controller="presenter.StartPresenter">
-    <Label text="Wysokosc mapy:" />
-    <TextField fx:id="height">5</TextField>
-    <Label text="Szerokosc mapy:" />
-    <TextField fx:id="width">5</TextField>
-    <Label text="Początkowa energia:" />
-    <TextField fx:id="animalLife">5</TextField>
-    <Label text="Dlugosc genotypu:" />
-    <TextField fx:id="genotypeLength">5</TextField>
-    <Label text="Wartosc energetyczna trawy:" />
-    <TextField fx:id="grassEnergy">2</TextField>
-    <Label text="Liczba tuneli:" />
-    <TextField fx:id="numberOfTunnels">2</TextField>
-    <Button onAction="#onSimulationStartClick">Start</Button>
+
+    <Label text="Dostosuj parametry:" style="-fx-font-size: 16px; -fx-font-weight: bold"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <VBox spacing="8">
+            <Label text="Wysokość mapy:" />
+            <ComboBox fx:id="height" prefWidth="150" onAction="#updateTunnels"/>
+
+            <Label text="Szerokość mapy:" />
+            <ComboBox fx:id="width" prefWidth="150" onAction="#updateTunnels"/>
+
+            <Label text="Liczba zwierząt:" />
+            <ComboBox fx:id="numberOfAnimals" prefWidth="150"/>
+
+            <Label text="Występowanie tuneli:" />
+            <CheckBox fx:id="useTunnels" />
+
+            <Label text="Liczba tuneli:" />
+            <ComboBox fx:id="numberOfTunnels" prefWidth="150"/>
+
+            <Label text="Początkowa energia zwierząt:" />
+            <ComboBox fx:id="animalLife" prefWidth="150"/>
+
+        </VBox>
+
+        <VBox spacing="8">
+            <Label text="Długość genotypu:" />
+            <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGensToMutate"/>
+
+            <Label text="Odtwarzanie genotypu od tyłu:" />
+            <CheckBox fx:id="useReverseGenotype" />
+
+            <Label text="Min energii do rozmnazania:"/>
+            <ComboBox fx:id="minimalEnergyToBreed" prefWidth="150" onAction="#updateEnergyLossOnBreed"/>
+
+            <Label text="Utrata energii przy rozmnażaniu:" />
+            <ComboBox fx:id="energyLossOnBreed" prefWidth="150"/>
+
+            <Label text="Max genów zmieniane w mutacji:" />
+            <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate"/>
+
+            <Label text="Min genów zmienane w mutacji:" />
+            <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate"/>
+        </VBox>
+
+        <VBox spacing="8">
+            <Label text="Liczba traw na start:" />
+            <ComboBox fx:id="startingGrassNumber" prefWidth="150"/>
+
+            <Label text="Wartość energetyczna trawy:" />
+            <ComboBox fx:id="grassEnergy" prefWidth="150"/>
+
+            <Label text="Liczba nowych traw na runde:" />
+            <ComboBox fx:id="numberOfGrassPerDay" prefWidth="150"/>
+
+            <Label text="Użyj gotowej konfiguracji:" />
+            <ComboBox fx:id="useConfiguration" prefWidth="150" onAction="#useSetConfiguration"/>
+
+            <Label text="Zapisz konfiguracje w .csv" />
+            <Button onAction="#exportConfiguration" minWidth="150" minHeight="40">Zapisz</Button>
+
+            <Label text="Aby zobaczyć nowo zapisaną konfigurację, należy uruchomić program jeszcze raz" maxWidth="180" wrapText="true" />
+        </VBox>
+    </HBox>
+
+    <HBox.margin>
+        <Insets bottom="40"/>
+    </HBox.margin>
+
+    <Button onAction="#onSimulationStartClick" minWidth="150" minHeight="40">Start</Button>
+    <Button onAction="#showLegendWindow" minWidth="150" minHeight="40">Legenda</Button>
+
 </VBox>

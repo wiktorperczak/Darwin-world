@@ -2,6 +2,7 @@ package model;
 
 public class TunnelExit extends WorldElement{
     public TunnelExit(Vector2d position){
+        worldElementType = WorldElementType.TUNNELEXIT;
         this.position = position;
     }
 

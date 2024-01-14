@@ -13,8 +13,11 @@ public interface WorldMap {
     Vector2d getBoundaries();
     void updateAllElements();
     Map<WorldElement, Vector2d> getAnimals();
-    UUID getId();
+    int getId();
     void registerObserver(MapChangeListener obs);
 
     void unregisterObserver(MapChangeListener obs);
+    StatsHandler getStatsHandler();
+    Integer getDaysSimulated();
+    boolean isEquatorPosition(int y);
 }

@@ -21,7 +21,7 @@ public class World {
 //        SimulationEngine simulationEngine = new SimulationEngine(simulations);
 //        simulationEngine.runAsyncInThreadPool();
 //        simulationEngine.awaitSimulationsEnd();
-        RectangularMap map = new RectangularMap(3, 3, optionsManager);
+        RectangularMap map = new RectangularMap(3, 3, 0, optionsManager);
         map.registerObserver(obs);
         Simulation simulation = new Simulation(positions, map);
         simulation.run();
@@ -34,7 +34,8 @@ public class World {
         optionsManager.setGenotypeLength(5);
         optionsManager.setEnergyLossOnBreed(1);
         optionsManager.setMinimalEnergyToBreed(1);
-        optionsManager.setGensToMutate(3);
+        optionsManager.setMaxGensToMutate(3);
+        optionsManager.setMinGensToMutate(3);
         optionsManager.setGrassEnergy(2);
         return optionsManager;
     }

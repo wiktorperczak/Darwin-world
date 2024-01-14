@@ -5,51 +5,59 @@ import java.util.*;
 public class RectangularMap implements WorldMap{
     private final Map<MapChangeListener, MapChangeListener> observers = new HashMap<>();
     public OptionsManager optionsManager;
+    public StatsHandler statsHandler;
     Map<WorldElement, Vector2d> animals = new HashMap<>();
     Map<WorldElement, Vector2d> grassFields = new HashMap<>();
-    List<List<Boolean>> isGrass = new ArrayList<>();
+    Set<Vector2d> equatorEmptyFields = new HashSet<>();
+    Set<Vector2d> nonEquatorEmptyFields = new HashSet<>();
     Map<WorldElement, Vector2d> tunnelEnters = new HashMap<>();
     Map<WorldElement, Vector2d> tunnelExits = new HashMap<>();
     Map<Vector2d, List<WorldElement>> allElements = new HashMap<>();
     Map<Vector2d, TunnelEnter> tunnels = new HashMap<>();
-    private int width;
-    private int height;
-    protected UUID id;
+    private int daysSimulated;
+    private final int width;
+    private final int height;
+    protected int id;
+    private int numberOfAllAnimals;
+    public List<Boolean> animalIdVisited = new ArrayList<>();
+    private final Random random = new Random();
 
-    public RectangularMap(int width, int height, OptionsManager optionsManager) {
+    public RectangularMap(int width, int height, int id, OptionsManager optionsManager) {
         this.width = width;
         this.height = height;
-        this.id = generateId();
+        this.id = id;
         this.optionsManager = optionsManager;
-        initializeIsGrass();
-        initializeTunnels();
-
+        initializeGrass();
+        daysSimulated = 0;
+        if (optionsManager.getUseTunnels()) { initializeTunnels(); }
+        statsHandler = new StatsHandler(this);
     }
 
-    void initializeIsGrass(){
-        for (int i = 0; i <= height; i++) {
-            List<Boolean> row = new ArrayList<>();
-            for (int j = 0; j <= width; j++) { row.add(false); }
-            isGrass.add(row);
+    public boolean isEquatorPosition(int y) {
+        int mod = (height + 1) % 5, equatorWidth = (height + 1) / 5;
+        if (mod == 3 || mod == 4) equatorWidth += 1;
+
+        int lower_bound = (height + 1 - equatorWidth) / 2;
+        int upper_bound = lower_bound + equatorWidth - 1;
+        return (y >= lower_bound && y <= upper_bound);
+    }
+
+    void initializeGrass(){
+        for (int y = 0; y <= height; y++) {
+            boolean isEquator = isEquatorPosition(y);
+            for (int x = 0; x <= width; x++) {
+                Vector2d position = new Vector2d(x, y);
+                if (isEquator) { equatorEmptyFields.add(position); }
+                else { nonEquatorEmptyFields.add(position); }
+            }
         }
+
     }
 
     void initializeTunnels(){
         List<Integer> coordinates = new ArrayList<>();
         for (int i = 0; i < (height + 1) * (width + 1); i++) { coordinates.add(i); }
         Collections.shuffle(coordinates);
-
-        for (int i = 0; i < 2 * optionsManager.getNumberOfTunnels(); i += 2) {
-            int enterX = coordinates.get(i) % (width + 1);
-            int enterY = coordinates.get(i) / (width + 1);
-            int exitX = coordinates.get(i + 1) % (width + 1);
-            int exitY = coordinates.get(i + 1) / (width + 1);
-
-            TunnelEnter tunnelEnter = new TunnelEnter(new Vector2d(enterX, enterY));
-            tunnelEnters.put(tunnelEnter, tunnelEnter.getPosition());
-            TunnelExit tunnelExit = new TunnelExit(new Vector2d(exitX, exitY));
-            tunnelExits.put(tunnelExit, tunnelExit.getPosition());
-        }
 
         for (int i = 0; i < 2 * optionsManager.getNumberOfTunnels(); i += 2) {
             int enterX = coordinates.get(i) % (width + 1);
@@ -71,8 +79,8 @@ public class RectangularMap implements WorldMap{
 
     @Override
     public void place(Animal animal) {
-        System.out.println("Animal added");
         animals.put(animal, animal.getPosition());
+        animalIdVisited.add(false);
     }
 
     @Override
@@ -102,9 +110,9 @@ public class RectangularMap implements WorldMap{
     public void updateAllElements() {
         Map<Vector2d, List<WorldElement>> elements = new HashMap<>();
         elements = addNewValuesToElements(elements, animals);
+        elements = addNewValuesToElements(elements, grassFields);
         elements = addNewValuesToElements(elements, tunnelEnters);
         elements = addNewValuesToElements(elements, tunnelExits);
-        elements = addNewValuesToElements(elements, grassFields);
         allElements = sortAnimals(elements);
     }
 
@@ -126,13 +134,13 @@ public class RectangularMap implements WorldMap{
     Map<Vector2d, List<WorldElement>> sortAnimals(Map<Vector2d, List<WorldElement>> elements){
         for (Vector2d position : elements.keySet()){
             List<WorldElement> animals = elements.get(position).stream()
-                    .filter(worldElement -> worldElement instanceof Animal)
+                    .filter(worldElement -> worldElement.worldElementType == WorldElementType.ANIMAL)
                     .map(worldElement -> (Animal) worldElement)
                     .sorted(new AnimalComparator())
                     .map(worldElement -> (WorldElement) worldElement)
                     .toList();
             List<WorldElement> restWorldElements = elements.get(position).stream()
-                    .filter(worldElement -> !(worldElement instanceof Animal))
+                    .filter(worldElement -> !(worldElement.worldElementType == WorldElementType.ANIMAL))
                     .toList();
             List<WorldElement> worldElements = new ArrayList<>();
             worldElements.addAll(animals);
@@ -157,13 +165,24 @@ public class RectangularMap implements WorldMap{
     }
 
     public void addNewGrassField(int x, int y) {
-        isGrass.get(y).set(x, true);
         Vector2d position = new Vector2d(x, y);
+        if (isEquatorPosition(y)) { equatorEmptyFields.remove(position); }
+        else { nonEquatorEmptyFields.remove(position); }
         grassFields.put(new Grass(position), position);
     }
 
-    public void deleteEatenGrass() {
-
+    public void generateRandomPosition(Set<Vector2d> setPosition) {
+        int range = setPosition.size();
+        int rand = random.nextInt(range), i = 0;
+        Vector2d field = new Vector2d(0, 0);
+        for (Vector2d position : setPosition) {
+            if (i == rand) {
+                field = position;
+                break;
+            }
+            i += 1;
+        }
+        addNewGrassField(field.getX(), field.getY());
     }
 
     @Override
@@ -181,7 +200,7 @@ public class RectangularMap implements WorldMap{
         return UUID.randomUUID();
     }
     @Override
-    public UUID getId() { return id;}
+    public int getId() { return id;}
 
     public Map<WorldElement, Vector2d> getAnimals(){
         return animals;
@@ -189,13 +208,47 @@ public class RectangularMap implements WorldMap{
     public Map<WorldElement, Vector2d> getGrassFields(){
         return grassFields;
     }
-    public boolean getIsGrass(int x, int y) { return isGrass.get(y).get(x); }
-    public void setIsGrassValue(int x, int y, boolean value) { isGrass.get(y).set(x, value); }
     public Map<Vector2d, TunnelEnter> getTunnels(){
         return tunnels;
     }
 
     public void removeAnimal(Animal animalToRemove){
         animals.remove(animalToRemove);
+        statsHandler.animalDeceased(animalToRemove);
+        animalToRemove.setDayOfDeath(daysSimulated);
     }
+
+    public void killAllAnimals(){
+        animals = new HashMap<>();
+        updateAllElements();
+    }
+
+    public void countAllStats(){
+        statsHandler.updateAllStats();
+    }
+
+    public StatsHandler getStatsHandler(){
+        return statsHandler;
+    }
+
+    public int getNumberOfAnimalsAndIncrement() {
+        numberOfAllAnimals += 1;
+        return numberOfAllAnimals - 1;
+    }
+    public boolean getAnimalIdVisited(int id) { return animalIdVisited.get(id); }
+    public void setAnimalIdVisited(int id, boolean value) {
+        animalIdVisited.set(id, value);
+    }
+    public void resetAnimalIdVisited() { Collections.fill(animalIdVisited, false); }
+
+    public void anotherDaySimulated() {
+        daysSimulated += 1;
+    }
+
+    public Integer getDaysSimulated(){
+        return daysSimulated;
+    }
+    public void clearAnimaIdVisited() { animalIdVisited.clear(); }
+    public Set<Vector2d> getEquatorEmptyFields() { return equatorEmptyFields; }
+    public Set<Vector2d> getNonEquatorEmptyFields() { return nonEquatorEmptyFields; }
 }

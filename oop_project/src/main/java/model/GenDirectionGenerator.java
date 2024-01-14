@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -7,9 +8,12 @@ import java.util.List;
 public class GenDirectionGenerator implements Iterable<MapDirection>{
     private List<Integer> genotype;
     private int it = 0;
+    private boolean useReverseGenotype;
 
-    public GenDirectionGenerator(List<Integer> tab){
-        genotype = tab;
+    public GenDirectionGenerator(List<Integer> tab, boolean useReverseGenotype){
+
+        genotype = new ArrayList<>(tab);
+        this.useReverseGenotype = useReverseGenotype;
     }
 
     @Override
@@ -18,7 +22,7 @@ public class GenDirectionGenerator implements Iterable<MapDirection>{
             @Override
             public boolean hasNext() {
                 if (it >= genotype.size()){
-                    Collections.reverse(genotype);
+                    if (useReverseGenotype) { Collections.reverse(genotype); }
                     it = 0;
                 }
                 return true;
@@ -30,5 +34,9 @@ public class GenDirectionGenerator implements Iterable<MapDirection>{
                 return MapDirection.toMapDirection(genotype.get(it++));
             }
         };
+    }
+
+    public Integer getActiveGen() {
+        return genotype.get(it);
     }
 }

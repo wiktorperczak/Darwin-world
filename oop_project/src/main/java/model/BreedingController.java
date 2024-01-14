@@ -13,7 +13,7 @@ public class BreedingController {
         int numberOfChildrenAdded = 0;
         for (Vector2d position : allAnimals.keySet()){
             List<Animal> animals = allAnimals.get(position).stream()
-                    .filter(worldElement -> worldElement instanceof Animal)
+                    .filter(worldElement -> worldElement.worldElementType == WorldElementType.ANIMAL)
                     .map(worldElement -> (Animal) worldElement)
                     .toList();
             for (int i = 0; i < animals.size() - 1; i += 2){
@@ -23,6 +23,8 @@ public class BreedingController {
                 if (animal1.getEnergy() < map.optionsManager.getMinimalEnergyToBreed() ||
                         animal2.getEnergy() < map.optionsManager.getMinimalEnergyToBreed()) continue;
                 Animal children = generateChildren(animal1, animal2);
+//                animal1.
+
                 map.place(children);
                 numberOfChildrenAdded += 1;
             }
@@ -46,11 +48,16 @@ public class BreedingController {
 //        System.out.println(takeLeftSide);
 //        System.out.println(childrenGenotype);
 //        System.out.println();
-        Animal children = new Animal(map, parent1.getPosition());
+        Animal children = new Animal(map, parent1.getPosition(), map.getNumberOfAnimalsAndIncrement());
         children.setEnergy(2 * map.optionsManager.getEnergyLossOnBreed());
         children.setGenotype(childrenGenotype);
         parent1.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
         parent2.addEnergy(-map.optionsManager.getEnergyLossOnBreed());
+        parent1.addKid(children);
+        parent2.addKid(children);
+
+        children.randomizeGenotypeIterator();
+        children.randomizeStartingRotation();
         return children;
     }
 
@@ -70,12 +77,19 @@ public class BreedingController {
     }
 
     static List<Integer> mutate(List<Integer> genotype){
+        Random random = new Random();
         ArrayList<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < genotype.size(); i++){
             indexes.add(i);
         }
-        for (int i = 0; i < map.optionsManager.getGensToMutate(); i++){
-            Random random = new Random();
+        int range = map.optionsManager.getMaxGensToMutate() - map.optionsManager.getMinGensToMutate();
+        int n = 0;
+        if (range > 0){
+            n = random.nextInt(range);
+        }
+        n += map.optionsManager.getMinGensToMutate();
+        for (int i = 0; i < n; i++){
+
             int temp = random.nextInt(indexes.size());
             int index = indexes.get(temp);
             indexes.remove(temp);
