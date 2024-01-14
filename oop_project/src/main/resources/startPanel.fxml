@@ -28,7 +28,7 @@
             <ComboBox fx:id="numberOfAnimals" prefWidth="150"/>
 
             <Label text="Występowanie tuneli:" />
-            <CheckBox fx:id="useTunnels" />
+            <CheckBox fx:id="useTunnels" onAction="#visibilityTunnels"/>
 
             <Label text="Liczba tuneli:" />
             <ComboBox fx:id="numberOfTunnels" prefWidth="150"/>

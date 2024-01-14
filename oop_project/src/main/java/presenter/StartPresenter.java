@@ -111,6 +111,11 @@ public class StartPresenter {
     }
 
     @FXML
+    private void visibilityTunnels() {
+        numberOfTunnels.setDisable(!useTunnels.isSelected());
+    }
+
+    @FXML
     private void updateTunnels() {
         numberOfTunnels.getItems().clear();
         for (int i = 0; i <= (width.getValue() + 1) * (height.getValue() + 1) / 2; i++) {
@@ -194,6 +199,7 @@ public class StartPresenter {
             width.setValue(Integer.parseInt(dataMap.get("Szerokość")));
             numberOfAnimals.setValue(Integer.parseInt(dataMap.get("Liczba zwierząt")));
             useTunnels.setSelected(Boolean.parseBoolean(dataMap.get("Występowanie tuneli")));
+            visibilityTunnels();
             numberOfTunnels.setValue(Integer.parseInt(dataMap.get("Liczba tuneli")));
             animalLife.setValue(Integer.parseInt(dataMap.get("Początkowa energia zwierząt")));
             genotypeLength.setValue(Integer.parseInt(dataMap.get("Długość genotypu")));
