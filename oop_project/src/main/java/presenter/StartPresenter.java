@@ -1,6 +1,5 @@
 package presenter;
 
-import com.sun.security.jgss.InquireType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
@@ -8,12 +7,15 @@ import model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
-
+import javafx.scene.layout.VBox;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -52,6 +54,8 @@ public class StartPresenter {
     public ComboBox<Integer> numberOfGrassPerDay;
     @FXML
     public ComboBox<Integer> startingGrassNumber;
+    @FXML
+    public ComboBox<String> useConfiguration;
 
     @FXML
     private void initialize() {
@@ -69,7 +73,6 @@ public class StartPresenter {
             grassEnergy.getItems().add(i);
             animalLife.getItems().add(i);
             genotypeLength.getItems().add(i);
-            // todo: energyloss < minimalenergy
             energyLossOnBreed.getItems().add(i);
             minimalEnergyToBreed.getItems().add(i);
             minGensToMutate.getItems().add(i);
@@ -97,6 +100,8 @@ public class StartPresenter {
         updateTunnels();
         updateEnergyLossOnBreed();
         updateGensToMutate();
+
+        updateConfigurations();
     }
 
     @FXML
@@ -144,6 +149,94 @@ public class StartPresenter {
         }
     }
 
+    private int numberOfCOnfigurationsInFolder() {
+        int idFileCount = 0;
+        File folder = new File("konfiguracje");
+        File[] files = folder.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && file.getName().toLowerCase().endsWith(".csv")) {
+                    idFileCount++;
+                }
+            }
+        }
+        return idFileCount;
+    }
+
+    @FXML
+    private void updateConfigurations() {
+        int num = numberOfCOnfigurationsInFolder();
+        for (int i = 0; i < num; i++) {
+            useConfiguration.getItems().add("konfiguracja" + (i+1));
+        }
+        useConfiguration.setValue("konfiguracja" + 1);
+    }
+
+    public void useSetConfiguration() {
+        String filePath = "konfiguracje/" + useConfiguration.getValue() + ".csv";
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String[] columnTitles = reader.readLine().split(",");
+            String[] values = reader.readLine().split(",");
+
+            Map<String, String> dataMap = new HashMap<>();
+            for (int i = 0; i < columnTitles.length; i++) {
+                dataMap.put(columnTitles[i], values[i]);
+            }
+
+            height.setValue(Integer.parseInt(dataMap.get("Wysokość")));
+            width.setValue(Integer.parseInt(dataMap.get("Szerokość")));
+            numberOfAnimals.setValue(Integer.parseInt(dataMap.get("Liczba zwierząt")));
+            useTunnels.setSelected(Boolean.parseBoolean(dataMap.get("Występowanie tuneli")));
+            numberOfTunnels.setValue(Integer.parseInt(dataMap.get("Liczba tuneli")));
+            animalLife.setValue(Integer.parseInt(dataMap.get("Początkowa energia zwierząt")));
+            genotypeLength.setValue(Integer.parseInt(dataMap.get("Długość genotypu")));
+            useReverseGenotype.setSelected(Boolean.parseBoolean(dataMap.get("Odtwarzanie genotypu od tyłu")));
+            minimalEnergyToBreed.setValue(Integer.parseInt(dataMap.get("Min energii do rozmnażania")));
+            energyLossOnBreed.setValue(Integer.parseInt(dataMap.get("Utrata energii przy rozmnażaniu")));
+            maxGensToMutate.setValue(Integer.parseInt(dataMap.get("Max genów zmieniane w mutacji")));
+            minGensToMutate.setValue(Integer.parseInt(dataMap.get("Min genów zmieniane w mutacji")));
+            startingGrassNumber.setValue(Integer.parseInt(dataMap.get("Liczba traw na start")));
+            grassEnergy.setValue(Integer.parseInt(dataMap.get("Wartość energetyczna trawy")));
+            numberOfGrassPerDay.setValue(Integer.parseInt(dataMap.get("Liczba nowych traw na runde")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportConfiguration() {
+        int id = 1 + numberOfCOnfigurationsInFolder();
+        String filePath = "konfiguracje/konfiguracja" + id + ".csv";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write("Wysokość,Szerokość,Liczba zwierząt,Występowanie tuneli,Liczba tuneli,Początkowa energia zwierząt," +
+                    "Długość genotypu,Odtwarzanie genotypu od tyłu,Min energii do rozmnażania,Utrata energii przy rozmnażaniu," +
+                    "Max genów zmieniane w mutacji,Min genów zmieniane w mutacji,Liczba traw na start," +
+                    "Wartość energetyczna trawy,Liczba nowych traw na runde");
+            writer.newLine();
+
+            StringBuilder rowBuilder = new StringBuilder();
+            rowBuilder.append(height.getValue()).append(",");
+            rowBuilder.append(width.getValue()).append(",");
+            rowBuilder.append(numberOfAnimals.getValue()).append(",");
+            rowBuilder.append(useTunnels.isSelected()).append(",");
+            rowBuilder.append(numberOfTunnels.getValue()).append(",");
+            rowBuilder.append(animalLife.getValue()).append(",");
+            rowBuilder.append(genotypeLength.getValue()).append(",");
+            rowBuilder.append(useReverseGenotype.isSelected()).append(",");
+            rowBuilder.append(minimalEnergyToBreed.getValue()).append(",");
+            rowBuilder.append(energyLossOnBreed.getValue()).append(",");
+            rowBuilder.append(maxGensToMutate.getValue()).append(",");
+            rowBuilder.append(minGensToMutate.getValue()).append(",");
+            rowBuilder.append(startingGrassNumber.getValue()).append(",");
+            rowBuilder.append(grassEnergy.getValue()).append(",");
+            rowBuilder.append(numberOfGrassPerDay.getValue()).append(",");
+            writer.write(rowBuilder.toString());
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void configureStage(Stage primaryStage, HBox viewRoot){
         var scene = new Scene(viewRoot);
@@ -180,7 +273,6 @@ public class StartPresenter {
         optionsManager.setStartingGrassNumber(startingGrassNumber.getValue());
         optionsManager.setSimulationSpeed(simulationSpeed.getValue());
 
-//        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
         List<Vector2d> positions = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < optionsManager.getNumberOfAnimals(); i++) {

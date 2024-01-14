@@ -22,7 +22,7 @@ public class Simulation implements Runnable{
     }
 
     public void run(){
-        String filePath = "output" + (map.getId() + 1) + ".csv";
+        String filePath = "statystyki/symulacja" + (map.getId() + 1) + ".csv";
         CsvHandler csvHandler = new CsvHandler(map);
         csvHandler.createCsvFile(filePath);
 
@@ -104,9 +104,7 @@ public class Simulation implements Runnable{
         Iterator<Map.Entry<WorldElement, Vector2d>> iterator = map.getGrassFields().entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<WorldElement, Vector2d> entry = iterator.next();
-            WorldElement grass = entry.getKey();
             Vector2d position = entry.getValue();
-
             if (map.getEquatorEmptyFields().contains(position) || map.getNonEquatorEmptyFields().contains(position)) {
                 iterator.remove();
             }

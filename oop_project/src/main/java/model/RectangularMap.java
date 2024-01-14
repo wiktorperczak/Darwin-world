@@ -29,7 +29,7 @@ public class RectangularMap implements WorldMap{
         this.height = height;
         this.id = id;
         this.optionsManager = optionsManager;
-        initializeIsGrass();
+        initializeGrass();
         daysSimulated = 0;
         if (optionsManager.getUseTunnels()) { initializeTunnels(); }
         statsHandler = new StatsHandler(this);
@@ -44,7 +44,7 @@ public class RectangularMap implements WorldMap{
         return (y >= lower_bound && y <= upper_bound);
     }
 
-    void initializeIsGrass(){
+    void initializeGrass(){
         for (int y = 0; y <= height; y++) {
             boolean isEquator = isEquatorPosition(y);
             for (int x = 0; x <= width; x++) {
@@ -230,15 +230,14 @@ public class RectangularMap implements WorldMap{
         return statsHandler;
     }
 
-    public int getNumberOfAllAnimals() { return numberOfAllAnimals; }
-    public void setNumberOfAllAnimals(int numberOfAllAnimals) { this.numberOfAllAnimals = numberOfAllAnimals; }
     public int getNumberOfAnimalsAndIncrement() {
         numberOfAllAnimals += 1;
         return numberOfAllAnimals - 1;
     }
-
     public boolean getAnimalIdVisited(int id) { return animalIdVisited.get(id); }
-    public void setAnimalIdVisited(int id, boolean value) { animalIdVisited.set(id, value); }
+    public void setAnimalIdVisited(int id, boolean value) {
+        animalIdVisited.set(id, value);
+    }
     public void resetAnimalIdVisited() { Collections.fill(animalIdVisited, false); }
 
     public void anotherDaySimulated() {

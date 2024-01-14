@@ -175,4 +175,28 @@ public class AnimalTest {
         assertFalse(animal.isAlive());
     }
 
+    @Test
+    public void testCalculateNumberOfDescendants() {
+        OptionsManager optionsManager = new OptionsManager();
+        optionsManager.generateBasicValues();
+        RectangularMap map = new RectangularMap(5, 5, 1, optionsManager);
+        Animal animal1 = new Animal(map, new Vector2d(1, 1), 0);
+        map.place(animal1);
+        Animal animal2 = new Animal(map, new Vector2d(2, 2), 1);
+        map.place(animal2);
+        Animal animal3 = new Animal(map, new Vector2d(3, 3), 2);
+        map.place(animal3);
+        Animal animal4 = new Animal(map, new Vector2d(4, 4), 3);
+        map.place(animal4);
+        Animal animal5 = new Animal(map, new Vector2d(5, 5), 4);
+        map.place(animal5);
+        animal1.getKids().add(animal2);
+        animal1.getKids().add(animal3);
+        animal2.getKids().add(animal4);
+        animal2.getKids().add(animal5);
+        animal3.getKids().add(animal4);
+        animal1.calculateNumberOfDescendants();
+        assertEquals(animal1.getNumberOfDescendants(), 4);
+    }
+
 }
