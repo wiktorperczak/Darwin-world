@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -16,6 +15,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import model.application.options.OptionsManager;
+import model.application.options.StatsHandler;
+import model.map.WorldMap;
+import model.map.utils.MapChangeListener;
+import model.map.utils.Vector2d;
+import model.simulation.Simulation;
+import model.worldElements.Animal;
+import model.worldElements.WorldElement;
+import model.worldElements.WorldElementType;
+
 import java.util.List;
 import java.util.Map;
 
@@ -160,10 +169,8 @@ public class SimulationPresenter implements MapChangeListener {
             } else if (worldElement.worldElementType == WorldElementType.GRASS){
                 drawTunnel(entry, bounds);
                 objectToDraw = createGrass();
-            } else if (worldElement.worldElementType == WorldElementType.TUNNELENTER){
-                objectToDraw = createTunnelEnter();
             } else {
-                objectToDraw = createTunnelExit();
+                objectToDraw = createTunnel();
             }
             GridPane.setHalignment(objectToDraw, HPos.CENTER);
 
@@ -218,12 +225,8 @@ public class SimulationPresenter implements MapChangeListener {
         return new Circle((double) cellSize /5, Color.GREEN);
     }
 
-    private Node createTunnelEnter(){
+    private Node createTunnel(){
         return new Circle((double) (cellSize * 2) /5, Color.DARKGRAY);
-    }
-
-    private Node createTunnelExit(){
-        return new Rectangle((double) (cellSize * 4) /5, (double) (cellSize * 4) /5, Color.DARKGRAY);
     }
 
     private Polygon createTriangle(double size, Color color) {
@@ -236,15 +239,9 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void drawTunnel(Map.Entry<Vector2d, List<WorldElement>> entry, Vector2d bounds){
         List<WorldElement> tunnel= entry.getValue().stream()
-                .filter(worldElement -> worldElement.worldElementType == WorldElementType.TUNNELENTER ||
-                        worldElement.worldElementType == WorldElementType.TUNNELEXIT).toList();
+                .filter(worldElement -> worldElement.worldElementType == WorldElementType.TUNNEL).toList();
         if (tunnel.isEmpty()) return;
-        Node objectToDraw;
-        if (tunnel.get(0).worldElementType == WorldElementType.TUNNELENTER){
-            objectToDraw = createTunnelEnter();
-        } else {
-            objectToDraw = createTunnelExit();
-        }
+        Node objectToDraw = createTunnel();
         GridPane.setHalignment(objectToDraw, HPos.CENTER);
         mapGrid.add(objectToDraw, entry.getKey().getX() + 1, bounds.getY() - entry.getKey().getY() + 1);
 //        ImageView imageView = createImageView(tunnel.get(0).getImagePath(), 0);
@@ -260,28 +257,28 @@ public class SimulationPresenter implements MapChangeListener {
 
     private void updateStatsLabels(WorldMap map) {
         statsHandler = map.getStatsHandler();
-        numberOfAnimalsLabel.setText("Number of Animals: " + statsHandler.getNumberOfAnimals());
-        numberOfGrassLabel.setText("Number of Grass: " + statsHandler.getNumberOfGrass());
-        numberOfFreeSpacesLabel.setText("Number of Free Spaces: " + statsHandler.getNumberOfFreeSpaces());
-        mostPopularGenLabel.setText("Most Popular Gen: " + statsHandler.getMostPopularGen());
-        averageEnergyLabel.setText("Average Energy: " + statsHandler.getAverageEnergy());
-        averageNumberOfKidsLabel.setText("Average Number of Kids: " + statsHandler.getAverageNumberOfKids());
-        averageLengthOfDeadAnimalsLabel.setText("Average Length of Dead Animals: " + statsHandler.getAverageLengthOfDeadAnimals());
+        numberOfAnimalsLabel.setText("Liczba zwierzat: " + statsHandler.getNumberOfAnimals());
+        numberOfGrassLabel.setText("Liczba traw: " + statsHandler.getNumberOfGrass());
+        numberOfFreeSpacesLabel.setText("Liczba wolnych pol: " + statsHandler.getNumberOfFreeSpaces());
+        mostPopularGenLabel.setText("Najpopularniejszy gen: " + statsHandler.getMostPopularGen());
+        averageEnergyLabel.setText("Srednia energia: " + statsHandler.getAverageEnergy());
+        averageNumberOfKidsLabel.setText("Srednia liczba dzieci: " + statsHandler.getAverageNumberOfKids());
+        averageLengthOfDeadAnimalsLabel.setText("Srednia dlugosc zycia niezywych zwierzakow: " + statsHandler.getAverageLengthOfDeadAnimals());
     }
 
     public void updateAnimalStats(Animal animal) {
         stopFollowingButton.setFocusTraversable(false);
-        animalsGenotypeLabel.setText("Genotype: " + animal.getGenotype());
-        genActivatedLabel.setText("Activated gen: " + animal.getActiveGen());
-        energyLabel.setText("Energy: " + animal.getEnergy());
-        grassEatenLabel.setText("Grass eaten: " + animal.getGrassEaten());
-        numberOfKidsLabel.setText("Number of kids: " + animal.getNumberOfKids());
+        animalsGenotypeLabel.setText("Genotyp: " + animal.getGenotype());
+        genActivatedLabel.setText("Aktywny gen: " + animal.getActiveGen());
+        energyLabel.setText("Energia: " + animal.getEnergy());
+        grassEatenLabel.setText("Zjedzona trawa: " + animal.getGrassEaten());
+        numberOfKidsLabel.setText("Liczba dzieci: " + animal.getNumberOfKids());
         animal.calculateNumberOfDescendants();
-        numberOfDescendantLabel.setText("Number of descendants: " + animal.getNumberOfDescendants());
+        numberOfDescendantLabel.setText("Liczba potomkow: " + animal.getNumberOfDescendants());
         if (animal.isAlive()) {
-            numberOfDaysLived.setText("Days lived: " + animal.getNumberOfDaysLived());
+            numberOfDaysLived.setText("Dni przezyte: " + animal.getNumberOfDaysLived());
         } else {
-            numberOfDaysLived.setText("Day of death: " + animal.getDayOfDeath());
+            numberOfDaysLived.setText("Dzien smierci: " + animal.getDayOfDeath());
         }
     }
 

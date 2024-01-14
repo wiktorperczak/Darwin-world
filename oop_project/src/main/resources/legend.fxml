@@ -28,13 +28,8 @@
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <Rectangle width="40" height="40" fill="DARKGRAY"/>
-        <Label text=" - Wyjście z tunelu" style="-fx-font-size: 16px;"/>
-    </HBox>
-
-    <HBox spacing="10" alignment="CENTER_LEFT">
         <Polygon points="0.0, 0.0, -10.0, 40.0, 10.0, 40.0" fill="YELLOW"/>
-        <Label text=" - Zwierzak (2 * startowa energia)" style="-fx-font-size: 16px;"/>
+        <Label text=" - Zwierzak (2 * startowa energia" style="-fx-font-size: 16px;"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
@@ -54,9 +49,9 @@
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <TextFlow>
-            <Text text="Press " style="-fx-font-size: 16px;"/>
-            <Text text="SPACE " style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
-            <Text text="to pause " style="-fx-font-size: 16px;"/>
+            <Text text="Wciścij " style="-fx-font-size: 16px;"/>
+            <Text text="SPACJĘ" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+            <Text text=", aby zatrzymać" style="-fx-font-size: 16px;"/>
         </TextFlow>
     </HBox>
 </VBox>

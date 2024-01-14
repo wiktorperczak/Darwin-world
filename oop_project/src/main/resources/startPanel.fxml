@@ -51,10 +51,10 @@
             <Label text="Utrata energii przy rozmnażaniu:" />
             <ComboBox fx:id="energyLossOnBreed" prefWidth="150"/>
 
-            <Label text="Max genów zmieniane w mutacji:" />
+            <Label text="Maksymalna liczba genów zmienianych podczas mutacji:" style="-fx-wrap-text: true; -fx-max-width: 150px" />
             <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate"/>
 
-            <Label text="Min genów zmienane w mutacji:" />
+            <Label text="Minimalna liczba genów zmienianych podczas mutacji:" style="-fx-wrap-text: true; -fx-max-width: 150px"/>
             <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate"/>
         </VBox>
 
@@ -67,6 +67,9 @@
 
             <Label text="Liczba nowych traw na runde:" />
             <ComboBox fx:id="numberOfGrassPerDay" prefWidth="150"/>
+
+            <Label text="Szybkość symulacji:" />
+            <ComboBox fx:id="simulationSpeed" prefWidth="150"/>
 
             <Label text="Użyj gotowej konfiguracji:" />
             <ComboBox fx:id="useConfiguration" prefWidth="150" onAction="#useSetConfiguration"/>

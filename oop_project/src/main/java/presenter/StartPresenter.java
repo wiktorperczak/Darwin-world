@@ -3,12 +3,18 @@ package presenter;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
-import model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
+import model.application.options.OptionsManager;
+import model.map.RectangularMap;
+import model.map.WorldMap;
+import model.map.utils.Vector2d;
+import model.simulation.Simulation;
+import model.simulation.SimulationEngine;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,6 +27,8 @@ import java.util.List;
 import java.util.Random;
 
 public class StartPresenter {
+    @FXML
+    public ComboBox<Integer> simulationSpeed;
     private int id = 0;
     @FXML
     public ComboBox<Integer> numberOfAnimals;
@@ -78,6 +86,12 @@ public class StartPresenter {
             numberOfGrassPerDay.getItems().add(i);
             startingGrassNumber.getItems().add(i);
         }
+
+        for (int i = 1; i <= 10; i++){
+            simulationSpeed.getItems().add(i);
+        }
+
+        simulationSpeed.setValue(5);
         startingGrassNumber.setValue(5);
         numberOfGrassPerDay.setValue(5);
         grassEnergy.setValue(2);
@@ -263,6 +277,7 @@ public class StartPresenter {
         optionsManager.setUseReverseGenotype(useReverseGenotype.isSelected());
         optionsManager.setNumberOfGrassPerDay(numberOfGrassPerDay.getValue());
         optionsManager.setStartingGrassNumber(startingGrassNumber.getValue());
+        optionsManager.setSimulationSpeed(simulationSpeed.getValue());
 
         List<Vector2d> positions = new ArrayList<>();
         Random random = new Random();

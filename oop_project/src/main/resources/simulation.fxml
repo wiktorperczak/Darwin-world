@@ -14,14 +14,14 @@
       fx:controller="presenter.SimulationPresenter">
 
     <VBox spacing="10" alignment="CENTER_LEFT">
-        <Label fx:id="statsLabel" text="Statistics" style="-fx-font-size: 20px; -fx-font-weight: bold"/>
+        <Label fx:id="statsLabel" text="Statystyki ogólne" style="-fx-font-size: 20px; -fx-font-weight: bold"/>
         <Label fx:id="numberOfAnimalsLabel" text="Number of Animals: " style="-fx-font-size: 16px;"/>
         <Label fx:id="numberOfGrassLabel" text="Number of Grass: " style="-fx-font-size: 16px;"/>
         <Label fx:id="numberOfFreeSpacesLabel" text="Number of Free Spaces: " style="-fx-font-size: 16px;"/>
         <Label fx:id="mostPopularGenLabel" text="Most Popular Gen: " style="-fx-font-size: 16px;"/>
         <Label fx:id="averageEnergyLabel" text="Average Energy: " style="-fx-font-size: 16px;"/>
         <Label fx:id="averageNumberOfKidsLabel" text="Average Number of Kids: " style="-fx-font-size: 16px;"/>
-        <Label fx:id="averageLengthOfDeadAnimalsLabel" text="Average Length of Dead Animals: " style="-fx-font-size: 16px;"/>
+        <Label fx:id="averageLengthOfDeadAnimalsLabel" text="Average Length of Dead Animals: " style="-fx-font-size: 16px; -fx-wrap-text: true; -fx-max-width: 210px"/>
     </VBox>
 
     <VBox spacing="10" alignment="CENTER">
@@ -41,6 +41,6 @@
         <Label fx:id="numberOfKidsLabel" text="Number of kids: " style="-fx-font-size: 16px;"/>
         <Label fx:id="numberOfDescendantLabel" text="Number of descendants: " style="-fx-font-size: 16px;"/>
         <Label fx:id="numberOfDaysLived" text="Days lived: " style="-fx-font-size: 16px;"/>
-        <Button fx:id="stopFollowingButton" text="Stop following" onAction="#stopFollowingAnimal"/>
+        <Button fx:id="stopFollowingButton" text="Zakończ śledzenie" onAction="#stopFollowingAnimal"/>
     </VBox>
 </HBox>
