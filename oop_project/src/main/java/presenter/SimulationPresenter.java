@@ -248,28 +248,28 @@ public class SimulationPresenter implements MapChangeListener {
 
     private void updateStatsLabels(WorldMap map) {
         statsHandler = map.getStatsHandler();
-        numberOfAnimalsLabel.setText("Number of Animals: " + statsHandler.getNumberOfAnimals());
-        numberOfGrassLabel.setText("Number of Grass: " + statsHandler.getNumberOfGrass());
-        numberOfFreeSpacesLabel.setText("Number of Free Spaces: " + statsHandler.getNumberOfFreeSpaces());
-        mostPopularGenLabel.setText("Most Popular Gen: " + statsHandler.getMostPopularGen());
-        averageEnergyLabel.setText("Average Energy: " + statsHandler.getAverageEnergy());
-        averageNumberOfKidsLabel.setText("Average Number of Kids: " + statsHandler.getAverageNumberOfKids());
-        averageLengthOfDeadAnimalsLabel.setText("Average Length of Dead Animals: " + statsHandler.getAverageLengthOfDeadAnimals());
+        numberOfAnimalsLabel.setText("Liczba zwierzat: " + statsHandler.getNumberOfAnimals());
+        numberOfGrassLabel.setText("Liczba traw: " + statsHandler.getNumberOfGrass());
+        numberOfFreeSpacesLabel.setText("Liczba wolnych pol: " + statsHandler.getNumberOfFreeSpaces());
+        mostPopularGenLabel.setText("Najpopularniejszy gen: " + statsHandler.getMostPopularGen());
+        averageEnergyLabel.setText("Srednia energia: " + statsHandler.getAverageEnergy());
+        averageNumberOfKidsLabel.setText("Srednia liczba dzieci: " + statsHandler.getAverageNumberOfKids());
+        averageLengthOfDeadAnimalsLabel.setText("Srednia dlugosc zycia niezywych zwierzakow: " + statsHandler.getAverageLengthOfDeadAnimals());
     }
 
     public void updateAnimalStats(Animal animal) {
         stopFollowingButton.setFocusTraversable(false);
-        animalsGenotypeLabel.setText("Genotype: " + animal.getGenotype());
-        genActivatedLabel.setText("Activated gen: " + animal.getActiveGen());
-        energyLabel.setText("Energy: " + animal.getEnergy());
-        grassEatenLabel.setText("Grass eaten: " + animal.getGrassEaten());
-        numberOfKidsLabel.setText("Number of kids: " + animal.getNumberOfKids());
+        animalsGenotypeLabel.setText("Genotyp: " + animal.getGenotype());
+        genActivatedLabel.setText("Aktywny gen: " + animal.getActiveGen());
+        energyLabel.setText("Energia: " + animal.getEnergy());
+        grassEatenLabel.setText("Zjedzona trawa: " + animal.getGrassEaten());
+        numberOfKidsLabel.setText("Liczba dzieci: " + animal.getNumberOfKids());
         animal.calculateNumberOfDescendants();
-        numberOfDescendantLabel.setText("Number of descendants: " + animal.getNumberOfDescendants());
+        numberOfDescendantLabel.setText("Liczba potomkow: " + animal.getNumberOfDescendants());
         if (animal.isAlive()) {
-            numberOfDaysLived.setText("Days lived: " + animal.getNumberOfDaysLived());
+            numberOfDaysLived.setText("Dni przezyte: " + animal.getNumberOfDaysLived());
         } else {
-            numberOfDaysLived.setText("Day of death: " + animal.getDayOfDeath());
+            numberOfDaysLived.setText("Dzien smierci: " + animal.getDayOfDeath());
         }
     }
 

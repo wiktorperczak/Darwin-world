@@ -52,7 +52,6 @@ public class RectangularMap implements WorldMap{
                 else { nonEquatorEmptyFields.add(position); }
             }
         }
-
     }
 
     void initializeTunnels(){

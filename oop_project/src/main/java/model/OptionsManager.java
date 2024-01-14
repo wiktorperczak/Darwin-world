@@ -1,21 +1,22 @@
 package model;
 
 public final class OptionsManager {
-    int numberOfAnimals;
-    int width;
-    int height;
-    int animalLife;
-    int genotypeLength;
-    int minimalEnergyToBreed;
-    int energyLossOnBreed;
-    int maxGensToMutate;
-    int minGensToMutate;
-    int grassEnergy;
-    int numberOfTunnels;
-    boolean useTunnels;
-    boolean useReverseGenotype;
-    int numberOfGrassPerDay;
-    int startingGrassNumber;
+    private int numberOfAnimals;
+    private int width;
+    private int height;
+    private int animalLife;
+    private int genotypeLength;
+    private int minimalEnergyToBreed;
+    private int energyLossOnBreed;
+    private int maxGensToMutate;
+    private int minGensToMutate;
+    private int grassEnergy;
+    private int numberOfTunnels;
+    private boolean useTunnels;
+    private boolean useReverseGenotype;
+    private int numberOfGrassPerDay;
+    private int startingGrassNumber;
+    private int simulationSpeed;
 
     public int getNumberOfAnimals() { return numberOfAnimals; }
 
@@ -55,6 +56,8 @@ public final class OptionsManager {
     public void setNumberOfGrassPerDay(int numberOfGrassPerDay) { this.numberOfGrassPerDay = numberOfGrassPerDay; }
     public int getStartingGrassNumber() { return startingGrassNumber; }
     public void setStartingGrassNumber(int startingGrassNumber) { this.startingGrassNumber = startingGrassNumber; }
+    public void setSimulationSpeed(int simulationSpeed){ this.simulationSpeed = simulationSpeed; }
+    public int getSimulationSpeed(){ return simulationSpeed; }
 
     public void generateBasicValues() {
         setNumberOfAnimals(10);
@@ -72,5 +75,6 @@ public final class OptionsManager {
         setUseReverseGenotype(true);
         setNumberOfGrassPerDay(10);
         setStartingGrassNumber(10);
+        setSimulationSpeed(5);
     }
 }

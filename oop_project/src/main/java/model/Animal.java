@@ -29,7 +29,7 @@ public class Animal extends WorldElement{
         this.map = map;
         this.position = position;
         genotype = generateGenotype(map.optionsManager.getGenotypeLength());
-        genDirectionGenerator = new GenDirectionGenerator(genotype, map.optionsManager.useReverseGenotype);
+        genDirectionGenerator = new GenDirectionGenerator(genotype, map.optionsManager.getUseReverseGenotype());
         genIterator = genDirectionGenerator.iterator();
         facingDirection = genIterator.next();
         energy = map.optionsManager.getAnimalLife();
@@ -109,7 +109,7 @@ public class Animal extends WorldElement{
     public List<Integer> getGenotype(){return genotype;}
     public void setGenotype(List<Integer> newGenotype){
         genotype = new ArrayList<>(newGenotype);
-        genDirectionGenerator = new GenDirectionGenerator(genotype, map.optionsManager.useReverseGenotype);
+        genDirectionGenerator = new GenDirectionGenerator(genotype, map.optionsManager.getUseReverseGenotype());
         genIterator = genDirectionGenerator.iterator();
     }
     public int getFacingDirection(){ return facingDirection.toInt();}

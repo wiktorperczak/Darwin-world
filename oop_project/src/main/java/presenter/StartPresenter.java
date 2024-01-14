@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Random;
 
 public class StartPresenter {
+    @FXML
+    public ComboBox<Integer> simulationSpeed;
     private int id = 0;
     @FXML
     public ComboBox<Integer> numberOfAnimals;
@@ -75,6 +77,12 @@ public class StartPresenter {
             numberOfGrassPerDay.getItems().add(i);
             startingGrassNumber.getItems().add(i);
         }
+
+        for (int i = 1; i <= 10; i++){
+            simulationSpeed.getItems().add(i);
+        }
+
+        simulationSpeed.setValue(5);
         startingGrassNumber.setValue(5);
         numberOfGrassPerDay.setValue(5);
         grassEnergy.setValue(2);
@@ -170,6 +178,7 @@ public class StartPresenter {
         optionsManager.setUseReverseGenotype(useReverseGenotype.isSelected());
         optionsManager.setNumberOfGrassPerDay(numberOfGrassPerDay.getValue());
         optionsManager.setStartingGrassNumber(startingGrassNumber.getValue());
+        optionsManager.setSimulationSpeed(simulationSpeed.getValue());
 
 //        List<Vector2d> positions = List.of(new Vector2d(1,1), new Vector2d(2, 2));
         List<Vector2d> positions = new ArrayList<>();

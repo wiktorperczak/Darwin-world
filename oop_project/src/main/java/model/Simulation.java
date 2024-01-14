@@ -8,6 +8,7 @@ public class Simulation implements Runnable{
     boolean isRunning;
     private final Object GUI_INITIALIZATION_MONITOR = new Object();
     private boolean pauseThreadFlag = false;
+    private final int simulationSpeed;
 
 
     public Simulation(List<Vector2d> animalsStartingPos, WorldMap map){
@@ -16,6 +17,7 @@ public class Simulation implements Runnable{
         for (Vector2d position : animalsStartingPos) {
             this.map.place(new Animal(this.map, position, this.map.getNumberOfAnimalsAndIncrement()));
         }
+        simulationSpeed = (11 - this.map.optionsManager.getSimulationSpeed()) * 100;
         this.map.mapChanged("Zwierzaki się ustawiły");
     }
 
@@ -24,7 +26,7 @@ public class Simulation implements Runnable{
         CsvHandler csvHandler = new CsvHandler(map);
         csvHandler.createCsvFile(filePath);
 
-        addGrass(map.optionsManager.startingGrassNumber);
+        addGrass(map.optionsManager.getStartingGrassNumber());
 
 
         while(!map.getAnimals().isEmpty()) {
@@ -36,14 +38,14 @@ public class Simulation implements Runnable{
             moveAnimals();
             eatingGrass();
             breed();
-            addGrass(map.optionsManager.numberOfGrassPerDay);
+            addGrass(map.optionsManager.getNumberOfGrassPerDay());
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
             map.countAllStats();
             csvHandler.appendRowToCsv(filePath);
             map.anotherDaySimulated();
             try {
-                Thread.sleep(50);
+                Thread.sleep(simulationSpeed);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
