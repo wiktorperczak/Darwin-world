@@ -19,54 +19,58 @@
     <HBox spacing="10" alignment="CENTER">
         <VBox spacing="8">
             <Label text="Wysokość mapy:" />
-            <ComboBox fx:id="height" prefWidth="150" onAction="#updateTunnels"/>
+            <ComboBox fx:id="height" prefWidth="150" onAction="#updateHeight" editable="true"/>
 
             <Label text="Szerokość mapy:" />
-            <ComboBox fx:id="width" prefWidth="150" onAction="#updateTunnels"/>
+            <ComboBox fx:id="width" prefWidth="150" onAction="#updateWidth" editable="true"/>
 
             <Label text="Liczba zwierząt:" />
-            <ComboBox fx:id="numberOfAnimals" prefWidth="150"/>
+            <ComboBox fx:id="numberOfAnimals" prefWidth="150" onAction="#updateNumberOfAnimals" editable="true"/>
 
             <Label text="Występowanie tuneli:" />
             <CheckBox fx:id="useTunnels" onAction="#visibilityTunnels"/>
 
             <Label text="Liczba tuneli:" />
-            <ComboBox fx:id="numberOfTunnels" prefWidth="150"/>
+            <ComboBox fx:id="numberOfTunnels" prefWidth="150" editable="true" onAction="#updateNumberOfTunnels"/>
 
             <Label text="Początkowa energia zwierząt:" />
-            <ComboBox fx:id="animalLife" prefWidth="150"/>
+            <ComboBox fx:id="animalLife" prefWidth="150" editable="true" onAction="#updateAnimalLife"/>
 
         </VBox>
 
         <VBox spacing="8">
             <Label text="Długość genotypu:" />
-            <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGensToMutate"/>
+            <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGenotypeLength" editable="true"/>
+<!--            <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGensToMutate" editable="true"/>-->
 
             <Label text="Odtwarzanie genotypu od tyłu:" />
             <CheckBox fx:id="useReverseGenotype" />
 
             <Label text="Min energii do rozmnazania:"/>
-            <ComboBox fx:id="minimalEnergyToBreed" prefWidth="150" onAction="#updateEnergyLossOnBreed"/>
+<!--            <ComboBox fx:id="minimalEnergyToBreed" prefWidth="150" onAction="#updateEnergyLossOnBreed" editable="true"/>-->
+            <ComboBox fx:id="minimalEnergyToBreed" prefWidth="150" onAction="#updateMinimalEnergyToBreed" editable="true"/>
 
             <Label text="Utrata energii przy rozmnażaniu:" />
-            <ComboBox fx:id="energyLossOnBreed" prefWidth="150"/>
+            <ComboBox fx:id="energyLossOnBreed" prefWidth="150" editable="true" onAction="#updateEnergyLossOnBreed"/>
 
             <Label text="Maksymalna liczba genów zmienianych podczas mutacji:" style="-fx-wrap-text: true; -fx-max-width: 150px" />
-            <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate"/>
+            <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate" editable="true"/>
+<!--            <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate" editable="true"/>-->
 
             <Label text="Minimalna liczba genów zmienianych podczas mutacji:" style="-fx-wrap-text: true; -fx-max-width: 150px"/>
-            <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate"/>
+            <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate" editable="true"/>
+<!--            <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate" editable="true"/>-->
         </VBox>
 
         <VBox spacing="8">
             <Label text="Liczba traw na start:" />
-            <ComboBox fx:id="startingGrassNumber" prefWidth="150"/>
+            <ComboBox fx:id="startingGrassNumber" prefWidth="150" editable="true" onAction="#updateStartingGrassNumber"/>
 
             <Label text="Wartość energetyczna trawy:" />
-            <ComboBox fx:id="grassEnergy" prefWidth="150"/>
+            <ComboBox fx:id="grassEnergy" prefWidth="150" editable="true" onAction="#updateGrassEnergy"/>
 
             <Label text="Liczba nowych traw na runde:" />
-            <ComboBox fx:id="numberOfGrassPerDay" prefWidth="150"/>
+            <ComboBox fx:id="numberOfGrassPerDay" prefWidth="150" editable="true" onAction="#updateGrassPerRound"/>
 
             <Label text="Szybkość symulacji:" />
             <ComboBox fx:id="simulationSpeed" prefWidth="150"/>

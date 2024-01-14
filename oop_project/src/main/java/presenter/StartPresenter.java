@@ -69,45 +69,82 @@ public class StartPresenter {
             width.getItems().add(i);
             height.getItems().add(i);
         }
-        width.setValue(5);
-        height.setValue(5);
 
-        for (int i = 1; i <= 1000; i++) { numberOfAnimals.getItems().add(i); }
-        numberOfAnimals.setValue(3);
-
-        for (int i = 1; i <= 30; i++) {
+        for (int i = 1; i <= 1000; i++) {
+            startingGrassNumber.getItems().add(i);
+            numberOfAnimals.getItems().add(i);
             grassEnergy.getItems().add(i);
+            numberOfGrassPerDay.getItems().add(i);
+        }
+
+        for (int i = 1; i < 100; i++) {
             animalLife.getItems().add(i);
+            if (i != 1) minimalEnergyToBreed.getItems().add(i);
             genotypeLength.getItems().add(i);
-            energyLossOnBreed.getItems().add(i);
-            minimalEnergyToBreed.getItems().add(i);
+            numberOfTunnels.getItems().add(i);
             minGensToMutate.getItems().add(i);
             maxGensToMutate.getItems().add(i);
-            numberOfGrassPerDay.getItems().add(i);
-            startingGrassNumber.getItems().add(i);
+        }
+
+        for (int i = 1; i < 400; i++) {
+            energyLossOnBreed.getItems().add(i);
         }
 
         for (int i = 1; i <= 10; i++){
             simulationSpeed.getItems().add(i);
         }
 
-        simulationSpeed.setValue(5);
+        width.setValue(5);
+        height.setValue(5);
+        numberOfAnimals.setValue(3);
         startingGrassNumber.setValue(5);
+        maxGensToMutate.setValue(1);
+        minGensToMutate.setValue(1);
+        simulationSpeed.setValue(5);
         numberOfGrassPerDay.setValue(5);
         grassEnergy.setValue(2);
         animalLife.setValue(5);
         genotypeLength.setValue(5);
         minimalEnergyToBreed.setValue(5);
-        maxGensToMutate.setValue(1);
-        minGensToMutate.setValue(1);
         useTunnels.setSelected(true);
         useReverseGenotype.setSelected(true);
-
-        updateTunnels();
-        updateEnergyLossOnBreed();
-        updateGensToMutate();
+        numberOfTunnels.setValue(1);
+        energyLossOnBreed.setValue(2);
 
         updateConfigurations();
+    }
+
+    @FXML
+    private void updateValue(ComboBox<Integer> box, int min, int max, int defaultValue) {
+        String input = box.getEditor().getText();
+        try {
+            int parsedValue = Integer.parseInt(input);
+
+            if (parsedValue >= min && parsedValue <= max) {
+                box.setValue(parsedValue);
+            } else {
+                box.setValue(defaultValue);
+            }
+        } catch (NumberFormatException e) {
+            height.setValue(defaultValue);
+        }
+    }
+
+    @FXML
+    private void updateHeight() {
+        updateValue(height, 1, 50, 5);
+        checkNumberOfTunnels();
+    }
+
+    @FXML
+    private void updateWidth() {
+        updateValue(width, 1, 50, 5);
+        checkNumberOfTunnels();
+    }
+
+    @FXML
+    private void updateNumberOfAnimals() {
+        updateValue(numberOfAnimals, 1, 1000, 3);
     }
 
     @FXML
@@ -115,48 +152,81 @@ public class StartPresenter {
         numberOfTunnels.setDisable(!useTunnels.isSelected());
     }
 
+
     @FXML
-    private void updateTunnels() {
-        numberOfTunnels.getItems().clear();
-        for (int i = 0; i <= (width.getValue() + 1) * (height.getValue() + 1) / 2; i++) {
-            numberOfTunnels.getItems().add(i);
-        }
-        numberOfTunnels.setValue(1);
+    private void updateNumberOfTunnels() {
+        updateValue(numberOfTunnels, 1, 100, 1);
+        checkNumberOfTunnels();
+    }
+
+    @FXML
+    private void updateAnimalLife() {
+        updateValue(animalLife, 1, 1000, 5);
+    }
+
+    @FXML
+    private void updateGenotypeLength() {
+        updateValue(genotypeLength, 1, 100, 5);
+    }
+
+    @FXML
+    private void updateMinimalEnergyToBreed() {
+        updateValue(minimalEnergyToBreed, 2, 1000, 5);
+        changeEnergyLossOnBreed();
     }
 
     @FXML
     private void updateEnergyLossOnBreed() {
-        energyLossOnBreed.getItems().clear();
-        for (int i = 0; i < minimalEnergyToBreed.getValue(); i++)
-            energyLossOnBreed.getItems().add(i);
-        energyLossOnBreed.setValue(1);
+        updateValue(energyLossOnBreed, 1, 500, 2);
+        changeEnergyLossOnBreed();
     }
 
     @FXML
-    private void updateGensToMutate(){
-        maxGensToMutate.getItems().clear();
-        minGensToMutate.getItems().clear();
-        for (int i = 0; i <= genotypeLength.getValue(); i++){
-            maxGensToMutate.getItems().add(i);
-            minGensToMutate.getItems().add(i);
+    private void updateMaxGensToMutate() {
+        updateValue(maxGensToMutate, 1, 100, 1);
+        changeMaxGensToMutate();
+    }
+
+    @FXML
+    private void updateMinGensToMutate() {
+        updateValue(minGensToMutate, 1, 100, 1);
+        changeMaxGensToMutate();
+    }
+
+    @FXML
+    private void updateStartingGrassNumber() {
+        updateValue(startingGrassNumber, 1, 1000, 5);
+    }
+
+    @FXML
+    private void updateGrassPerRound() {
+        updateValue(numberOfGrassPerDay, 1, 1000, 5);
+    }
+
+    @FXML
+    private void updateGrassEnergy() {
+        updateValue(grassEnergy, 1, 1000, 2);
+    }
+
+    @FXML
+    private void checkNumberOfTunnels() {
+        if (((width.getValue() + 1) * (height.getValue() + 1)) / 2 < numberOfTunnels.getValue()) {
+            numberOfTunnels.setValue(1);
         }
-        maxGensToMutate.setValue(1);
-        minGensToMutate.setValue(1);
     }
 
     @FXML
-    private void updateMaxGensToMutate(){
+    private void changeEnergyLossOnBreed() {
+        if (energyLossOnBreed.getValue() >= minimalEnergyToBreed.getValue()) {
+            energyLossOnBreed.setValue(1);
+        }
+    }
+
+    @FXML
+    private void changeMaxGensToMutate(){
         if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
         if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
             maxGensToMutate.setValue(minGensToMutate.getValue());
-        }
-    }
-
-    @FXML
-    private void updateMinGensToMutate(){
-        if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
-        if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
-            minGensToMutate.setValue(maxGensToMutate.getValue());
         }
     }
 
