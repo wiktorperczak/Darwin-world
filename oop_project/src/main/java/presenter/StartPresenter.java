@@ -2,6 +2,7 @@ package presenter;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,13 +19,15 @@ import model.simulation.SimulationEngine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class StartPresenter {
     @FXML
@@ -62,6 +65,10 @@ public class StartPresenter {
     public ComboBox<Integer> startingGrassNumber;
     @FXML
     public ComboBox<String> useConfiguration;
+    @FXML
+    public CheckBox statsToCsv;
+    @FXML
+    public TextField statsName;
 
     @FXML
     private void initialize() {
@@ -110,6 +117,7 @@ public class StartPresenter {
         useReverseGenotype.setSelected(true);
         numberOfTunnels.setValue(1);
         energyLossOnBreed.setValue(2);
+        statsToCsv.setSelected(true);
 
         updateConfigurations();
     }
@@ -150,6 +158,11 @@ public class StartPresenter {
     @FXML
     private void visibilityTunnels() {
         numberOfTunnels.setDisable(!useTunnels.isSelected());
+    }
+
+    @FXML
+    private void visibilityStatsName() {
+        statsName.setDisable(!statsToCsv.isSelected());
     }
 
 
@@ -230,32 +243,33 @@ public class StartPresenter {
         }
     }
 
-    private int numberOfCOnfigurationsInFolder() {
-        int idFileCount = 0;
-        File folder = new File("konfiguracje");
-        File[] files = folder.listFiles();
+    @FXML
+    private void saveStatsToCsv() {
 
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile() && file.getName().toLowerCase().endsWith(".csv")) {
-                    idFileCount++;
-                }
-            }
-        }
-        return idFileCount;
     }
 
     @FXML
     private void updateConfigurations() {
-        int num = numberOfCOnfigurationsInFolder();
-        for (int i = 0; i < num; i++) {
-            useConfiguration.getItems().add("konfiguracja" + (i+1));
+        useConfiguration.getItems().clear();
+
+        String currentDir = System.getProperty("user.dir");
+        File folder = new File(currentDir, "konfiguracje");
+
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(".csv")) {
+                        useConfiguration.getItems().add(file.getName());
+                    }
+                }
+            }
         }
-        useConfiguration.setValue("konfiguracja" + 1);
     }
 
     public void useSetConfiguration() {
-        String filePath = "konfiguracje/" + useConfiguration.getValue() + ".csv";
+        String filePath = "konfiguracje/" + useConfiguration.getValue();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String[] columnTitles = reader.readLine().split(",");
             String[] values = reader.readLine().split(",");
@@ -286,10 +300,26 @@ public class StartPresenter {
         }
     }
 
-    public void exportConfiguration() {
-        int id = 1 + numberOfCOnfigurationsInFolder();
-        String filePath = "konfiguracje/konfiguracja" + id + ".csv";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+    public void saveConfigurationToCsv() {
+        FileChooser fileChooser = new FileChooser();
+
+        String currentDir = System.getProperty("user.dir");
+        Path configDirPath = Paths.get(currentDir, "konfiguracje");
+        File defaultDirectory = configDirPath.toFile();
+        fileChooser.setInitialDirectory(defaultDirectory);
+
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Pliki CSV (*.csv)", "*.csv"));
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            saveDataToCsv(file);
+            updateConfigurations();
+        }
+    }
+
+    private void saveDataToCsv(File file) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("Wysokość,Szerokość,Liczba zwierząt,Występowanie tuneli,Liczba tuneli,Początkowa energia zwierząt," +
                     "Długość genotypu,Odtwarzanie genotypu od tyłu,Min energii do rozmnażania,Utrata energii przy rozmnażaniu," +
                     "Max genów zmieniane w mutacji,Min genów zmieniane w mutacji,Liczba traw na start," +
@@ -354,6 +384,9 @@ public class StartPresenter {
         optionsManager.setNumberOfGrassPerDay(numberOfGrassPerDay.getValue());
         optionsManager.setStartingGrassNumber(startingGrassNumber.getValue());
         optionsManager.setSimulationSpeed(simulationSpeed.getValue());
+        optionsManager.setStatsToCsv(statsToCsv.isSelected());
+        optionsManager.setStatsName(statsName.getText());
+
 
         List<Vector2d> positions = new ArrayList<>();
         Random random = new Random();
