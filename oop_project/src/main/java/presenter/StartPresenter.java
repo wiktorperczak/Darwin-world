@@ -180,6 +180,8 @@ public class StartPresenter {
     @FXML
     private void updateGenotypeLength() {
         updateValue(genotypeLength, 1, 100, 5);
+        changeMinGensToMutate();
+        changeMaxGensToMutate();
     }
 
     @FXML
@@ -203,7 +205,7 @@ public class StartPresenter {
     @FXML
     private void updateMinGensToMutate() {
         updateValue(minGensToMutate, 1, 100, 1);
-        changeMaxGensToMutate();
+        changeMinGensToMutate();
     }
 
     @FXML
@@ -240,6 +242,19 @@ public class StartPresenter {
         if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
         if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
             maxGensToMutate.setValue(minGensToMutate.getValue());
+        }
+        if (genotypeLength.getValue() < maxGensToMutate.getValue()){
+            maxGensToMutate.setValue(genotypeLength.getValue());
+        }
+    }
+
+    private void changeMinGensToMutate(){
+        if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
+        if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
+            minGensToMutate.setValue(maxGensToMutate.getValue());
+        }
+        if (genotypeLength.getValue() < minGensToMutate.getValue()){
+            minGensToMutate.setValue(genotypeLength.getValue());
         }
     }
 

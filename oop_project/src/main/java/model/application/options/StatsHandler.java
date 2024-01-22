@@ -12,7 +12,7 @@ public class StatsHandler {
     private int numberOfAnimals;
     private int numberOfGrass;
     private int numberOfFreeSpaces;
-    private int mostPopularGen;
+    private List<Integer> mostPopularGenotype;
     private double averageEnergy;
     private double averageNumberOfKids;
     private double averageLengthOfDeadAnimals;
@@ -34,7 +34,7 @@ public class StatsHandler {
         averageEnergy = calculateAverageEnergy();
         averageNumberOfKids = calculateAverageNumberOfKids();
         averageLengthOfDeadAnimals = calculateAverageLengthOfDeadAnimals();
-        mostPopularGen = calculateMostPopularGen();
+        mostPopularGenotype = calculateMostPopularGen();
     }
     List<Animal> getAnimals(){
         return map.getAnimals().keySet().stream()
@@ -76,27 +76,30 @@ public class StatsHandler {
         return Math.round((((double) sumLifeLengthOfDeadAnimals / numberOfDeadAnimals)*100.0))/100.0;
     }
 
-    int calculateMostPopularGen(){
-        Map<Integer, Integer> allGens = new HashMap<>();
-        for (int i = 0; i < 8; i++){
-            allGens.put(i, 0);
-        }
+    List<Integer> calculateMostPopularGen(){
+        Map<List<Integer>, Integer> gensMap = new HashMap<>();
+//        for (int i = 0; i < 8; i++){
+//            allGens.put(i, 0);
+//        }
 
         for (Animal animal : animals){
-            for (Integer gen : animal.getGenotype()){
-                allGens.put(gen, allGens.get(gen) + 1);
+            List<Integer> animalsGenotype = animal.getGenotype();
+            if (gensMap.containsKey(animalsGenotype)){
+                gensMap.put(animalsGenotype, gensMap.get(animalsGenotype) + 1);
+            } else {
+                gensMap.put(animalsGenotype, 1);
             }
         }
-        int resultGen = -1;
-        int number = -1;
-        for (Map.Entry<Integer, Integer> entry : allGens.entrySet()){
-            if (entry.getValue() > number){
-                resultGen = entry.getKey();
-                number = entry.getValue();
+        List<Integer> resultGenotype = new ArrayList<>();
+        int maxNumber = -1;
+        for (Map.Entry<List<Integer>, Integer> entry : gensMap.entrySet()){
+            if (entry.getValue() > maxNumber){
+                resultGenotype = entry.getKey();
+                maxNumber = entry.getValue();
             }
         }
 
-        return resultGen;
+        return resultGenotype;
     }
 
     public void animalDeceased(Animal animal){
@@ -118,8 +121,8 @@ public class StatsHandler {
         return numberOfFreeSpaces;
     }
 
-    public int getMostPopularGen() {
-        return mostPopularGen;
+    public List<Integer> getMostPopularGenotype() {
+        return mostPopularGenotype;
     }
 
     public double getAverageNumberOfKids() {

@@ -32,7 +32,7 @@ public class CsvHandler {
             rowBuilder.append(map.statsHandler.getNumberOfAnimals()).append(",");
             rowBuilder.append(map.statsHandler.getNumberOfGrass()).append(",");
             rowBuilder.append(map.statsHandler.getNumberOfFreeSpaces()).append(",");
-            rowBuilder.append(map.statsHandler.getMostPopularGen()).append(",");
+            rowBuilder.append(map.statsHandler.getMostPopularGenotype()).append(",");
             rowBuilder.append(map.statsHandler.getAverageEnergy()).append(",");
             rowBuilder.append(map.statsHandler.getAverageNumberOfKids()).append(",");
             rowBuilder.append(map.statsHandler.getAverageLengthOfDeadAnimals()).append(",");
