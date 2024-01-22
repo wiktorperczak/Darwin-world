@@ -2,6 +2,7 @@ package presenter;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,13 +19,15 @@ import model.simulation.SimulationEngine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class StartPresenter {
     @FXML
@@ -62,6 +65,10 @@ public class StartPresenter {
     public ComboBox<Integer> startingGrassNumber;
     @FXML
     public ComboBox<String> useConfiguration;
+    @FXML
+    public CheckBox statsToCsv;
+    @FXML
+    public TextField statsName;
 
     @FXML
     private void initialize() {
@@ -69,78 +76,167 @@ public class StartPresenter {
             width.getItems().add(i);
             height.getItems().add(i);
         }
-        width.setValue(5);
-        height.setValue(5);
 
-        for (int i = 1; i <= 1000; i++) { numberOfAnimals.getItems().add(i); }
-        numberOfAnimals.setValue(3);
-
-        for (int i = 1; i <= 30; i++) {
+        for (int i = 1; i <= 1000; i++) {
+            startingGrassNumber.getItems().add(i);
+            numberOfAnimals.getItems().add(i);
             grassEnergy.getItems().add(i);
+            numberOfGrassPerDay.getItems().add(i);
+        }
+
+        for (int i = 1; i < 100; i++) {
             animalLife.getItems().add(i);
+            if (i != 1) minimalEnergyToBreed.getItems().add(i);
             genotypeLength.getItems().add(i);
-            energyLossOnBreed.getItems().add(i);
-            minimalEnergyToBreed.getItems().add(i);
+            numberOfTunnels.getItems().add(i);
             minGensToMutate.getItems().add(i);
             maxGensToMutate.getItems().add(i);
-            numberOfGrassPerDay.getItems().add(i);
-            startingGrassNumber.getItems().add(i);
+        }
+
+        for (int i = 1; i < 400; i++) {
+            energyLossOnBreed.getItems().add(i);
         }
 
         for (int i = 1; i <= 10; i++){
             simulationSpeed.getItems().add(i);
         }
 
-        simulationSpeed.setValue(5);
+        width.setValue(5);
+        height.setValue(5);
+        numberOfAnimals.setValue(3);
         startingGrassNumber.setValue(5);
+        maxGensToMutate.setValue(1);
+        minGensToMutate.setValue(1);
+        simulationSpeed.setValue(5);
         numberOfGrassPerDay.setValue(5);
         grassEnergy.setValue(2);
         animalLife.setValue(5);
         genotypeLength.setValue(5);
         minimalEnergyToBreed.setValue(5);
-        maxGensToMutate.setValue(1);
-        minGensToMutate.setValue(1);
         useTunnels.setSelected(true);
         useReverseGenotype.setSelected(true);
-
-        updateTunnels();
-        updateEnergyLossOnBreed();
-        updateGensToMutate();
+        numberOfTunnels.setValue(1);
+        energyLossOnBreed.setValue(2);
+        statsToCsv.setSelected(true);
 
         updateConfigurations();
     }
 
     @FXML
-    private void updateTunnels() {
-        numberOfTunnels.getItems().clear();
-        for (int i = 0; i <= (width.getValue() + 1) * (height.getValue() + 1) / 2; i++) {
-            numberOfTunnels.getItems().add(i);
+    private void updateValue(ComboBox<Integer> box, int min, int max, int defaultValue) {
+        String input = box.getEditor().getText();
+        try {
+            int parsedValue = Integer.parseInt(input);
+
+            if (parsedValue >= min && parsedValue <= max) {
+                box.setValue(parsedValue);
+            } else {
+                box.setValue(defaultValue);
+            }
+        } catch (NumberFormatException e) {
+            height.setValue(defaultValue);
         }
-        numberOfTunnels.setValue(1);
+    }
+
+    @FXML
+    private void updateHeight() {
+        updateValue(height, 1, 50, 5);
+        checkNumberOfTunnels();
+    }
+
+    @FXML
+    private void updateWidth() {
+        updateValue(width, 1, 50, 5);
+        checkNumberOfTunnels();
+    }
+
+    @FXML
+    private void updateNumberOfAnimals() {
+        updateValue(numberOfAnimals, 1, 1000, 3);
+    }
+
+    @FXML
+    private void visibilityTunnels() {
+        numberOfTunnels.setDisable(!useTunnels.isSelected());
+    }
+
+    @FXML
+    private void visibilityStatsName() {
+        statsName.setDisable(!statsToCsv.isSelected());
+    }
+
+
+    @FXML
+    private void updateNumberOfTunnels() {
+        updateValue(numberOfTunnels, 1, 100, 1);
+        checkNumberOfTunnels();
+    }
+
+    @FXML
+    private void updateAnimalLife() {
+        updateValue(animalLife, 1, 1000, 5);
+    }
+
+    @FXML
+    private void updateGenotypeLength() {
+        updateValue(genotypeLength, 1, 100, 5);
+    }
+
+    @FXML
+    private void updateMinimalEnergyToBreed() {
+        updateValue(minimalEnergyToBreed, 2, 1000, 5);
+        changeEnergyLossOnBreed();
     }
 
     @FXML
     private void updateEnergyLossOnBreed() {
-        energyLossOnBreed.getItems().clear();
-        for (int i = 0; i < minimalEnergyToBreed.getValue(); i++)
-            energyLossOnBreed.getItems().add(i);
-        energyLossOnBreed.setValue(1);
+        updateValue(energyLossOnBreed, 1, 500, 2);
+        changeEnergyLossOnBreed();
     }
 
     @FXML
-    private void updateGensToMutate(){
-        maxGensToMutate.getItems().clear();
-        minGensToMutate.getItems().clear();
-        for (int i = 0; i <= genotypeLength.getValue(); i++){
-            maxGensToMutate.getItems().add(i);
-            minGensToMutate.getItems().add(i);
+    private void updateMaxGensToMutate() {
+        updateValue(maxGensToMutate, 1, 100, 1);
+        changeMaxGensToMutate();
+    }
+
+    @FXML
+    private void updateMinGensToMutate() {
+        updateValue(minGensToMutate, 1, 100, 1);
+        changeMaxGensToMutate();
+    }
+
+    @FXML
+    private void updateStartingGrassNumber() {
+        updateValue(startingGrassNumber, 1, 1000, 5);
+    }
+
+    @FXML
+    private void updateGrassPerRound() {
+        updateValue(numberOfGrassPerDay, 1, 1000, 5);
+    }
+
+    @FXML
+    private void updateGrassEnergy() {
+        updateValue(grassEnergy, 1, 1000, 2);
+    }
+
+    @FXML
+    private void checkNumberOfTunnels() {
+        if (((width.getValue() + 1) * (height.getValue() + 1)) / 2 < numberOfTunnels.getValue()) {
+            numberOfTunnels.setValue(1);
         }
-        maxGensToMutate.setValue(1);
-        minGensToMutate.setValue(1);
     }
 
     @FXML
-    private void updateMaxGensToMutate(){
+    private void changeEnergyLossOnBreed() {
+        if (energyLossOnBreed.getValue() >= minimalEnergyToBreed.getValue()) {
+            energyLossOnBreed.setValue(1);
+        }
+    }
+
+    @FXML
+    private void changeMaxGensToMutate(){
         if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
         if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
             maxGensToMutate.setValue(minGensToMutate.getValue());
@@ -148,39 +244,32 @@ public class StartPresenter {
     }
 
     @FXML
-    private void updateMinGensToMutate(){
-        if (minGensToMutate.getValue() == null || maxGensToMutate.getValue() == null) return;
-        if (minGensToMutate.getValue() > maxGensToMutate.getValue()){
-            minGensToMutate.setValue(maxGensToMutate.getValue());
-        }
-    }
+    private void saveStatsToCsv() {
 
-    private int numberOfCOnfigurationsInFolder() {
-        int idFileCount = 0;
-        File folder = new File("konfiguracje");
-        File[] files = folder.listFiles();
-
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile() && file.getName().toLowerCase().endsWith(".csv")) {
-                    idFileCount++;
-                }
-            }
-        }
-        return idFileCount;
     }
 
     @FXML
     private void updateConfigurations() {
-        int num = numberOfCOnfigurationsInFolder();
-        for (int i = 0; i < num; i++) {
-            useConfiguration.getItems().add("konfiguracja" + (i+1));
+        useConfiguration.getItems().clear();
+
+        String currentDir = System.getProperty("user.dir");
+        File folder = new File(currentDir, "konfiguracje");
+
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(".csv")) {
+                        useConfiguration.getItems().add(file.getName());
+                    }
+                }
+            }
         }
-        useConfiguration.setValue("konfiguracja" + 1);
     }
 
     public void useSetConfiguration() {
-        String filePath = "konfiguracje/" + useConfiguration.getValue() + ".csv";
+        String filePath = "konfiguracje/" + useConfiguration.getValue();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String[] columnTitles = reader.readLine().split(",");
             String[] values = reader.readLine().split(",");
@@ -194,6 +283,7 @@ public class StartPresenter {
             width.setValue(Integer.parseInt(dataMap.get("Szerokość")));
             numberOfAnimals.setValue(Integer.parseInt(dataMap.get("Liczba zwierząt")));
             useTunnels.setSelected(Boolean.parseBoolean(dataMap.get("Występowanie tuneli")));
+            visibilityTunnels();
             numberOfTunnels.setValue(Integer.parseInt(dataMap.get("Liczba tuneli")));
             animalLife.setValue(Integer.parseInt(dataMap.get("Początkowa energia zwierząt")));
             genotypeLength.setValue(Integer.parseInt(dataMap.get("Długość genotypu")));
@@ -210,10 +300,26 @@ public class StartPresenter {
         }
     }
 
-    public void exportConfiguration() {
-        int id = 1 + numberOfCOnfigurationsInFolder();
-        String filePath = "konfiguracje/konfiguracja" + id + ".csv";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+    public void saveConfigurationToCsv() {
+        FileChooser fileChooser = new FileChooser();
+
+        String currentDir = System.getProperty("user.dir");
+        Path configDirPath = Paths.get(currentDir, "konfiguracje");
+        File defaultDirectory = configDirPath.toFile();
+        fileChooser.setInitialDirectory(defaultDirectory);
+
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Pliki CSV (*.csv)", "*.csv"));
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            saveDataToCsv(file);
+            updateConfigurations();
+        }
+    }
+
+    private void saveDataToCsv(File file) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("Wysokość,Szerokość,Liczba zwierząt,Występowanie tuneli,Liczba tuneli,Początkowa energia zwierząt," +
                     "Długość genotypu,Odtwarzanie genotypu od tyłu,Min energii do rozmnażania,Utrata energii przy rozmnażaniu," +
                     "Max genów zmieniane w mutacji,Min genów zmieniane w mutacji,Liczba traw na start," +
@@ -278,6 +384,9 @@ public class StartPresenter {
         optionsManager.setNumberOfGrassPerDay(numberOfGrassPerDay.getValue());
         optionsManager.setStartingGrassNumber(startingGrassNumber.getValue());
         optionsManager.setSimulationSpeed(simulationSpeed.getValue());
+        optionsManager.setStatsToCsv(statsToCsv.isSelected());
+        optionsManager.setStatsName(statsName.getText());
+
 
         List<Vector2d> positions = new ArrayList<>();
         Random random = new Random();
