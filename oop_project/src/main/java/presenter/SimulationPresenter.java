@@ -178,7 +178,7 @@ public class SimulationPresenter implements MapChangeListener {
 
             if (simulationPaused &&
                     worldElement.worldElementType == WorldElementType.ANIMAL &&
-                    ((Animal) worldElement).genotypeHasGen(statsHandler.getMostPopularGen())){
+                    ((Animal) worldElement).getGenotype().equals(statsHandler.getMostPopularGenotype())){
                 Circle circle = new Circle((double) cellSize /10, Color.BLACK);
                 GridPane.setHalignment(circle, HPos.CENTER);
                 circle.setMouseTransparent(true);
@@ -260,7 +260,7 @@ public class SimulationPresenter implements MapChangeListener {
         numberOfAnimalsLabel.setText("Liczba zwierzat: " + statsHandler.getNumberOfAnimals());
         numberOfGrassLabel.setText("Liczba traw: " + statsHandler.getNumberOfGrass());
         numberOfFreeSpacesLabel.setText("Liczba wolnych pol: " + statsHandler.getNumberOfFreeSpaces());
-        mostPopularGenLabel.setText("Najpopularniejszy gen: " + statsHandler.getMostPopularGen());
+        mostPopularGenLabel.setText("Najpopularniejszy genotyp: " + statsHandler.getMostPopularGenotype());
         averageEnergyLabel.setText("Srednia energia: " + statsHandler.getAverageEnergy());
         averageNumberOfKidsLabel.setText("Srednia liczba dzieci: " + statsHandler.getAverageNumberOfKids());
         averageLengthOfDeadAnimalsLabel.setText("Srednia dlugosc zycia niezywych zwierzakow: " + statsHandler.getAverageLengthOfDeadAnimals());
