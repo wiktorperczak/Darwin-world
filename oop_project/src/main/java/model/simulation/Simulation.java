@@ -11,6 +11,7 @@ import model.worldElements.WorldElementType;
 
 import java.util.*;
 
+
 public class Simulation implements Runnable{
     private RectangularMap map;
     Random random = new Random();
@@ -28,11 +29,15 @@ public class Simulation implements Runnable{
         this.map.mapChanged("Zwierzaki się ustawiły");
     }
 
-    public void run(){
-        String filePath = "statystyki/symulacja" + (map.getId() + 1) + ".csv";
+    public void run() {
         CsvHandler csvHandler = new CsvHandler(map);
-        csvHandler.createCsvFile(filePath);
-        addGrass(map.optionsManager.getStartingGrassNumber());
+        String filePath = "";
+        if (map.optionsManager.getStatsToCsv()) {
+            filePath = "statystyki/" + map.optionsManager.getStatsName();
+            csvHandler.createCsvFile(filePath);
+            addGrass(map.optionsManager.getStartingGrassNumber());
+        }
+
         while(!map.getAnimals().isEmpty()) {
             checkForPaused();
             removeDeadBodies();
@@ -46,7 +51,7 @@ public class Simulation implements Runnable{
             map.updateAllElements();
             map.mapChanged("Zwierzaki sie ruszyly");
             map.countAllStats();
-            csvHandler.appendRowToCsv(filePath);
+            if (map.optionsManager.getStatsToCsv()) { csvHandler.appendRowToCsv(filePath); }
             map.anotherDaySimulated();
             try {
                 Thread.sleep(simulationSpeed);

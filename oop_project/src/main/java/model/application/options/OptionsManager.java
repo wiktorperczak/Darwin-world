@@ -17,6 +17,8 @@ public final class OptionsManager {
     private int numberOfGrassPerDay;
     private int startingGrassNumber;
     private int simulationSpeed;
+    private boolean statsToCsv;
+    private String statsName;
 
     public int getNumberOfAnimals() { return numberOfAnimals; }
 
@@ -57,6 +59,11 @@ public final class OptionsManager {
     public void setStartingGrassNumber(int startingGrassNumber) { this.startingGrassNumber = startingGrassNumber; }
     public void setSimulationSpeed(int simulationSpeed){ this.simulationSpeed = simulationSpeed; }
     public int getSimulationSpeed(){ return simulationSpeed; }
+    public boolean getStatsToCsv() { return statsToCsv; }
+    public String getStatsName() { return statsName; }
+    public void setStatsToCsv(boolean statsToCsv) { this.statsToCsv = statsToCsv; }
+    public void setStatsName(String statsName) { this.statsName = statsName; }
+
 
     public void generateBasicValues() {
         setNumberOfAnimals(10);

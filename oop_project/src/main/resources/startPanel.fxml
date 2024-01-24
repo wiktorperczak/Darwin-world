@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -27,6 +22,9 @@
             <Label text="Liczba zwierząt:" />
             <ComboBox fx:id="numberOfAnimals" prefWidth="150" onAction="#updateNumberOfAnimals" editable="true"/>
 
+            <Label text="Liczba traw na start:" />
+            <ComboBox fx:id="startingGrassNumber" prefWidth="150" editable="true" onAction="#updateStartingGrassNumber"/>
+
             <Label text="Występowanie tuneli:" />
             <CheckBox fx:id="useTunnels" onAction="#visibilityTunnels"/>
 
@@ -41,13 +39,11 @@
         <VBox spacing="8">
             <Label text="Długość genotypu:" />
             <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGenotypeLength" editable="true"/>
-<!--            <ComboBox fx:id="genotypeLength" prefWidth="150" onAction="#updateGensToMutate" editable="true"/>-->
 
             <Label text="Odtwarzanie genotypu od tyłu:" />
             <CheckBox fx:id="useReverseGenotype" />
 
             <Label text="Min energii do rozmnazania:"/>
-<!--            <ComboBox fx:id="minimalEnergyToBreed" prefWidth="150" onAction="#updateEnergyLossOnBreed" editable="true"/>-->
             <ComboBox fx:id="minimalEnergyToBreed" prefWidth="150" onAction="#updateMinimalEnergyToBreed" editable="true"/>
 
             <Label text="Utrata energii przy rozmnażaniu:" />
@@ -55,17 +51,12 @@
 
             <Label text="Maksymalna liczba genów zmienianych podczas mutacji:" style="-fx-wrap-text: true; -fx-max-width: 150px" />
             <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate" editable="true"/>
-<!--            <ComboBox fx:id="maxGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate" editable="true"/>-->
 
             <Label text="Minimalna liczba genów zmienianych podczas mutacji:" style="-fx-wrap-text: true; -fx-max-width: 150px"/>
             <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMinGensToMutate" editable="true"/>
-<!--            <ComboBox fx:id="minGensToMutate" prefWidth="150" onAction="#updateMaxGensToMutate" editable="true"/>-->
         </VBox>
 
         <VBox spacing="8">
-            <Label text="Liczba traw na start:" />
-            <ComboBox fx:id="startingGrassNumber" prefWidth="150" editable="true" onAction="#updateStartingGrassNumber"/>
-
             <Label text="Wartość energetyczna trawy:" />
             <ComboBox fx:id="grassEnergy" prefWidth="150" editable="true" onAction="#updateGrassEnergy"/>
 
@@ -78,10 +69,13 @@
             <Label text="Użyj gotowej konfiguracji:" />
             <ComboBox fx:id="useConfiguration" prefWidth="150" onAction="#useSetConfiguration"/>
 
-            <Label text="Zapisz konfiguracje w .csv" />
-            <Button onAction="#exportConfiguration" minWidth="150" minHeight="40">Zapisz</Button>
+            <Button onAction="#saveConfigurationToCsv" minWidth="150" minHeight="40">Zapisz konfiguracje</Button>
 
-            <Label text="Aby zobaczyć nowo zapisaną konfigurację, należy uruchomić program jeszcze raz" maxWidth="180" wrapText="true" />
+            <Label text="Zapisuj statystyki do csv" />
+            <CheckBox fx:id="statsToCsv" onAction="#visibilityStatsName"/>
+
+            <Label text="Nazwa pliku csv" />
+            <TextField fx:id="statsName" text="statystyki"/>
         </VBox>
     </HBox>
 
