@@ -1,5 +1,3 @@
-# OOP-Project
-
 # Podział pracy w projekcie z Programowania Obiektowego
 
 Mikołaj Gosztyła:
