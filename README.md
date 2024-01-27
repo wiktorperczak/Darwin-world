@@ -13,10 +13,10 @@ Mikołaj Gosztyła:
 Wiktor Perczak:
 - funkcjonalność trawy, równika
 - zliczanie przodków
-- GUI z ustawieniami
+- GUI z ustawieniami, sprawdzanie poprawności danych
 - eksportowanie statystyk
 - eksportowanie i wczytywanie konfiguracji
 - wielowątkowość
-- testy Vector2d, Symulacji
+- testy Vector2d, Symulacji, RectangularMap
 
 Wiele klas było pisanych wspólnie i ciężko jest jednoznacznie podzielić wkład w ich kod.
